@@ -149,25 +149,18 @@
         }
 
         .duke-portrait {
-            width: 42px;
-            height: 48px;
+            width: 192px;
+            height: 192px;
             margin-bottom: 2rem;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             filter: drop-shadow(0 0 30px var(--duke-blue));
             animation: dukeFloat 3s ease-in-out infinite;
-            background-image: url('images/duke-hud-sheet.png');
-            /* Duke face with sunglasses - native position, scaled up */
-            background-position: -67px -64px;
-            background-size: 322px 209px;
-            transform: scale(4);
-            margin-top: 60px;
-            margin-bottom: 80px;
         }
 
         @keyframes dukeFloat {
-            0%, 100% { transform: scale(4) translateY(0); }
-            50% { transform: scale(4) translateY(-5px); }
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .hero-quote {
@@ -502,7 +495,7 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <div class="duke-portrait" title="Duke Nukem"></div>
+        <img src="images/duke-face-sprite.png" alt="Duke Nukem" class="duke-portrait">
         <h1 class="hero-title">DUKE'S SEO ARSENAL</h1>
         <p class="hero-subtitle">
             Dominate the SERPs like Duke dominates aliens.
@@ -518,7 +511,7 @@
     <!-- Mighty Boot Divider -->
     <div class="mighty-boot-divider">
         <div class="boot-divider-line left"></div>
-        <div class="mighty-boot" id="mightyBoot" title="Click to stomp!"></div>
+        <img src="images/mighty-boot-sprite.png" alt="Mighty Boot" class="mighty-boot" id="mightyBoot" title="Click to stomp!">
         <div class="boot-divider-line right"></div>
     </div>
 
@@ -610,7 +603,7 @@
     <!-- Mighty Boot Divider 2 -->
     <div class="mighty-boot-divider">
         <div class="boot-divider-line left"></div>
-        <div class="mighty-boot" title="Click to stomp!"></div>
+        <img src="images/mighty-boot-sprite.png" alt="Mighty Boot" class="mighty-boot" title="Click to stomp!">
         <div class="boot-divider-line right"></div>
     </div>
 
@@ -731,7 +724,7 @@
 
         <!-- Duke Face -->
         <div class="hud-face-container">
-            <div class="hud-face" id="dukeFace" title="Duke"></div>
+            <img src="images/duke-face-sprite.png" alt="Duke" class="hud-face" id="dukeFace" title="Duke">
         </div>
 
         <!-- Ammo -->

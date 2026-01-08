@@ -84,11 +84,7 @@ html, body { cursor: crosshair !important; }
 
 .hud-face {
     width: 42px;
-    height: 48px;
-    background-image: url('../images/duke-hud-sheet.png');
-    /* Duke face with sunglasses from Fullscreen Status row - native size */
-    background-position: -67px -64px;
-    background-size: 322px 209px;
+    height: 42px;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: pointer;
@@ -113,12 +109,8 @@ html, body { cursor: crosshair !important; }
 }
 
 .mighty-boot {
-    width: 130px;
-    height: 100px;
-    background-image: url('../images/duke-weapons.png');
-    /* Mighty boot extended kick - row 3, frame 4 */
-    background-position: -200px -115px;
-    background-size: 514px 837px;
+    width: 200px;
+    height: auto;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: pointer;
