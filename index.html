@@ -797,49 +797,88 @@
     <audio id="pickupSound" preload="auto">
         <source src="audio/pickup.wav" type="audio/wav">
     </audio>
-    <audio id="dukeVoice" preload="auto">
-        <source src="audio/duke-quote.wav" type="audio/wav">
+
+    <!-- Duke Voice Clips -->
+    <audio id="voiceHailToTheKing" preload="auto">
+        <source src="audio/hail-to-the-king.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceComeGetSome" preload="auto">
+        <source src="audio/come-get-some.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceDamnImGood" preload="auto">
+        <source src="audio/damn-im-good.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceLetsRock" preload="auto">
+        <source src="audio/lets-rock.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBlowItOut" preload="auto">
+        <source src="audio/blow-it-out.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voicePieceOfCake" preload="auto">
+        <source src="audio/piece-of-cake.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceShakeItBaby" preload="auto">
+        <source src="audio/shake-it-baby.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceCool" preload="auto">
+        <source src="audio/cool.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        // Duke Nukem Quotes
-        const dukeQuotes = [
-            "Hail to the king, baby!",
-            "It's time to kick ass and chew bubblegum...",
-            "Come get some!",
-            "Damn, I'm good!",
-            "Groovy!",
-            "Let's rock!",
-            "Blow it out your ass!",
-            "I'm gonna rip off your head and shit down your neck!",
-            "Your ass is grass, and I've got the weed whacker.",
-            "Nobody steals our chicks... and lives!"
-        ];
+        // Duke Voice Clips mapping
+        const dukeVoiceClips = {
+            hailToTheKing: { id: 'voiceHailToTheKing', text: "Hail to the king, baby!" },
+            comeGetSome: { id: 'voiceComeGetSome', text: "Come get some!" },
+            damnImGood: { id: 'voiceDamnImGood', text: "Damn, I'm good!" },
+            letsRock: { id: 'voiceLetsRock', text: "Let's rock!" },
+            blowItOut: { id: 'voiceBlowItOut', text: "Blow it out your ass!" },
+            pieceOfCake: { id: 'voicePieceOfCake', text: "Piece of cake!" },
+            shakeItBaby: { id: 'voiceShakeItBaby', text: "Shake it, baby!" },
+            cool: { id: 'voiceCool', text: "Cool!" }
+        };
+
+        // Array for random selection
+        const voiceClipKeys = Object.keys(dukeVoiceClips);
 
         let killCount = parseInt(localStorage.getItem('duke_kills') || '0');
+        let lastVoicePlayed = 0;
+        const voiceCooldown = 2000; // 2 seconds between voice clips
 
-        // Show Duke quote
-        function showDukeQuote(quote) {
+        // Play Duke voice clip
+        function playDukeVoice(clipKey) {
+            const now = Date.now();
+            if (now - lastVoicePlayed < voiceCooldown) return false;
+
+            const clip = dukeVoiceClips[clipKey];
+            if (!clip) return false;
+
+            const audio = document.getElementById(clip.id);
+            if (audio) {
+                audio.volume = 0.7;
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+                lastVoicePlayed = now;
+                showDukeQuoteText(clip.text);
+                return true;
+            }
+            return false;
+        }
+
+        // Play random voice clip
+        function playRandomVoice() {
+            const randomKey = voiceClipKeys[Math.floor(Math.random() * voiceClipKeys.length)];
+            return playDukeVoice(randomKey);
+        }
+
+        // Show Duke quote text (without audio)
+        function showDukeQuoteText(quote) {
             const quoteEl = document.getElementById('dukeQuote');
             quoteEl.textContent = '"' + quote + '"';
             quoteEl.classList.add('show');
 
-            // Play voice if available
-            const voice = document.getElementById('dukeVoice');
-            if (voice) {
-                voice.currentTime = 0;
-                voice.play().catch(() => {});
-            }
-
             setTimeout(() => {
                 quoteEl.classList.remove('show');
             }, 3000);
-        }
-
-        // Random quote on interaction
-        function randomQuote() {
-            const quote = dukeQuotes[Math.floor(Math.random() * dukeQuotes.length)];
-            showDukeQuote(quote);
         }
 
         // Mighty Boot click
@@ -868,15 +907,17 @@
                 localStorage.setItem('duke_kills', killCount);
                 document.getElementById('hudKills').textContent = killCount;
 
-                // Random quote sometimes
-                if (Math.random() > 0.6) {
-                    randomQuote();
+                // Play voice clip on stomps
+                const stompVoices = ['damnImGood', 'pieceOfCake', 'cool', 'blowItOut'];
+                if (Math.random() > 0.5) {
+                    const voice = stompVoices[Math.floor(Math.random() * stompVoices.length)];
+                    playDukeVoice(voice);
                 }
             });
         });
 
         // CTA clicks - Duke quote
-        document.querySelectorAll('.big-cta, .feature-link').forEach(cta => {
+        document.querySelectorAll('.big-cta').forEach(cta => {
             cta.addEventListener('click', function(e) {
                 // Play pickup sound
                 const pickup = document.getElementById('pickupSound');
@@ -885,12 +926,32 @@
                     pickup.play().catch(() => {});
                 }
 
-                // Show quote
-                showDukeQuote("Hail to the king, baby!");
+                // "Hail to the King" on main CTA
+                playDukeVoice('hailToTheKing');
             });
         });
 
-        // Feature card hover
+        // Feature link clicks
+        document.querySelectorAll('.feature-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                const pickup = document.getElementById('pickupSound');
+                if (pickup) {
+                    pickup.currentTime = 0;
+                    pickup.play().catch(() => {});
+                }
+
+                // Different quotes for different features
+                const text = this.textContent.trim();
+                if (text.includes('HUNTING')) playDukeVoice('comeGetSome');
+                else if (text.includes('BLOW')) playDukeVoice('blowItOut');
+                else if (text.includes('STOMP')) playDukeVoice('pieceOfCake');
+                else if (text.includes('BLAST')) playDukeVoice('letsRock');
+                else if (text.includes('AIM')) playDukeVoice('comeGetSome');
+                else if (text.includes('DEVASTATE')) playDukeVoice('damnImGood');
+            });
+        });
+
+        // Feature card hover - subtle sound
         document.querySelectorAll('.feature-card').forEach(card => {
             card.addEventListener('mouseenter', function() {
                 const pickup = document.getElementById('pickupSound');
@@ -906,15 +967,20 @@
         let faceClicks = 0;
         document.getElementById('dukeFace').addEventListener('click', function() {
             faceClicks++;
-            if (faceClicks >= 5) {
-                randomQuote();
+            if (faceClicks >= 3) {
+                playRandomVoice();
                 faceClicks = 0;
             }
         });
 
-        // Hero CTA - Special quote
+        // Hero CTA - Special quote on hover
         document.getElementById('heroCTA').addEventListener('mouseenter', function() {
-            showDukeQuote("Come get some!");
+            playDukeVoice('comeGetSome');
+        });
+
+        // Bottom CTA - Hail to the King
+        document.getElementById('bottomCTA').addEventListener('mouseenter', function() {
+            playDukeVoice('hailToTheKing');
         });
 
         // Update HUD kills on load
@@ -929,7 +995,7 @@
             if (keySequence.length > 4) keySequence.shift();
 
             if (keySequence.join('') === secretCode.join('')) {
-                showDukeQuote("Damn, I'm good!");
+                playDukeVoice('damnImGood');
                 document.body.classList.add('shake');
                 setTimeout(() => document.body.classList.remove('shake'), 500);
                 keySequence = [];
@@ -963,7 +1029,7 @@
                     musicToggle.textContent = '🔊';
                     musicToggle.classList.add('playing');
                     localStorage.setItem('duke_music_playing', 'true');
-                    showDukeQuote("Let's rock!");
+                    playDukeVoice('letsRock');
                 }).catch(() => {});
             }
             isPlaying = !isPlaying;
@@ -971,6 +1037,16 @@
 
         // Set volume
         bgMusic.volume = 0.4;
+
+        // Random Duke quote on scroll (occasionally)
+        let lastScrollQuote = 0;
+        window.addEventListener('scroll', function() {
+            const now = Date.now();
+            if (now - lastScrollQuote > 30000 && Math.random() > 0.98) {
+                playRandomVoice();
+                lastScrollQuote = now;
+            }
+        });
     </script>
 </body>
 </html>
