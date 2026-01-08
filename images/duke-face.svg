@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="200" height="200">
+  <!-- Duke's iconic blonde flat-top and sunglasses -->
+  <rect fill="#1a1a2e" width="64" height="64"/>
+
+  <!-- Neck -->
+  <rect fill="#e8c090" x="20" y="48" width="24" height="16"/>
+
+  <!-- Face -->
+  <rect fill="#e8c090" x="12" y="16" width="40" height="36"/>
+
+  <!-- Blonde flat-top hair -->
+  <rect fill="#f0c040" x="10" y="6" width="44" height="14"/>
+  <rect fill="#d4a030" x="10" y="6" width="44" height="4"/>
+
+  <!-- Sunglasses -->
+  <rect fill="#111" x="10" y="22" width="20" height="10" rx="2"/>
+  <rect fill="#111" x="34" y="22" width="20" height="10" rx="2"/>
+  <rect fill="#333" x="28" y="24" width="8" height="4"/>
+
+  <!-- Sunglasses shine -->
+  <rect fill="#444" x="12" y="24" width="6" height="2"/>
+  <rect fill="#444" x="36" y="24" width="6" height="2"/>
+
+  <!-- Nose -->
+  <polygon fill="#d4a080" points="32,30 28,42 36,42"/>
+
+  <!-- Mouth/Grin -->
+  <rect fill="#600" x="22" y="44" width="20" height="4"/>
+  <rect fill="#fff" x="24" y="44" width="4" height="2"/>
+  <rect fill="#fff" x="30" y="44" width="4" height="2"/>
+  <rect fill="#fff" x="36" y="44" width="4" height="2"/>
+
+  <!-- Jaw line -->
+  <rect fill="#d4a080" x="12" y="48" width="8" height="4"/>
+  <rect fill="#d4a080" x="44" y="48" width="8" height="4"/>
+</svg>

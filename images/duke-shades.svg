@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 50" width="150" height="62">
+  <!-- Duke's iconic sunglasses -->
+
+  <!-- Frame bridge -->
+  <rect fill="#222" x="52" y="18" width="16" height="6" rx="2"/>
+
+  <!-- Left lens frame -->
+  <rect fill="#111" x="5" y="10" width="50" height="30" rx="5"/>
+  <rect fill="#222" x="8" y="13" width="44" height="24" rx="3"/>
+
+  <!-- Right lens frame -->
+  <rect fill="#111" x="65" y="10" width="50" height="30" rx="5"/>
+  <rect fill="#222" x="68" y="13" width="44" height="24" rx="3"/>
+
+  <!-- Left lens shine -->
+  <rect fill="#333" x="12" y="16" width="15" height="4" rx="2"/>
+  <rect fill="#2a2a2a" x="10" y="25" width="38" height="2"/>
+
+  <!-- Right lens shine -->
+  <rect fill="#333" x="72" y="16" width="15" height="4" rx="2"/>
+  <rect fill="#2a2a2a" x="70" y="25" width="38" height="2"/>
+
+  <!-- Temple arms (sides) -->
+  <rect fill="#111" x="0" y="15" width="8" height="8" rx="2"/>
+  <rect fill="#111" x="112" y="15" width="8" height="8" rx="2"/>
+
+  <!-- Neon reflection effect -->
+  <rect fill="#00aaff" x="15" y="18" width="8" height="2" opacity="0.6"/>
+  <rect fill="#ff0066" x="35" y="20" width="6" height="2" opacity="0.5"/>
+  <rect fill="#00aaff" x="75" y="18" width="8" height="2" opacity="0.6"/>
+  <rect fill="#ff0066" x="95" y="20" width="6" height="2" opacity="0.5"/>
+</svg>
