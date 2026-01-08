@@ -1,5 +1,5 @@
-/* ===== DUKE NUKEM 3D HUD - SEMrush Style ===== */
-/* Neon blue/red aesthetic with urban grit */
+/* ===== DUKE NUKEM 3D HUD - AUTHENTIC STYLE ===== */
+/* Using real Duke 3D sprite assets */
 
 @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
 
@@ -8,82 +8,46 @@
 html, body { cursor: crosshair !important; }
 
 :root {
-    --duke-blue: #00aaff;
-    --duke-blue-dark: #006699;
-    --duke-red: #ff3333;
-    --duke-red-dark: #990000;
-    --duke-yellow: #ffcc00;
-    --duke-gold: #ffaa00;
-    --duke-bg: #1a1a2e;
-    --duke-panel: #0d0d1a;
-    --duke-border: #334466;
-    --neon-glow: 0 0 10px var(--duke-blue), 0 0 20px var(--duke-blue);
-    --red-glow: 0 0 10px var(--duke-red), 0 0 20px var(--duke-red);
+    --duke-blue: #5090d0;
+    --duke-red: #d04040;
+    --duke-yellow: #d0c040;
+    --duke-gold: #c09030;
+    --duke-bg: #000000;
+    --duke-panel: #303030;
+    --status-bar-height: 64px;
 }
 
-/* Main HUD container - Duke's bottom bar style */
+/* Main HUD container - Real Duke 3D status bar style */
 .duke-hud {
     position: fixed;
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 80px;
-    background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 50%, #0d0d1a 100%);
-    border-top: 3px solid var(--duke-blue);
-    box-shadow:
-        inset 0 2px 0 rgba(0, 170, 255, 0.3),
-        0 -4px 20px rgba(0, 170, 255, 0.3),
-        0 0 40px rgba(0, 0, 0, 0.8);
+    height: var(--status-bar-height);
+    background-image: url('../images/duke-hud-sheet.png');
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    background-size: auto var(--status-bar-height);
+    border-top: 2px solid #606060;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     z-index: 9999;
     font-family: 'Press Start 2P', monospace;
-    padding: 0;
-    gap: 0;
+    padding: 0 20px;
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
 }
 
-/* Scanline effect on HUD */
-.duke-hud::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: repeating-linear-gradient(
-        0deg,
-        transparent,
-        transparent 2px,
-        rgba(0, 0, 0, 0.1) 2px,
-        rgba(0, 0, 0, 0.1) 4px
-    );
-    pointer-events: none;
-}
-
-/* HUD Sections - metallic panels with neon accents */
+/* HUD Sections */
 .hud-section {
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100%;
-    background: linear-gradient(180deg, rgba(20,20,40,0.9) 0%, rgba(10,10,20,0.95) 100%);
-    border-left: 2px solid var(--duke-border);
-    border-right: 2px solid #111122;
-    padding: 0 1.5rem;
-    position: relative;
-}
-
-.hud-section::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 10%;
-    right: 10%;
-    height: 2px;
-    background: linear-gradient(90deg, transparent, var(--duke-blue), transparent);
-    opacity: 0.5;
+    padding: 0 15px;
 }
 
 /* Stat container */
@@ -91,208 +55,169 @@ html, body { cursor: crosshair !important; }
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
-    padding: 0 0.5rem;
-    position: relative;
-    z-index: 1;
+    gap: 2px;
 }
 
-/* HUD values - big neon numbers */
+/* HUD values - Duke 3D style yellow numbers */
 .hud-value {
-    font-size: 1.8rem;
-    text-shadow:
-        2px 2px 0 #000,
-        0 0 10px currentColor,
-        0 0 20px currentColor;
+    font-size: 1.4rem;
+    color: var(--duke-yellow);
+    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
     letter-spacing: 2px;
 }
 
-/* HUD labels - small text below numbers */
+/* HUD labels */
 .hud-label {
-    font-size: 0.45rem;
-    color: #667799;
+    font-size: 0.4rem;
+    color: #909090;
     text-shadow: 1px 1px 0 #000;
     text-transform: uppercase;
-    letter-spacing: 1px;
 }
 
-/* Duke face container - center ego meter style */
+/* Duke face container using sprite sheet */
 .hud-face-container {
-    width: 70px;
-    height: 70px;
-    background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%);
-    border: 3px solid var(--duke-blue);
-    box-shadow:
-        inset 0 0 20px rgba(0, 0, 0, 0.8),
-        0 0 15px rgba(0, 170, 255, 0.4);
+    width: 48px;
+    height: 48px;
+    background: #202020;
+    border: 2px solid #404040;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 1rem;
-    position: relative;
-}
-
-/* Ego meter bar below face */
-.hud-face-container::after {
-    content: 'EGO';
-    position: absolute;
-    bottom: -18px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 0.4rem;
-    color: var(--duke-gold);
-    text-shadow: 0 0 5px var(--duke-gold);
+    margin: 0 10px;
+    overflow: hidden;
 }
 
 .hud-face {
-    width: 60px;
-    height: 60px;
+    width: 42px;
+    height: 48px;
+    background-image: url('../images/duke-hud-sheet.png');
+    /* Duke face with sunglasses from Fullscreen Status row */
+    background-position: -134px -128px;
+    background-size: 644px 418px;
     image-rendering: pixelated;
-    filter: drop-shadow(0 0 5px var(--duke-blue));
+    image-rendering: crisp-edges;
+    cursor: pointer;
 }
 
-/* Duke-style colors for each stat */
-.hud-ammo { color: var(--duke-yellow); }
-.hud-health { color: var(--duke-red); }
+/* Color variations */
+.hud-health { color: #ff4040; }
 .hud-armor { color: var(--duke-blue); }
+.hud-ammo { color: var(--duke-yellow); }
 .hud-kills { color: var(--duke-gold); }
-.hud-ego { color: var(--duke-gold); }
-
-/* Weapon indicator */
-.hud-weapon {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--duke-yellow);
-    font-size: 0.5rem;
-}
-
-.hud-weapon-icon {
-    width: 40px;
-    height: 40px;
-    image-rendering: pixelated;
-}
 
 /* ===== MIGHTY BOOT WEAPON DIVIDER ===== */
 .mighty-boot-divider {
     position: relative;
     width: 100%;
-    height: 120px;
+    height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 2rem 0;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .mighty-boot {
-    width: 150px;
-    height: auto;
+    width: 160px;
+    height: 120px;
+    background-image: url('../images/duke-weapons.png');
+    /* Mighty boot kick frame - row 3 of weapon sprites */
+    background-position: -5px -100px;
+    background-size: 514px 837px;
     image-rendering: pixelated;
-    filter: drop-shadow(0 0 20px var(--duke-gold));
-    animation: bootStomp 2s ease-in-out infinite;
+    image-rendering: crisp-edges;
     cursor: pointer;
     transition: transform 0.1s;
+    filter: drop-shadow(0 0 10px rgba(255, 200, 100, 0.5));
 }
 
 .mighty-boot:hover {
-    animation: none;
-    transform: scale(1.2) rotate(-10deg);
+    transform: scale(1.1) rotate(-5deg);
+    filter: drop-shadow(0 0 20px rgba(255, 200, 100, 0.8));
 }
 
 .mighty-boot:active {
-    transform: scale(1.3) rotate(5deg);
-}
-
-@keyframes bootStomp {
-    0%, 100% { transform: translateY(0) rotate(0deg); }
-    10% { transform: translateY(-30px) rotate(-5deg); }
-    30% { transform: translateY(10px) rotate(5deg); }
-    40% { transform: translateY(0) rotate(0deg); }
+    transform: scale(1.2) rotate(10deg) translateX(20px);
 }
 
 .boot-divider-line {
     position: absolute;
-    width: 40%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--duke-red), transparent);
-    box-shadow: 0 0 10px var(--duke-red);
+    width: 35%;
+    height: 4px;
+    background: linear-gradient(90deg, transparent, #c09030, #c09030, transparent);
 }
 
-.boot-divider-line.left {
-    left: 0;
+.boot-divider-line.left { left: 0; }
+.boot-divider-line.right { right: 0; }
+
+/* ===== WEAPON SPRITES ===== */
+.weapon-sprite {
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    background-image: url('../images/duke-weapons.png');
+    background-size: 1028px 1673px;
 }
 
-.boot-divider-line.right {
-    right: 0;
+.weapon-pistol {
+    width: 120px;
+    height: 100px;
+    background-position: -280px -5px;
+}
+
+.weapon-shotgun {
+    width: 200px;
+    height: 80px;
+    background-position: -5px -295px;
+}
+
+.weapon-rpg {
+    width: 150px;
+    height: 100px;
+    background-position: -5px -400px;
+}
+
+.weapon-pipebomb {
+    width: 80px;
+    height: 60px;
+    background-position: -200px -400px;
+}
+
+.weapon-devastator {
+    width: 180px;
+    height: 100px;
+    background-position: -5px -560px;
+}
+
+.weapon-freezer {
+    width: 150px;
+    height: 80px;
+    background-position: -450px -560px;
 }
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .duke-hud {
-        height: 60px;
-    }
-    .hud-section {
-        padding: 0 0.8rem;
+        height: 50px;
+        padding: 0 10px;
     }
     .hud-face-container {
-        width: 50px;
-        height: 50px;
-        margin: 0 0.5rem;
+        width: 40px;
+        height: 40px;
     }
     .hud-face {
-        width: 44px;
-        height: 44px;
-    }
-    .hud-value {
-        font-size: 1.2rem;
-    }
-    .hud-label {
-        font-size: 0.35rem;
-    }
-    .mighty-boot {
-        width: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .duke-hud {
-        height: 52px;
-    }
-    .hud-section {
-        padding: 0 0.5rem;
+        width: 36px;
+        height: 36px;
     }
     .hud-value {
         font-size: 1rem;
     }
-    .hud-face-container {
-        width: 44px;
-        height: 44px;
-        margin: 0 0.3rem;
-    }
-    .hud-face {
-        width: 38px;
-        height: 38px;
+    .hud-label {
+        font-size: 0.3rem;
     }
     .mighty-boot {
-        width: 80px;
+        width: 150px;
+        height: 112px;
     }
-}
-
-/* ===== NEON TEXT STYLES ===== */
-.neon-blue {
-    color: var(--duke-blue);
-    text-shadow: var(--neon-glow);
-}
-
-.neon-red {
-    color: var(--duke-red);
-    text-shadow: var(--red-glow);
-}
-
-.neon-yellow {
-    color: var(--duke-yellow);
-    text-shadow: 0 0 10px var(--duke-yellow), 0 0 20px var(--duke-yellow);
 }
 
 /* ===== CRT EFFECTS ===== */
@@ -309,9 +234,9 @@ html, body { cursor: crosshair !important; }
         rgba(0, 0, 0, 0.15),
         rgba(0, 0, 0, 0.15) 1px,
         transparent 1px,
-        transparent 3px
+        transparent 2px
     );
-    opacity: 0.5;
+    opacity: 0.4;
 }
 
 .vignette {
@@ -322,47 +247,65 @@ html, body { cursor: crosshair !important; }
     height: 100%;
     pointer-events: none;
     z-index: 9997;
-    background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 20, 40, 0.6) 100%);
+    background: radial-gradient(ellipse at center, transparent 50%, rgba(0, 0, 0, 0.5) 100%);
 }
 
-/* Neon flicker animation */
-@keyframes neonFlicker {
-    0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
-        text-shadow:
-            0 0 10px currentColor,
-            0 0 20px currentColor,
-            0 0 30px currentColor;
-    }
-    20%, 24%, 55% {
-        text-shadow: none;
-    }
+/* Pain flash for damage effects */
+.pain-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 0, 0, 0.3);
+    pointer-events: none;
+    z-index: 9996;
+    opacity: 0;
+    transition: opacity 0.1s;
 }
 
-.flicker {
-    animation: neonFlicker 3s infinite;
+.pain-flash.active {
+    opacity: 1;
 }
 
-/* ===== DUKE QUOTE BANNER ===== */
+/* Screen shake */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+/* ===== DUKE QUOTE DISPLAY ===== */
 .duke-quote {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.9);
-    border: 2px solid var(--duke-red);
-    padding: 1rem 2rem;
+    border: 3px solid var(--duke-gold);
+    padding: 15px 25px;
     font-family: 'Press Start 2P', monospace;
-    font-size: 0.6rem;
+    font-size: 0.7rem;
     color: var(--duke-yellow);
-    text-shadow: 0 0 10px var(--duke-yellow);
+    text-shadow: 2px 2px 0 #000;
     z-index: 10000;
     display: none;
+    max-width: 80%;
+    text-align: center;
+}
+
+.duke-quote.show {
+    display: block;
     animation: quoteSlide 0.3s ease-out;
 }
 
 @keyframes quoteSlide {
     from {
-        transform: translateX(-50%) translateY(-50px);
+        transform: translateX(-50%) translateY(-30px);
         opacity: 0;
     }
     to {
@@ -371,209 +314,56 @@ html, body { cursor: crosshair !important; }
     }
 }
 
-.duke-quote.show {
-    display: block;
-}
-
-/* ===== PIPE BOMB BUTTON ===== */
-.pipe-bomb-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 1rem 2rem;
-    background: linear-gradient(180deg, #4a1a1a 0%, #2a0a0a 100%);
-    border: 3px solid var(--duke-red);
-    color: var(--duke-yellow);
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.7rem;
-    cursor: pointer;
+/* ===== FEATURE CARDS WITH WEAPON BACKGROUNDS ===== */
+.feature-card {
+    background: linear-gradient(180deg, #202028 0%, #101018 100%);
+    border: 3px solid #404050;
+    padding: 25px;
     transition: all 0.3s;
-    box-shadow:
-        0 0 15px rgba(255, 51, 51, 0.3),
-        inset 0 0 20px rgba(0, 0, 0, 0.5);
+    position: relative;
 }
 
-.pipe-bomb-btn:hover {
-    transform: scale(1.05);
-    box-shadow:
-        0 0 30px rgba(255, 51, 51, 0.6),
-        inset 0 0 20px rgba(0, 0, 0, 0.5);
-    border-color: var(--duke-yellow);
+.feature-card:hover {
+    border-color: var(--duke-gold);
+    box-shadow: 0 0 20px rgba(192, 144, 48, 0.3);
+    transform: translateY(-3px);
 }
 
-.pipe-bomb-btn:active {
-    transform: scale(0.98);
-}
-
-/* ===== JETPACK SCROLL INDICATOR ===== */
-.jetpack-scroll {
-    position: fixed;
-    right: 20px;
-    bottom: 100px;
-    width: 50px;
-    height: 50px;
-    background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%);
-    border: 2px solid var(--duke-blue);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s;
-    z-index: 9999;
-}
-
-.jetpack-scroll:hover {
-    box-shadow: var(--neon-glow);
-    transform: scale(1.1);
-}
-
-.jetpack-scroll::before {
-    content: '▲';
-    color: var(--duke-blue);
-    font-size: 1.2rem;
-    animation: jetpackBounce 1s ease-in-out infinite;
-}
-
-@keyframes jetpackBounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
-}
-
-/* ===== EXPLOSION EFFECT ===== */
-@keyframes explosion {
-    0% {
-        transform: scale(0);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(2);
-        opacity: 0;
-    }
-}
-
-.explosion {
-    position: fixed;
+.feature-card .weapon-icon {
     width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, var(--duke-yellow) 0%, var(--duke-red) 50%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-    animation: explosion 0.5s ease-out forwards;
-    z-index: 10001;
-}
-
-/* ===== STRIPPER TIPS ANIMATION (for 404) ===== */
-@keyframes dollarFall {
-    0% {
-        transform: translateY(-100vh) rotate(0deg);
-        opacity: 1;
-    }
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
-    }
-}
-
-.dollar-bill {
-    position: fixed;
-    font-size: 2rem;
-    color: #00aa00;
-    text-shadow: 0 0 10px #00ff00;
-    pointer-events: none;
-    animation: dollarFall 3s linear forwards;
-    z-index: 10000;
-}
-
-/* ===== MUSIC PLAYER ===== */
-.music-player {
-    position: fixed;
-    bottom: 90px;
-    right: 12px;
-    z-index: 10000;
-}
-
-.music-btn {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: 'Press Start 2P', monospace;
-    font-size: 0.4rem;
-    padding: 8px 12px;
-    background: linear-gradient(to bottom, #2a2a4a, #1a1a2e);
-    color: var(--duke-blue);
-    border: 2px solid var(--duke-border);
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.music-btn:hover {
-    border-color: var(--duke-blue);
-    box-shadow: var(--neon-glow);
-}
-
-.music-btn.playing {
-    border-color: var(--duke-yellow);
-    color: var(--duke-yellow);
-    animation: musicGlow 2s ease-in-out infinite;
-}
-
-@keyframes musicGlow {
-    0%, 100% { box-shadow: none; }
-    50% { box-shadow: 0 0 15px var(--duke-yellow); }
-}
-
-/* ===== ALIEN KILL COUNTER ===== */
-.alien-counter {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.alien-icon {
-    width: 30px;
-    height: 30px;
+    height: 80px;
+    margin-bottom: 15px;
     image-rendering: pixelated;
 }
 
-/* ===== SEMRUSH SPECIFIC STYLES ===== */
-.semrush-orange {
-    color: #ff6c2c;
-    text-shadow: 0 0 10px #ff6c2c, 0 0 20px #ff6c2c;
-}
-
-.semrush-card {
-    background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
-    border: 2px solid var(--duke-blue);
-    padding: 2rem;
-    margin: 1rem;
-    transition: all 0.3s;
-}
-
-.semrush-card:hover {
-    border-color: var(--duke-yellow);
-    box-shadow: 0 0 30px rgba(255, 204, 0, 0.3);
-    transform: translateY(-5px);
-}
-
+/* ===== SEMRUSH CTA BUTTONS ===== */
 .semrush-cta {
     display: inline-block;
-    padding: 1rem 2rem;
+    padding: 15px 30px;
     background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%);
     color: #fff;
     font-family: 'Press Start 2P', monospace;
     font-size: 0.6rem;
     text-decoration: none;
-    border: 2px solid #ffaa00;
+    border: 3px solid #ffaa00;
     transition: all 0.3s;
-    box-shadow: 0 0 20px rgba(255, 108, 44, 0.4);
+    box-shadow: 0 4px 0 #994400;
 }
 
 .semrush-cta:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 40px rgba(255, 108, 44, 0.7);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #994400, 0 0 20px rgba(255, 108, 44, 0.5);
+}
+
+.semrush-cta:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #994400;
+}
+
+/* ===== STATUS BAR TEXTURE ===== */
+.status-bar-bg {
+    background-image: url('../images/duke-hud-sheet.png');
+    background-position: 0 0;
+    background-repeat: repeat-x;
+    image-rendering: pixelated;
 }
