@@ -149,23 +149,25 @@
         }
 
         .duke-portrait {
-            width: 84px;
-            height: 96px;
+            width: 42px;
+            height: 48px;
             margin-bottom: 2rem;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             filter: drop-shadow(0 0 30px var(--duke-blue));
             animation: dukeFloat 3s ease-in-out infinite;
             background-image: url('images/duke-hud-sheet.png');
-            /* Duke face with sunglasses - scaled 2x */
-            background-position: -134px -128px;
-            background-size: 644px 418px;
-            transform: scale(2);
+            /* Duke face with sunglasses - native position, scaled up */
+            background-position: -67px -64px;
+            background-size: 322px 209px;
+            transform: scale(4);
+            margin-top: 60px;
+            margin-bottom: 80px;
         }
 
         @keyframes dukeFloat {
-            0%, 100% { transform: scale(2) translateY(0); }
-            50% { transform: scale(2) translateY(-10px); }
+            0%, 100% { transform: scale(4) translateY(0); }
+            50% { transform: scale(4) translateY(-5px); }
         }
 
         .hero-quote {
