@@ -228,18 +228,6 @@
             to { opacity: 1; }
         }
 
-        /* Duke doing push-ups */
-        .duke-pushup {
-            width: 100px;
-            margin-top: 2rem;
-            animation: pushup 1s ease-in-out infinite;
-        }
-
-        @keyframes pushup {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.8); }
-        }
-
         /* Click anywhere for tips */
         .click-hint {
             position: fixed;
@@ -323,8 +311,6 @@
         </div>
 
         <a href="index.html" class="home-link">RESPAWN AT BASE</a>
-
-        <img src="images/duke-muscles.svg" alt="Duke flexing" class="duke-pushup">
     </div>
 
     <div class="click-hint">Click anywhere to make it rain</div>
@@ -380,7 +366,8 @@
         function createDollarBill(x) {
             const bill = document.createElement('div');
             bill.className = 'dollar-bill';
-            bill.textContent = '$';
+            const moneySymbols = ['💵', '💰', '💲', '🤑'];
+            bill.textContent = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
             bill.style.left = x + 'px';
             bill.style.top = '-50px';
             bill.style.animationDuration = (2 + Math.random() * 2) + 's';
