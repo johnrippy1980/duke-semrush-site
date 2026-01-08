@@ -3,16 +3,16 @@
 <!-- __ _ _ _ __| |_ (_)__ _____
     / _` | '_/ _| ' \| |\ V / -_)
     \__,_|_| \__|_||_|_| \_/\___| -->
-  <head data-release=-202602- data-node="ia902802.us.archive.org">
-    <title>Internet Archive: Page Not Found</title>
+  <head data-release=75944dba data-node="www13.us.archive.org">
+    <title>Internet Archive: Error</title>
 
           <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     
         <meta name="google-site-verification" content="Q2YSouphkkgHkFNP7FgAkc4TmBs1Gmag3uGNndb53B8" />
     <meta name="google-site-verification" content="bpjKvUvsX0lxfmjg19TLblckWkDpnptZEYsBntApxUk" />
 
-    <meta name="baggage" content="sentry-trace_id=d432efbbfa9c4565aff1799c37569f89,sentry-sample_rate=0.001,sentry-transaction=%2Fabout%2F404.php,sentry-public_key=94bf3037c1e245c8a927aaa4daad2dbb,sentry-environment=production,sentry-sampled=false,sentry-sample_rand=0.179689"/>    <meta name="sentry-trace" content="d432efbbfa9c4565aff1799c37569f89-11ef8f70ae774256-0"/>
-    <script  nonce="f3a3511d7177d9c9709442fbf2b77817" >
+    <meta name="baggage" content="sentry-trace_id=4dbdf524be30466abbf7b330ca0304f5,sentry-sample_rate=0.001,sentry-transaction=%2Fdownload.php,sentry-public_key=94bf3037c1e245c8a927aaa4daad2dbb,sentry-environment=production,sentry-sampled=false,sentry-sample_rand=0.745195"/>    <meta name="sentry-trace" content="4dbdf524be30466abbf7b330ca0304f5-dc3d67ebd6be422f-0"/>
+    <script  nonce="2cf6bf43161716ee2e26aafb3de5b891" >
 /* @licstart  The following is the entire license notice for the
  * JavaScript code in this page.
  *
@@ -36,11 +36,11 @@
         <meta charset="UTF-8">
                       <meta property="mediatype" content="">
                       <meta property="primary_collection" content="">
-            <script src="//archive.org/includes/athena.js?v=-202602-" type="text/javascript"></script>
-    <script src="//archive.org/includes/apollo.js?v=-202602-" type="text/javascript"></script>
-    <script src="//archive.org/components/npm/lit/polyfill-support.js?v=-202602-" type="text/javascript"></script>
-    <script src="//archive.org/components/npm/@webcomponents/webcomponentsjs/webcomponents-bundle.js?v=-202602-" type="text/javascript"></script>
-<script nonce="f3a3511d7177d9c9709442fbf2b77817" >
+            <script src="//archive.org/includes/athena.js?v=75944dba" type="text/javascript"></script>
+    <script src="//archive.org/includes/apollo.js?v=75944dba" type="text/javascript"></script>
+    <script src="//archive.org/components/npm/lit/polyfill-support.js?v=75944dba" type="text/javascript"></script>
+    <script src="//archive.org/components/npm/@webcomponents/webcomponentsjs/webcomponents-bundle.js?v=75944dba" type="text/javascript"></script>
+<script nonce="2cf6bf43161716ee2e26aafb3de5b891" >
       window.__realDefine = customElements.define.bind(customElements);
       customElements.define = function() {
         try {
@@ -49,9 +49,9 @@
           console.warn(e);
         }
       }
-    </script>    <script src="//archive.org/includes/build/js/ia-topnav.min.js?v=-202602-" type="text/javascript"></script>
-    <script src="//archive.org/includes/build/js/archive.min.js?v=-202602-" type="text/javascript"></script>
-    <link href="//archive.org/includes/build/css/archive.min.css?v=-202602-" rel="stylesheet" type="text/css"/>
+    </script>    <script src="//archive.org/includes/build/js/ia-topnav.min.js?v=75944dba" type="text/javascript"></script>
+    <script src="//archive.org/includes/build/js/archive.min.js?v=75944dba" type="text/javascript"></script>
+    <link href="//archive.org/includes/build/css/archive.min.css?v=75944dba" rel="stylesheet" type="text/css"/>
     <link rel="SHORTCUT ICON" href="https://archive.org/images/glogo.jpg"/>
   </head>
   <body class="navia ">
@@ -92,6 +92,12 @@
     text-transform: uppercase;
     color: #ccc;
     cursor: pointer;
+  }
+  .login-button-1 .dropdown-toggle.logged-out-menu {
+    display: inline-block;
+    vertical-align: middle;
+    background: inherit;
+    border: medium;
   }
 
   .login-button-1 .dropdown-toggle.login-button svg.login-button {
@@ -791,6 +797,7 @@
       float: right;
       vertical-align: middle;
       height: 100%;
+      padding: 1rem 0.5rem;
     }
 
     .primary-nav-1 .user-info.primary-nav .user-menu.primary-nav img.primary-nav {
@@ -862,6 +869,7 @@
 
     .primary-nav-1 .upload.primary-nav span.primary-nav {
       display: inline;
+      vertical-align: middle;
     }
 
   }
@@ -2176,8 +2184,8 @@
           <div class="user-info style-scope primary-nav">
             <!--?lit$49386103$-->
             <login-button class="style-scope primary-nav x-scope login-button-1"><!---->
-              <div class="logged-out-toolbar style-scope login-button">
-                <a class="dropdown-toggle style-scope login-button" data-event-click-tracking="TopNav|NavLoginIcon">
+              <div class="logged-out-toolbar style-scope">
+                <button aria-label="Toggle login menu" class="logged-out-menu dropdown-toggle login-button" data-event-click-tracking="TopNav|NavLoginIcon" aria-expanded="false">
                   <!--?lit$49386103$-->
                   <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"
                     aria-labelledby="userTitleID userDescID" class="style-scope login-button">
@@ -2188,8 +2196,7 @@
                       d="m20.7130435 18.0434783c-3.5658385 0-6.4565218-2.9198821-6.4565218-6.5217392 0-3.60185703 2.8906833-6.5217391 6.4565218-6.5217391s6.4565217 2.91988207 6.4565217 6.5217391c0 3.6018571-2.8906832 6.5217392-6.4565217 6.5217392zm-12.9130435 16.9565217c0-7.9240855 5.7813665-14.3478261 12.9130435-14.3478261s12.9130435 6.4237406 12.9130435 14.3478261z"
                       fill-rule="evenodd"></path>
                     </svg>
-
-                </a>
+                </button>
                 <span class="style-scope login-button">
                   <a class="style-scope login-button" href="/account/signup">Sign up</a>
                   |
@@ -2820,7 +2827,7 @@
   <!--?lit$49386103$-->
   <signed-out-dropdown class="style-scope ia-topnav x-scope signed-out-dropdown-1" tabindex="-1"><!---->
     <div class="nav-container style-scope signed-out-dropdown">
-      <nav class="initial style-scope signed-out-dropdown" aria-hidden="true" aria-expanded="false">
+      <nav class="initial style-scope signed-out-dropdown" aria-hidden="true">
         <ul class="style-scope signed-out-dropdown">
           <!--?lit$49386103$--><!---->
           <li class="style-scope signed-out-dropdown"><!--?lit$49386103$--><a class="style-scope signed-out-dropdown"
@@ -2942,4 +2949,134 @@
         <main id="maincontent">
           <div class="container container-ia">
 
-          <h1>Page not found</h1>We&#146;re sorry, the page you have requested is not available.<div id='wb404'/><script src='https://archive.org/web/wb404.js'></script>
+          <div style="margin:0 20px;text-align:center;font-weight:bold">The specified item's metadata does not exist or is unparseable.<br />Feel free to report this so that we can fix the problem.</div>
+        </div><!--/.container-->
+              </main>
+    </div><!--/#wrap-->
+    
+    <!-- Timing ...
+     rendered on: www13.us.archive.org
+ seconds diff sec                                      message   stack(file:line:function)
+=========================================================
+  0.0000   0.0000                                petabox start   var/cache/petabox/petabox/www/sf/download.php:1:require
+                                             |common/ia:66:require_once
+                                             |setup.php:384:log
+  3.3686   3.3686                             redis_read start   var/cache/petabox/petabox/www/sf/download.php:79:main_wrap
+                                             |download.php:98:main
+                                             |download.php:287:quickFileRedir
+                                             |download.php:986:get_obj_fast
+                                             |common/Metadata.inc:2630:_get_obj_fast
+                                             |Metadata.inc:2693:run_l1_cache
+                                             |Metadata.inc:1712:fetch
+                                             |Metadata/L1/AbstractL1Cache.inc:145:fetch
+                                             |Caching/TieredReactiveCache.inc:141:fetch
+                                             |ReactiveCache.inc:500:recompute_cache_miss
+                                             |ReactiveCache.inc:534:_recompute
+                                             |ReactiveCache.inc:619:do_recompute
+                                             |ReactiveCache.inc:896:call_user_func_array
+                                             |./unknown:unknown:Caching\{closure}
+                                             |/var/cache/petabox/petabox/www/common/Caching/TieredReactiveCache.inc:88:recompute_fn
+                                             |TieredReactiveCache.inc:223:fetch
+                                             |ReactiveCache.inc:500:recompute_cache_miss
+                                             |ReactiveCache.inc:534:_recompute
+                                             |ReactiveCache.inc:619:do_recompute
+                                             |ReactiveCache.inc:896:call_user_func_array
+                                             |./unknown:unknown:{closure}
+                                             |/var/cache/petabox/petabox/www/common/Cache.inc:387:recompute
+                                             |Cache.inc:652:Metadata\L1\{closure}
+                                             |Metadata/L1/AbstractL1Cache.inc:59:recompute_fn
+                                             |AbstractL1Cache.inc:232:read
+                                             |AdapterPipeline.inc:288:_read
+                                             |AdapterPipeline.inc:324:pipeline
+                                             |AdapterPipeline.inc:466:fetch
+                                             |AdapterPipeline.inc:895:execute_pipeline
+                                             |RecordServer.inc:184:log
+  3.3706   0.0020                            redis_read finish   var/cache/petabox/petabox/www/sf/download.php:79:main_wrap
+                                             |download.php:98:main
+                                             |download.php:287:quickFileRedir
+                                             |download.php:986:get_obj_fast
+                                             |common/Metadata.inc:2630:_get_obj_fast
+                                             |Metadata.inc:2693:run_l1_cache
+                                             |Metadata.inc:1712:fetch
+                                             |Metadata/L1/AbstractL1Cache.inc:145:fetch
+                                             |Caching/TieredReactiveCache.inc:141:fetch
+                                             |ReactiveCache.inc:500:recompute_cache_miss
+                                             |ReactiveCache.inc:534:_recompute
+                                             |ReactiveCache.inc:619:do_recompute
+                                             |ReactiveCache.inc:896:call_user_func_array
+                                             |./unknown:unknown:Caching\{closure}
+                                             |/var/cache/petabox/petabox/www/common/Caching/TieredReactiveCache.inc:88:recompute_fn
+                                             |TieredReactiveCache.inc:223:fetch
+                                             |ReactiveCache.inc:500:recompute_cache_miss
+                                             |ReactiveCache.inc:534:_recompute
+                                             |ReactiveCache.inc:619:do_recompute
+                                             |ReactiveCache.inc:896:call_user_func_array
+                                             |./unknown:unknown:{closure}
+                                             |/var/cache/petabox/petabox/www/common/Cache.inc:387:recompute
+                                             |Cache.inc:652:Metadata\L1\{closure}
+                                             |Metadata/L1/AbstractL1Cache.inc:59:recompute_fn
+                                             |AbstractL1Cache.inc:232:read
+                                             |AdapterPipeline.inc:288:_read
+                                             |AdapterPipeline.inc:324:pipeline
+                                             |AdapterPipeline.inc:466:fetch
+                                             |AdapterPipeline.inc:895:execute_pipeline
+                                             |RecordServer.inc:193:log
+  3.3796   0.0090                          begin session_start   var/cache/petabox/petabox/www/sf/download.php:79:main_wrap
+                                             |download.php:98:main
+                                             |download.php:287:quickFileRedir
+                                             |download.php:1021:exit_service_unavailable
+                                             |common/ErrorHTTP.inc:136:head
+                                             |Nav.inc:153:__construct
+                                             |Nav.inc:224:session_start
+                                             |Cookies.inc:50:log
+  3.3796   0.0000   skipping session_start, user not logged-in   var/cache/petabox/petabox/www/sf/download.php:79:main_wrap
+                                             |download.php:98:main
+                                             |download.php:287:quickFileRedir
+                                             |download.php:1021:exit_service_unavailable
+                                             |common/ErrorHTTP.inc:136:head
+                                             |Nav.inc:153:__construct
+                                             |Nav.inc:224:session_start
+                                             |Cookies.inc:60:log
+  3.3931   0.0134                                     bug dump   var/cache/petabox/petabox/www/sf/download.php:79:main_wrap
+                                             |download.php:98:main
+                                             |download.php:287:quickFileRedir
+                                             |download.php:1021:exit_service_unavailable
+                                             |common/ErrorHTTP.inc:138:fatal
+                                             |setup.php:89:footer
+                                             |setup.php:148:footer
+                                             |Nav.inc:942:dump
+                                             |Bug.inc:94:log
+    -->
+    <script  nonce="2cf6bf43161716ee2e26aafb3de5b891" >
+if (typeof archive_analytics !== 'undefined') {
+  archive_analytics.send_pageview_on_load(archive_analytics);
+  archive_analytics.process_url_events(location);
+  var vs = archive_analytics.get_data_packets();
+  for (var i in vs) {
+    if (!vs[i]) {
+      vs[i] = {};
+    }
+    vs[i]['cache_bust']=Math.random();
+    vs[i]['server_ms']=3393;
+    vs[i]['server_name']="www13.us.archive.org";
+      }
+
+  if (document.querySelectorAll('.more_search').length) {
+    archive_analytics.send_scroll_fetch_base_event();
+  }
+}
+</script>
+          <img src="//athena.archive.org/0.gif?kind=track_js&track_js_case=control&cache_bust=1378099827" alt="" />
+          <noscript>
+        <img src="//athena.archive.org/0.gif?kind=track_js&track_js_case=disabled&cache_bust=1041847949" />
+      </noscript>
+          <script  nonce="2cf6bf43161716ee2e26aafb3de5b891" >
+        document.addEventListener('DOMContentLoaded', function() {
+          if (typeof archive_analytics !== 'undefined')
+            archive_analytics.create_tracking_image('in_page_executes');
+        });
+      </script>
+      </div>
+  </body>
+</html>
+    

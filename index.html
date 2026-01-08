@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/duke-hud.css">
+    <link rel="stylesheet" href="css/duke-game.css">
     <style>
         * {
             margin: 0;
@@ -729,6 +730,94 @@
         </table>
     </section>
 
+    <!-- Deathmatch Section - SEMrush vs Competitors -->
+    <section class="deathmatch-section" id="deathmatch">
+        <h2 class="deathmatch-title">DEATHMATCH: SEO TOOL SHOWDOWN</h2>
+        <div class="deathmatch-arena">
+            <div class="competitor-card winner">
+                <div class="competitor-logo">🏆</div>
+                <div class="competitor-name">SEMRUSH</div>
+                <div class="competitor-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Keywords DB:</span>
+                        <span class="stat-value">25B+</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Backlinks:</span>
+                        <span class="stat-value">43T+</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Tools:</span>
+                        <span class="stat-value">55+</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-value">99.9%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Price:</span>
+                        <span class="stat-value">$139/mo</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="vs-badge">VS</div>
+
+            <div class="competitor-card loser">
+                <div class="competitor-logo">💀</div>
+                <div class="competitor-name">AHREFS</div>
+                <div class="competitor-stats">
+                    <div class="stat-row">
+                        <span class="stat-label">Keywords DB:</span>
+                        <span class="stat-value">21B</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Backlinks:</span>
+                        <span class="stat-value">35T</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Tools:</span>
+                        <span class="stat-value">12</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Accuracy:</span>
+                        <span class="stat-value">95%</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Price:</span>
+                        <span class="stat-value">$129/mo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p style="text-align: center; margin-top: 2rem; font-size: 0.5rem; color: #888;">
+            "Your face, your ass - what's the difference?" - Duke on using inferior SEO tools
+        </p>
+    </section>
+
+    <!-- Boss Battle Section -->
+    <section class="boss-section" id="boss">
+        <h2 class="boss-title">BOSS BATTLE: THE BATTLELORD OF BAD SEO</h2>
+        <div class="boss-container">
+            <img src="images/battlelord.png" alt="Battlelord Boss" class="boss-image" id="pageBoss">
+        </div>
+        <p class="boss-challenge">
+            The Battlelord represents everything wrong with SEO:<br>
+            Keyword stuffing. Link farms. Duplicate content. Black hat tactics.<br>
+            <strong>CLICK THE BOSS TO DEFEAT HIM!</strong>
+        </p>
+        <button class="boss-button" onclick="DukeGame.spawnBoss()">
+            SPAWN BATTLELORD
+        </button>
+    </section>
+
+    <!-- Mighty Boot Divider 3 -->
+    <div class="mighty-boot-divider">
+        <div class="boot-divider-line left"></div>
+        <img src="images/mighty-boot-sprite.png" alt="Mighty Boot" class="mighty-boot" title="Click to stomp!">
+        <div class="boot-divider-line right"></div>
+    </div>
+
     <!-- CTA Section -->
     <section class="cta-section">
         <h2 class="cta-title">"IT'S TIME TO KICK ASS AND RANK KEYWORDS"</h2>
@@ -822,6 +911,29 @@
     </audio>
     <audio id="voiceCool" preload="auto">
         <source src="audio/cool.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceGroovy" preload="auto">
+        <source src="audio/groovy.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBubblegum" preload="auto">
+        <source src="audio/bubblegum.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceYourFace" preload="auto">
+        <source src="audio/your-face.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBallsOfSteel" preload="auto">
+        <source src="audio/balls-of-steel.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Game Sound Effects -->
+    <audio id="death1" preload="auto">
+        <source src="audio/death1.wav" type="audio/wav">
+    </audio>
+    <audio id="explosionSound" preload="auto">
+        <source src="audio/explosion.wav" type="audio/wav">
+    </audio>
+    <audio id="shotgunSound" preload="auto">
+        <source src="audio/shotgun.wav" type="audio/wav">
     </audio>
 
     <script>
@@ -1048,5 +1160,8 @@
             }
         });
     </script>
+
+    <!-- Duke Game Engine -->
+    <script src="js/duke-game.js"></script>
 </body>
 </html>
