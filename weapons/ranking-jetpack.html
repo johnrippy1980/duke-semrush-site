@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ranking Jetpack | Duke's SEO Arsenal</title>
+    <meta name="description" content="Fly to the top of the SERPs with rocket-powered position tracking. SEMrush Position Tracking for ranking domination.">
+    <link rel="icon" href="../images/duke-icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/duke-hud.css">
+    <link rel="stylesheet" href="../css/duke-game.css">
+    <style>
+        :root {
+            --duke-red: #ff3333;
+            --duke-yellow: #ffcc00;
+            --duke-blue: #00aaff;
+            --duke-dark: #0a0a14;
+            --duke-border: #333;
+            --neon-glow: 0 0 10px var(--duke-blue), 0 0 20px var(--duke-blue);
+            --red-glow: 0 0 10px var(--duke-red), 0 0 20px var(--duke-red);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #0a0a14;
+            color: #ddd;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-bottom: 3px solid #c09030;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10000;
+            padding: 0 20px;
+        }
+
+        .nav-link {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #c09030;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            border-color: #c09030;
+            background: rgba(192, 144, 48, 0.2);
+            text-shadow: 0 0 10px #c09030;
+        }
+
+        .nav-logo { font-size: 0.6rem; color: #ff6c2c; text-shadow: 0 0 10px #ff6c2c; margin-right: auto; }
+        .nav-cta { background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%); color: #fff !important; border: 2px solid #ffaa00 !important; margin-left: auto; }
+
+        .weapon-page { padding-top: 80px; max-width: 1000px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+        .weapon-header { text-align: center; margin-bottom: 3rem; }
+        .weapon-icon { font-size: 6rem; margin-bottom: 1rem; animation: rocketFly 1s ease-in-out infinite; }
+        @keyframes rocketFly {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-15px) translateX(5px); }
+            50% { transform: translateY(-25px) translateX(0); }
+            75% { transform: translateY(-15px) translateX(-5px); }
+        }
+        .weapon-title { font-size: 2rem; color: var(--duke-yellow); text-shadow: 4px 4px 0 #000, 0 0 30px var(--duke-yellow); margin-bottom: 0.5rem; }
+        .weapon-subtitle { font-size: 0.7rem; color: var(--duke-blue); text-shadow: var(--neon-glow); }
+
+        .duke-quote {
+            font-size: 0.8rem;
+            color: var(--duke-red);
+            text-shadow: var(--red-glow);
+            margin: 2rem 0;
+            font-style: italic;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 51, 51, 0.1);
+            border: 2px solid var(--duke-red);
+        }
+
+        .weapon-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%); border: 2px solid var(--duke-blue); padding: 1.5rem; text-align: center; }
+        .stat-value { font-size: 1.5rem; color: var(--duke-yellow); text-shadow: 0 0 10px var(--duke-yellow); }
+        .stat-name { font-size: 0.4rem; color: #888; margin-top: 0.5rem; }
+
+        .weapon-description { font-size: 0.6rem; line-height: 2.5; color: #bbb; margin: 2rem 0; }
+        .weapon-description h3 { font-size: 0.9rem; color: var(--duke-red); margin: 2rem 0 1rem 0; }
+
+        .feature-list { list-style: none; margin: 1.5rem 0; }
+        .feature-list li { font-size: 0.5rem; color: #aaa; padding: 0.8rem; margin: 0.5rem 0; background: rgba(0, 170, 255, 0.1); border-left: 3px solid var(--duke-blue); line-height: 2; }
+        .feature-list li::before { content: ">> "; color: var(--duke-yellow); }
+
+        .cta-section { text-align: center; margin: 3rem 0; padding: 2rem; background: linear-gradient(180deg, rgba(255, 108, 44, 0.2) 0%, transparent 100%); border: 2px solid #ff6c2c; }
+        .big-cta { display: inline-block; padding: 1.5rem 3rem; background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%); color: #fff; text-decoration: none; font-size: 0.8rem; border: 3px solid #ffaa00; transition: all 0.3s; animation: ctaPulse 2s ease-in-out infinite; }
+        @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 108, 44, 0.4); } 50% { box-shadow: 0 0 40px rgba(255, 108, 44, 0.8); } }
+        .big-cta:hover { transform: scale(1.1); animation: none; box-shadow: 0 0 50px rgba(255, 108, 44, 1); }
+
+        .weapon-nav { display: flex; justify-content: space-between; margin: 3rem 0; padding: 1rem 0; border-top: 2px solid var(--duke-border); }
+        .weapon-nav a { font-size: 0.5rem; color: var(--duke-blue); text-decoration: none; padding: 0.8rem 1.5rem; border: 2px solid var(--duke-blue); transition: all 0.3s; }
+        .weapon-nav a:hover { background: var(--duke-blue); color: #000; }
+
+        .footer { text-align: center; padding: 2rem; font-size: 0.4rem; color: #666; margin-bottom: 80px; }
+        .footer a { color: var(--duke-blue); text-decoration: none; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
+        .comparison-table th, .comparison-table td { padding: 1rem; text-align: left; border: 1px solid var(--duke-border); font-size: 0.45rem; }
+        .comparison-table th { background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%); color: var(--duke-yellow); }
+        .comparison-table tr:hover { background: rgba(0, 170, 255, 0.1); }
+
+        /* Ranking Trajectory Display */
+        .ranking-trajectory {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+            border: 3px solid var(--duke-blue);
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .ranking-trajectory h4 {
+            color: var(--duke-yellow);
+            font-size: 0.7rem;
+            margin-bottom: 1.5rem;
+        }
+        .trajectory-bar {
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 0.5rem;
+            height: 150px;
+            padding: 0 1rem;
+        }
+        .trajectory-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+        .trajectory-bar-fill {
+            width: 100%;
+            background: linear-gradient(180deg, var(--duke-yellow), var(--duke-red));
+            border-radius: 3px 3px 0 0;
+            transition: height 0.5s;
+        }
+        .trajectory-label {
+            font-size: 0.3rem;
+            color: #888;
+            margin-top: 0.5rem;
+        }
+        .trajectory-position {
+            font-size: 0.4rem;
+            color: var(--duke-yellow);
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-link nav-logo">DUKE'S SEO ARSENAL</a>
+        <a href="../index.html#weapons" class="nav-link">WEAPONS</a>
+        <a href="../index.html#stats" class="nav-link">STATS</a>
+        <a href="../index.html#deathmatch" class="nav-link">DEATHMATCH</a>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
+    </nav>
+
+    <main class="weapon-page">
+        <header class="weapon-header">
+            <div class="weapon-icon">🚀</div>
+            <h1 class="weapon-title">RANKING JETPACK</h1>
+            <p class="weapon-subtitle">SEMrush Position Tracking</p>
+        </header>
+
+        <blockquote class="duke-quote">
+            "Time to fly, baby! Straight to position one!"
+        </blockquote>
+
+        <div class="weapon-stats">
+            <div class="stat-card">
+                <div class="stat-value">DAILY</div>
+                <div class="stat-name">RANK UPDATES</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">LOCAL</div>
+                <div class="stat-name">TARGETING</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">DEVICE</div>
+                <div class="stat-name">SEGMENTATION</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">SERP</div>
+                <div class="stat-name">FEATURE TRACKING</div>
+            </div>
+        </div>
+
+        <div class="weapon-description">
+            <h3>WEAPON OVERVIEW</h3>
+            <p>
+                Duke's jetpack lets him soar above the alien scum and rain destruction from above.
+                SEMrush Position Tracking gives you the same tactical advantage - a bird's eye view
+                of the SERP battlefield where you can watch your rankings rise and competitors fall.
+            </p>
+
+            <div class="ranking-trajectory">
+                <h4>RANKING TRAJECTORY - WATCH YOUR ASCENT</h4>
+                <div class="trajectory-bar">
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 30px;"></div>
+                        <div class="trajectory-label">Week 1</div>
+                        <div class="trajectory-position">#47</div>
+                    </div>
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 50px;"></div>
+                        <div class="trajectory-label">Week 2</div>
+                        <div class="trajectory-position">#28</div>
+                    </div>
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 70px;"></div>
+                        <div class="trajectory-label">Week 3</div>
+                        <div class="trajectory-position">#15</div>
+                    </div>
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 100px;"></div>
+                        <div class="trajectory-label">Week 4</div>
+                        <div class="trajectory-position">#7</div>
+                    </div>
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 130px;"></div>
+                        <div class="trajectory-label">Week 5</div>
+                        <div class="trajectory-position">#3</div>
+                    </div>
+                    <div class="trajectory-item">
+                        <div class="trajectory-bar-fill" style="height: 150px;"></div>
+                        <div class="trajectory-label">Week 6</div>
+                        <div class="trajectory-position">#1</div>
+                    </div>
+                </div>
+            </div>
+
+            <h3>WHY THIS WEAPON DOMINATES</h3>
+            <p>
+                Unlike basic rank trackers that show you yesterday's news, SEMrush Position Tracking
+                updates daily and shows you exactly where you stand against competitors. Track by
+                location, device type, and see which SERP features you're winning (or losing).
+            </p>
+
+            <ul class="feature-list">
+                <li>Daily Rank Updates - Know where you stand every single day</li>
+                <li>Local Tracking - Track rankings by city, state, or country</li>
+                <li>Device Segmentation - Separate desktop and mobile rankings</li>
+                <li>Competitor Comparison - See how you stack up against rivals</li>
+                <li>SERP Feature Tracking - Know when you win featured snippets, local packs, etc.</li>
+                <li>Visibility Score - One metric to rule them all</li>
+                <li>Custom Triggers - Get alerts when rankings change significantly</li>
+                <li>Share of Voice - See your dominance across keyword groups</li>
+            </ul>
+
+            <h3>TACTICAL APPLICATIONS</h3>
+            <p>
+                Start by importing your target keywords - up to thousands at a time. Set up tracking
+                for your primary locations and devices. Then add your top competitors. Now watch as
+                SEMrush builds a complete picture of the SERP battlefield. Set up alerts for big
+                ranking changes so you're never caught off guard.
+            </p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>FEATURE</th>
+                        <th>SEMRUSH</th>
+                        <th>WEAK ALTERNATIVES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Update Frequency</td>
+                        <td>Daily</td>
+                        <td>Weekly/Monthly</td>
+                    </tr>
+                    <tr>
+                        <td>Local Tracking</td>
+                        <td>Any Location</td>
+                        <td>Limited Cities</td>
+                    </tr>
+                    <tr>
+                        <td>SERP Features</td>
+                        <td>25+ Types</td>
+                        <td>5-10 Types</td>
+                    </tr>
+                    <tr>
+                        <td>Competitor Tracking</td>
+                        <td>Automatic Discovery</td>
+                        <td>Manual Entry Only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cta-section">
+            <p style="font-size: 0.6rem; color: var(--duke-yellow); margin-bottom: 1rem;">
+                READY TO TAKE FLIGHT?
+            </p>
+            <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="big-cta" target="_blank">
+                STRAP ON THE JETPACK
+            </a>
+        </div>
+
+        <nav class="weapon-nav">
+            <a href="site-audit-stomp.html">< PREV: SITE AUDIT STOMP</a>
+            <a href="../index.html#weapons">ALL WEAPONS</a>
+            <a href="competitor-shotgun.html">NEXT: COMPETITOR SHOTGUN ></a>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <p>
+            Duke Nukem is a trademark of Gearbox Software. This is a fan-made affiliate site.<br>
+            SEMrush affiliate links help support this site. | <a href="../index.html">Back to Arsenal</a>
+        </p>
+    </footer>
+
+    <div class="duke-hud">
+        <div class="hud-left">
+            <img src="../images/duke-face.png" alt="Duke" class="duke-face">
+            <div class="health-bar">
+                <div class="health-fill" id="healthFill"></div>
+                <span class="health-text">100%</span>
+            </div>
+        </div>
+        <div class="hud-center">
+            <div class="ammo-display">
+                <span class="ammo-icon">🚀</span>
+                <span class="ammo-count" id="ammoCount">50</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <div class="armor-display">
+                <span class="armor-icon">🛡️</span>
+                <span class="armor-value">100</span>
+            </div>
+            <div class="keys-display">
+                <span class="key blue">🔵</span>
+                <span class="key red">🔴</span>
+                <span class="key yellow">🟡</span>
+            </div>
+        </div>
+    </div>
+
+    <audio id="voiceHailToTheKing" preload="auto"><source src="../audio/hail-to-the-king.mp3" type="audio/mpeg"></audio>
+    <script src="../js/duke-game.js"></script>
+</body>
+</html>

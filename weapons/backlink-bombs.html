@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backlink Bombs | Duke's SEO Arsenal</title>
+    <meta name="description" content="Pipe bomb your way through competitor backlink profiles. SEMrush Backlink Analysis for toxic link detection and removal.">
+    <link rel="icon" href="../images/duke-icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/duke-hud.css">
+    <link rel="stylesheet" href="../css/duke-game.css">
+    <style>
+        :root {
+            --duke-red: #ff3333;
+            --duke-yellow: #ffcc00;
+            --duke-blue: #00aaff;
+            --duke-dark: #0a0a14;
+            --duke-border: #333;
+            --neon-glow: 0 0 10px var(--duke-blue), 0 0 20px var(--duke-blue);
+            --red-glow: 0 0 10px var(--duke-red), 0 0 20px var(--duke-red);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #0a0a14;
+            color: #ddd;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-bottom: 3px solid #c09030;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10000;
+            padding: 0 20px;
+        }
+
+        .nav-link {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #c09030;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            border-color: #c09030;
+            background: rgba(192, 144, 48, 0.2);
+            text-shadow: 0 0 10px #c09030;
+        }
+
+        .nav-logo { font-size: 0.6rem; color: #ff6c2c; text-shadow: 0 0 10px #ff6c2c; margin-right: auto; }
+        .nav-cta { background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%); color: #fff !important; border: 2px solid #ffaa00 !important; margin-left: auto; }
+
+        .weapon-page { padding-top: 80px; max-width: 1000px; margin: 0 auto; padding-left: 2rem; padding-right: 2rem; }
+        .weapon-header { text-align: center; margin-bottom: 3rem; }
+        .weapon-icon { font-size: 6rem; margin-bottom: 1rem; animation: weaponFloat 2s ease-in-out infinite; }
+        @keyframes weaponFloat { 0%, 100% { transform: translateY(0) rotate(-5deg); } 50% { transform: translateY(-10px) rotate(5deg); } }
+        .weapon-title { font-size: 2rem; color: var(--duke-yellow); text-shadow: 4px 4px 0 #000, 0 0 30px var(--duke-yellow); margin-bottom: 0.5rem; }
+        .weapon-subtitle { font-size: 0.7rem; color: var(--duke-blue); text-shadow: var(--neon-glow); }
+
+        .duke-quote {
+            font-size: 0.8rem;
+            color: var(--duke-red);
+            text-shadow: var(--red-glow);
+            margin: 2rem 0;
+            font-style: italic;
+            text-align: center;
+            padding: 1.5rem;
+            background: rgba(255, 51, 51, 0.1);
+            border: 2px solid var(--duke-red);
+        }
+
+        .weapon-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin: 2rem 0; }
+        .stat-card { background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%); border: 2px solid var(--duke-blue); padding: 1.5rem; text-align: center; }
+        .stat-value { font-size: 1.5rem; color: var(--duke-yellow); text-shadow: 0 0 10px var(--duke-yellow); }
+        .stat-name { font-size: 0.4rem; color: #888; margin-top: 0.5rem; }
+
+        .weapon-description { font-size: 0.6rem; line-height: 2.5; color: #bbb; margin: 2rem 0; }
+        .weapon-description h3 { font-size: 0.9rem; color: var(--duke-red); margin: 2rem 0 1rem 0; }
+
+        .feature-list { list-style: none; margin: 1.5rem 0; }
+        .feature-list li { font-size: 0.5rem; color: #aaa; padding: 0.8rem; margin: 0.5rem 0; background: rgba(0, 170, 255, 0.1); border-left: 3px solid var(--duke-blue); line-height: 2; }
+        .feature-list li::before { content: ">> "; color: var(--duke-yellow); }
+
+        .cta-section { text-align: center; margin: 3rem 0; padding: 2rem; background: linear-gradient(180deg, rgba(255, 108, 44, 0.2) 0%, transparent 100%); border: 2px solid #ff6c2c; }
+        .big-cta { display: inline-block; padding: 1.5rem 3rem; background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%); color: #fff; text-decoration: none; font-size: 0.8rem; border: 3px solid #ffaa00; transition: all 0.3s; animation: ctaPulse 2s ease-in-out infinite; }
+        @keyframes ctaPulse { 0%, 100% { box-shadow: 0 0 20px rgba(255, 108, 44, 0.4); } 50% { box-shadow: 0 0 40px rgba(255, 108, 44, 0.8); } }
+        .big-cta:hover { transform: scale(1.1); animation: none; box-shadow: 0 0 50px rgba(255, 108, 44, 1); }
+
+        .weapon-nav { display: flex; justify-content: space-between; margin: 3rem 0; padding: 1rem 0; border-top: 2px solid var(--duke-border); }
+        .weapon-nav a { font-size: 0.5rem; color: var(--duke-blue); text-decoration: none; padding: 0.8rem 1.5rem; border: 2px solid var(--duke-blue); transition: all 0.3s; }
+        .weapon-nav a:hover { background: var(--duke-blue); color: #000; }
+
+        .footer { text-align: center; padding: 2rem; font-size: 0.4rem; color: #666; margin-bottom: 80px; }
+        .footer a { color: var(--duke-blue); text-decoration: none; }
+
+        .comparison-table { width: 100%; border-collapse: collapse; margin: 2rem 0; }
+        .comparison-table th, .comparison-table td { padding: 1rem; text-align: left; border: 1px solid var(--duke-border); font-size: 0.45rem; }
+        .comparison-table th { background: linear-gradient(180deg, #2a2a4a 0%, #1a1a2e 100%); color: var(--duke-yellow); }
+        .comparison-table tr:hover { background: rgba(0, 170, 255, 0.1); }
+
+        /* Toxic Link Warning */
+        .toxic-warning {
+            background: linear-gradient(180deg, rgba(255, 0, 0, 0.2) 0%, rgba(100, 0, 0, 0.2) 100%);
+            border: 2px solid var(--duke-red);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            animation: toxicPulse 2s ease-in-out infinite;
+        }
+        @keyframes toxicPulse {
+            0%, 100% { border-color: var(--duke-red); }
+            50% { border-color: #ff6600; }
+        }
+        .toxic-warning h4 {
+            color: var(--duke-red);
+            font-size: 0.7rem;
+            margin-bottom: 0.5rem;
+        }
+        .toxic-warning p {
+            font-size: 0.5rem;
+            color: #ff9999;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="../index.html" class="nav-link nav-logo">DUKE'S SEO ARSENAL</a>
+        <a href="../index.html#weapons" class="nav-link">WEAPONS</a>
+        <a href="../index.html#stats" class="nav-link">STATS</a>
+        <a href="../index.html#deathmatch" class="nav-link">DEATHMATCH</a>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
+    </nav>
+
+    <main class="weapon-page">
+        <header class="weapon-header">
+            <div class="weapon-icon">💣</div>
+            <h1 class="weapon-title">BACKLINK BOMBS</h1>
+            <p class="weapon-subtitle">SEMrush Backlink Analytics & Audit</p>
+        </header>
+
+        <blockquote class="duke-quote">
+            "Time to blow these toxic links out your ass!"
+        </blockquote>
+
+        <div class="weapon-stats">
+            <div class="stat-card">
+                <div class="stat-value">43T+</div>
+                <div class="stat-name">BACKLINKS INDEXED</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">REAL-TIME</div>
+                <div class="stat-name">LINK MONITORING</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">100+</div>
+                <div class="stat-name">TOXIC MARKERS</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">1-CLICK</div>
+                <div class="stat-name">DISAVOW FILE</div>
+            </div>
+        </div>
+
+        <div class="weapon-description">
+            <h3>WEAPON OVERVIEW</h3>
+            <p>
+                Pipe bombs are meant for one thing: clearing out rooms full of hostiles. SEMrush Backlink Analytics
+                does the same thing for your link profile. It identifies every link pointing to your site, separates
+                the friendlies from the toxic waste, and helps you blow the bad ones to kingdom come.
+            </p>
+
+            <div class="toxic-warning">
+                <h4>⚠️ TOXIC LINK ALERT</h4>
+                <p>
+                    Toxic backlinks are like alien parasites - they look harmless until they destroy you from within.
+                    Google penalties don't discriminate. SEMrush's Toxic Score identifies dangerous links before they
+                    take you down.
+                </p>
+            </div>
+
+            <h3>WHY THIS WEAPON DOMINATES</h3>
+            <p>
+                SEMrush has the largest backlink database in the industry - over 43 TRILLION links. That means
+                when you're analyzing competitors or auditing your own profile, you're getting the complete picture.
+                Not some watered-down snapshot that misses half the threats.
+            </p>
+
+            <ul class="feature-list">
+                <li>Backlink Analytics - See every link pointing to any domain, instantly</li>
+                <li>Backlink Audit - Identify toxic links with 100+ risk markers</li>
+                <li>Link Building Tool - Find new link opportunities and track outreach</li>
+                <li>Backlink Gap - Find links your competitors have that you don't</li>
+                <li>Bulk Analysis - Analyze up to 200 URLs at once</li>
+                <li>Historical Data - Track link growth and losses over time</li>
+            </ul>
+
+            <h3>TACTICAL APPLICATIONS</h3>
+            <p>
+                Start by running a Backlink Audit on your own domain. SEMrush will flag every suspicious link with
+                a Toxic Score. Review the worst offenders, add them to your disavow list, and submit to Google.
+                Then pivot to competitor analysis - find where their best links come from and start your own
+                outreach campaign.
+            </p>
+
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>FEATURE</th>
+                        <th>SEMRUSH</th>
+                        <th>WEAK ALTERNATIVES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Backlink Database</td>
+                        <td>43+ Trillion</td>
+                        <td>15-30 Trillion</td>
+                    </tr>
+                    <tr>
+                        <td>Toxic Score Accuracy</td>
+                        <td>100+ Markers</td>
+                        <td>10-20 Markers</td>
+                    </tr>
+                    <tr>
+                        <td>Update Frequency</td>
+                        <td>Real-time Crawl</td>
+                        <td>Monthly Updates</td>
+                    </tr>
+                    <tr>
+                        <td>Disavow Integration</td>
+                        <td>1-Click Export</td>
+                        <td>Manual Only</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="cta-section">
+            <p style="font-size: 0.6rem; color: var(--duke-yellow); margin-bottom: 1rem;">
+                READY TO DETONATE SOME TOXIC LINKS?
+            </p>
+            <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="big-cta" target="_blank">
+                ARM YOUR BACKLINK BOMBS
+            </a>
+        </div>
+
+        <nav class="weapon-nav">
+            <a href="keyword-hunting.html">< PREV: KEYWORD HUNTING</a>
+            <a href="../index.html#weapons">ALL WEAPONS</a>
+            <a href="site-audit-stomp.html">NEXT: SITE AUDIT STOMP ></a>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <p>
+            Duke Nukem is a trademark of Gearbox Software. This is a fan-made affiliate site.<br>
+            SEMrush affiliate links help support this site. | <a href="../index.html">Back to Arsenal</a>
+        </p>
+    </footer>
+
+    <div class="duke-hud">
+        <div class="hud-left">
+            <img src="../images/duke-face.png" alt="Duke" class="duke-face">
+            <div class="health-bar">
+                <div class="health-fill" id="healthFill"></div>
+                <span class="health-text">100%</span>
+            </div>
+        </div>
+        <div class="hud-center">
+            <div class="ammo-display">
+                <span class="ammo-icon">💣</span>
+                <span class="ammo-count" id="ammoCount">50</span>
+            </div>
+        </div>
+        <div class="hud-right">
+            <div class="armor-display">
+                <span class="armor-icon">🛡️</span>
+                <span class="armor-value">100</span>
+            </div>
+            <div class="keys-display">
+                <span class="key blue">🔵</span>
+                <span class="key red">🔴</span>
+                <span class="key yellow">🟡</span>
+            </div>
+        </div>
+    </div>
+
+    <audio id="voiceHailToTheKing" preload="auto"><source src="../audio/hail-to-the-king.mp3" type="audio/mpeg"></audio>
+    <script src="../js/duke-game.js"></script>
+</body>
+</html>
