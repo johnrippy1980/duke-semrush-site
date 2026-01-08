@@ -372,6 +372,43 @@
             text-shadow: var(--neon-glow);
         }
 
+        /* Music Toggle Button */
+        .music-toggle {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border: 2px solid #c09030;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(192, 144, 48, 0.3);
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(192, 144, 48, 0.6);
+            border-color: #ffcc00;
+        }
+
+        .music-toggle.playing {
+            animation: musicPulse 1s ease-in-out infinite;
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
         /* Alien enemy decorations */
         .alien-float {
             position: fixed;
@@ -479,6 +516,16 @@
         <a href="#compare" class="nav-link">COMPARE</a>
         <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
     </nav>
+
+    <!-- Music Toggle -->
+    <button class="music-toggle" id="musicToggle" title="Toggle Grabbag Theme">
+        🔇
+    </button>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/grabbag.mp3" type="audio/mpeg">
+    </audio>
 
     <!-- CRT Effects -->
     <div class="crt-overlay"></div>
@@ -890,6 +937,40 @@
         });
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and rank keywords..."');
+
+        // Music Toggle
+        const musicToggle = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        // Check if music was playing before (localStorage)
+        if (localStorage.getItem('duke_music_playing') === 'true') {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.add('playing');
+            }).catch(() => {});
+        }
+
+        musicToggle.addEventListener('click', function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+                musicToggle.classList.remove('playing');
+                localStorage.setItem('duke_music_playing', 'false');
+            } else {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = '🔊';
+                    musicToggle.classList.add('playing');
+                    localStorage.setItem('duke_music_playing', 'true');
+                    showDukeQuote("Let's rock!");
+                }).catch(() => {});
+            }
+            isPlaying = !isPlaying;
+        });
+
+        // Set volume
+        bgMusic.volume = 0.4;
     </script>
 </body>
 </html>
