@@ -74,18 +74,18 @@
             right: 10%;
         }
 
-        /* Duke sunglasses */
-        .duke-shades {
-            width: 150px;
-            height: auto;
+        /* Duke on throne */
+        .duke-throne {
+            width: auto;
+            height: 250px;
             margin-bottom: 2rem;
             filter: drop-shadow(0 0 30px #ff69b4);
-            animation: shadesBob 2s ease-in-out infinite;
+            animation: throneBob 3s ease-in-out infinite;
         }
 
-        @keyframes shadesBob {
-            0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+        @keyframes throneBob {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.02); }
         }
 
         .error-code {
@@ -298,7 +298,7 @@
     <div class="cash-sound" id="cashSound">$$$</div>
 
     <div class="error-container">
-        <img src="images/duke-shades.svg" alt="Duke's Shades" class="duke-shades">
+        <img src="images/duke-404.png" alt="Duke on Throne - Hail to the King" class="duke-throne">
 
         <div class="error-code">404</div>
         <h1 class="error-title">PAGE GOT FRAGGED</h1>
