@@ -202,13 +202,39 @@
 
         @keyframes dollarFall {
             0% {
-                transform: translateY(-100vh) rotate(0deg) scale(1);
+                transform: translateY(0) rotate(0deg) scale(1);
                 opacity: 1;
             }
             100% {
-                transform: translateY(100vh) rotate(720deg) scale(0.5);
-                opacity: 0;
+                transform: translateY(100vh) rotate(720deg) scale(0.8);
+                opacity: 1;
             }
+        }
+
+        /* Piled up money at bottom */
+        .money-pile {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            width: 100%;
+            font-size: 2rem;
+            line-height: 1;
+            pointer-events: none;
+            z-index: 99;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .money-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: pileAppear 0.3s ease-out forwards;
+        }
+
+        @keyframes pileAppear {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         /* Babes sign */
@@ -315,6 +341,9 @@
 
     <div class="click-hint">Click anywhere to make it rain</div>
 
+    <!-- Money pile container -->
+    <div class="money-pile" id="moneyPile"></div>
+
     <!-- Audio -->
     <audio id="cashRegister" preload="auto">
         <source src="audio/pickup.wav" type="audio/wav">
@@ -363,18 +392,46 @@
             }
         });
 
+        // Money pile tracking
+        const moneyPile = document.getElementById('moneyPile');
+        let piledMoney = [];
+        const moneySymbols = ['💵', '💰', '💲', '🤑'];
+        const moneyPerRow = Math.floor(window.innerWidth / 35);
+
+        function addToPile() {
+            const symbol = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
+            piledMoney.push(symbol);
+            renderPile();
+        }
+
+        function renderPile() {
+            let html = '';
+            let rows = [];
+            for (let i = 0; i < piledMoney.length; i += moneyPerRow) {
+                rows.push(piledMoney.slice(i, i + moneyPerRow).join(''));
+            }
+            // Reverse so newest row is at bottom (visually piling up)
+            rows.reverse();
+            html = rows.map(row => `<div class="money-row">${row}</div>`).join('');
+            moneyPile.innerHTML = html;
+        }
+
         function createDollarBill(x) {
             const bill = document.createElement('div');
             bill.className = 'dollar-bill';
-            const moneySymbols = ['💵', '💰', '💲', '🤑'];
-            bill.textContent = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
+            const symbol = moneySymbols[Math.floor(Math.random() * moneySymbols.length)];
+            bill.textContent = symbol;
             bill.style.left = x + 'px';
             bill.style.top = '-50px';
-            bill.style.animationDuration = (2 + Math.random() * 2) + 's';
+            const duration = 1.5 + Math.random() * 1.5;
+            bill.style.animationDuration = duration + 's';
             document.body.appendChild(bill);
 
-            // Remove after animation
-            setTimeout(() => bill.remove(), 4000);
+            // Add to pile when it lands
+            setTimeout(() => {
+                bill.remove();
+                addToPile();
+            }, duration * 1000);
         }
 
         function showQuote() {
