@@ -150,12 +150,14 @@
 
         .duke-portrait {
             width: auto;
-            height: 250px;
+            height: 200px;
             margin-bottom: 2rem;
             image-rendering: pixelated;
             image-rendering: crisp-edges;
             filter: drop-shadow(0 0 30px var(--duke-blue));
             animation: dukeFloat 3s ease-in-out infinite;
+            /* Position like FPS weapon at bottom of hero */
+            position: relative;
         }
 
         @keyframes dukeFloat {
