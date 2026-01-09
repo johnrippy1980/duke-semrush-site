@@ -142,7 +142,16 @@
             background: #0a0a14 !important;
         }
 
-        /* Hide js-dos UI elements AFTER game loads - keep canvas visible */
+        /* Ensure canvas is ALWAYS visible */
+        #dosbox canvas {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+            z-index: 10 !important;
+            position: relative !important;
+        }
+
+        /* Hide js-dos UI elements - but NOT the canvas */
         .sidebar-header,
         .emulator-button-control,
         .jsdos-player-save-button,
