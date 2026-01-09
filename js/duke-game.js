@@ -469,27 +469,40 @@
     }
 
     // ===== BOSS SYSTEM =====
+    let battlelordRoar = null;
+
+    function playBattlelordRoar() {
+        if (!battlelordRoar) {
+            battlelordRoar = new Audio(`${basePath}audio/battlelord-roar.mp3`);
+            battlelordRoar.volume = 0.6;
+        }
+        battlelordRoar.currentTime = 0;
+        battlelordRoar.play().catch(() => {});
+    }
+
     function spawnBoss() {
         if (document.querySelector('.boss-enemy')) return;
 
         const boss = document.createElement('div');
-        boss.className = 'boss-enemy';
+        boss.className = 'boss-enemy boss-spawning';
         boss.dataset.hp = 500;
         boss.dataset.maxHp = 500;
+        boss.dataset.state = 'idle';
         boss.innerHTML = `
-            <div class="boss-health-bar">
+            <div class="boss-health-bar" style="opacity: 0;">
                 <div class="boss-health-fill"></div>
             </div>
-            <div class="boss-name">BATTLELORD</div>
+            <div class="boss-name" style="opacity: 0;">BATTLELORD</div>
         `;
 
+        // Start small (pre-spawn size) then grow
         boss.style.cssText = `
             position: fixed;
             left: 50%;
             top: 30%;
-            transform: translateX(-50%);
-            width: 200px;
-            height: 200px;
+            transform: translateX(-50%) scale(0.3);
+            width: 300px;
+            height: 300px;
             background-image: url('${basePath}images/battlelord.png');
             background-size: contain;
             background-repeat: no-repeat;
@@ -498,17 +511,41 @@
             cursor: crosshair;
             z-index: 150;
             filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
-            animation: bossPulse 1s ease-in-out infinite;
+            opacity: 0;
+            transition: transform 1s ease-out, opacity 0.5s ease-in;
         `;
 
         boss.addEventListener('click', (e) => damageBoss(e, boss));
 
         document.body.appendChild(boss);
 
-        // Boss entrance
-        playVoice('letsRock');
-        flashScreen('#ff0000', 500);
-        showQuote("BATTLELORD: You will die, human!");
+        // Play Battlelord roar immediately
+        playBattlelordRoar();
+        flashScreen('#ff0000', 300);
+
+        // Animate spawn: fade in
+        setTimeout(() => {
+            boss.style.opacity = '1';
+        }, 50);
+
+        // Grow to full size
+        setTimeout(() => {
+            boss.style.transform = 'translateX(-50%) scale(1)';
+            boss.classList.remove('boss-spawning');
+            boss.classList.add('boss-active');
+        }, 300);
+
+        // Show health bar and name after spawn animation
+        setTimeout(() => {
+            const healthBar = boss.querySelector('.boss-health-bar');
+            const bossName = boss.querySelector('.boss-name');
+            if (healthBar) healthBar.style.opacity = '1';
+            if (bossName) bossName.style.opacity = '1';
+
+            // Start idle animation
+            boss.style.animation = 'bossPulse 1s ease-in-out infinite';
+            showQuote("BATTLELORD: You will die, human!");
+        }, 1000);
     }
 
     function damageBoss(e, boss) {
@@ -524,36 +561,80 @@
         createExplosion(e.clientX, e.clientY);
 
         if (newHp <= 0) {
-            // Boss killed!
+            // Boss killed! Play "Blow it out your ass"
             gameState.bossDefeated = true;
             localStorage.setItem('duke_boss_defeated', 'true');
             unlockAchievement('boss_killer');
 
-            // Big explosion
-            for (let i = 0; i < 10; i++) {
+            // Big explosion chain
+            for (let i = 0; i < 15; i++) {
                 setTimeout(() => {
                     createExplosion(
-                        e.clientX + (Math.random() - 0.5) * 200,
-                        e.clientY + (Math.random() - 0.5) * 200
+                        e.clientX + (Math.random() - 0.5) * 250,
+                        e.clientY + (Math.random() - 0.5) * 250
                     );
-                }, i * 100);
+                }, i * 80);
             }
 
-            playVoice('hailToTheKing');
+            // Boss death animation - shrink and fade
+            boss.style.transition = 'all 0.8s ease-in';
+            boss.style.transform = 'translateX(-50%) scale(0.1) rotate(360deg)';
+            boss.style.opacity = '0';
+            boss.style.filter = 'brightness(5) drop-shadow(0 0 50px #ff0000)';
+
+            // Play "Blow it out your ass!" - the iconic kill line
+            playVoice('blowItOut');
+            showQuote("Blow it out your ass!");
 
             gameState.killCount += 10;
             gameState.totalKills += 10;
             updateHUD();
 
-            boss.remove();
+            // Remove after animation
+            setTimeout(() => boss.remove(), 800);
         } else {
             boss.dataset.hp = newHp;
             const healthPercent = (newHp / maxHp) * 100;
             const healthFill = boss.querySelector('.boss-health-fill');
             if (healthFill) healthFill.style.width = healthPercent + '%';
 
+            // Pain state - make Battlelord react
             boss.classList.add('boss-hit');
-            setTimeout(() => boss.classList.remove('boss-hit'), 100);
+            boss.classList.add('boss-pain');
+
+            // Flash red and shake the boss
+            boss.style.filter = 'brightness(3) hue-rotate(0deg) drop-shadow(0 0 40px #ff0000)';
+
+            // Random pain reaction
+            const painReactions = [
+                'translateX(-50%) scale(1.1) rotate(-5deg)',
+                'translateX(-50%) scale(0.95) rotate(5deg)',
+                'translateX(-50%) scale(1.05) rotate(-3deg)'
+            ];
+            const randomPain = painReactions[Math.floor(Math.random() * painReactions.length)];
+            boss.style.transform = randomPain;
+
+            // Play roar occasionally when hit (20% chance)
+            if (Math.random() < 0.2) {
+                playBattlelordRoar();
+            }
+
+            // Return to normal after hit
+            setTimeout(() => {
+                boss.classList.remove('boss-hit');
+                boss.classList.remove('boss-pain');
+                boss.style.filter = 'drop-shadow(0 0 30px rgba(255, 0, 0, 0.8))';
+                boss.style.transform = 'translateX(-50%) scale(1)';
+            }, 150);
+
+            // Show taunt quotes at health thresholds
+            if (healthPercent < 25 && healthPercent > 20) {
+                showQuote("BATTLELORD: You... will... pay!");
+            } else if (healthPercent < 50 && healthPercent > 45) {
+                showQuote("BATTLELORD: Is that all you've got?!");
+            } else if (healthPercent < 75 && healthPercent > 70) {
+                showQuote("BATTLELORD: Pathetic human!");
+            }
         }
     }
 

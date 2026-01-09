@@ -837,17 +837,19 @@
     <!-- Boss Battle Section -->
     <section class="boss-section" id="boss">
         <h2 class="boss-title">BOSS BATTLE: THE BATTLELORD OF BAD SEO</h2>
-        <div class="boss-container">
-            <img src="images/battlelord.png" alt="Battlelord Boss" class="boss-image" id="pageBoss">
+        <div class="boss-container boss-preview">
+            <img src="images/battlelord.png" alt="Battlelord Boss" class="boss-image" id="pageBoss" style="width: 100px; opacity: 0.5; filter: grayscale(50%);">
+            <p style="font-size: 0.4rem; color: #666; margin-top: 10px;">Dormant... for now</p>
         </div>
         <p class="boss-challenge">
             The Battlelord represents everything wrong with SEO:<br>
             Keyword stuffing. Link farms. Duplicate content. Black hat tactics.<br>
-            <strong>CLICK THE BOSS TO DEFEAT HIM!</strong>
+            <strong>SPAWN HIM AND CLICK TO ATTACK!</strong>
         </p>
         <button class="boss-button" onclick="DukeGame.spawnBoss()">
-            SPAWN BATTLELORD
+            <span style="animation: pulse 1s infinite;">⚠️</span> SPAWN BATTLELORD <span style="animation: pulse 1s infinite;">⚠️</span>
         </button>
+        <p style="font-size: 0.35rem; color: #888; margin-top: 10px;">Warning: He roars. He fights back. Turn up your volume.</p>
     </section>
 
     <!-- Mighty Boot Divider 3 -->

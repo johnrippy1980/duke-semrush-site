@@ -78,6 +78,45 @@
     50% { filter: drop-shadow(0 0 50px rgba(255, 0, 0, 1)); }
 }
 
+/* Boss spawn animation */
+.boss-spawning {
+    animation: bossSpawn 0.5s ease-out;
+}
+
+@keyframes bossSpawn {
+    0% {
+        transform: translateX(-50%) scale(0.3);
+        filter: brightness(5) drop-shadow(0 0 80px #ff0000);
+    }
+    50% {
+        filter: brightness(2) drop-shadow(0 0 60px #ff0000);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        filter: drop-shadow(0 0 30px rgba(255, 0, 0, 0.8));
+    }
+}
+
+/* Boss pain state */
+.boss-pain {
+    animation: bossPain 0.15s ease-out !important;
+}
+
+@keyframes bossPain {
+    0% { filter: brightness(3) hue-rotate(0deg); }
+    50% { filter: brightness(2) hue-rotate(-30deg); }
+    100% { filter: brightness(1.2) hue-rotate(0deg); }
+}
+
+/* Boss active state */
+.boss-active {
+    cursor: crosshair;
+}
+
+.boss-active:hover {
+    filter: drop-shadow(0 0 50px rgba(255, 0, 0, 1)) brightness(1.2) !important;
+}
+
 /* ===== WEAPON SELECTOR ===== */
 .weapon-selector {
     position: fixed;
