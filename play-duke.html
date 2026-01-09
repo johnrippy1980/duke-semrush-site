@@ -142,6 +142,38 @@
             background: #0a0a14 !important;
         }
 
+        /* Hide ALL js-dos UI elements - we want ONLY the game */
+        .emulator-button,
+        .emulator-button-touch-zone,
+        .emulator-button-control,
+        .sidebar-header,
+        [class*="sidebar"],
+        [class*="jsdos-sidebar"],
+        [class*="jsdos-button"],
+        [class*="save"],
+        [class*="tooltip"],
+        [class*="notification"],
+        [class*="tutorial"],
+        [class*="onboarding"],
+        #dosbox > div:not(canvas):not(.emulator-screen):not([class*="canvas"]) > *:not(canvas),
+        .emulator-mouse-overlay + div,
+        div[style*="position: absolute"][style*="z-index"],
+        .emulator-controls,
+        .emulator-actionbar,
+        .jsdos-panel {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+        }
+
+        /* Ensure canvas/game area is fully visible */
+        #dosbox canvas {
+            display: block !important;
+            visibility: visible !important;
+            opacity: 1 !important;
+        }
+
         /* Loading Overlay */
         .loading-overlay {
             position: absolute;
