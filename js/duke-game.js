@@ -149,6 +149,7 @@
         setupParallax();
         setupEasterEggs();
         setupIdleAnimation();
+        setupWeaponHoverSounds();
         updateHUD();
 
         // Show intro sequence on first visit (after a short delay)
@@ -1585,6 +1586,163 @@
         }); // Bubble phase (default)
     }
 
+    // ===== WEAPON HOVER SOUNDS =====
+    // Maps weapons to their characteristic sounds/voice lines
+    const weaponHoverSounds = {
+        'boot': { voice: 'pieceOfCake', text: 'Mighty Boot - stomp bugs!' },
+        'mighty-boot': { voice: 'pieceOfCake', text: 'Mighty Boot - stomp bugs!' },
+        'pistol': { voice: 'comeGetSome', text: 'Pistol - precision targeting!' },
+        'shotgun': { voice: 'letsRock', text: 'Shotgun - let\'s rock!' },
+        'chaingun': { voice: 'comeGetSome', text: 'Chaingun - rapid fire!' },
+        'ripper': { voice: 'comeGetSome', text: 'Ripper - rip it up!' },
+        'rpg': { voice: 'blowItOut', text: 'RPG - blast off!' },
+        'pipebomb': { voice: 'blowItOut', text: 'Pipe Bomb - blow it up!' },
+        'devastator': { voice: 'damnImGood', text: 'Devastator - mass destruction!' },
+        'freezer': { voice: 'cool', text: 'Freezethrower - ice cold!' },
+        'freezethrower': { voice: 'cool', text: 'Freezethrower - freeze \'em!' }
+    };
+
+    // Cooldown to prevent sound spam on hover
+    let lastWeaponHoverTime = 0;
+    const weaponHoverCooldown = 800; // 800ms between sounds
+
+    function setupWeaponHoverSounds() {
+        // Add hover sounds to feature cards (the weapon cards in the grid)
+        const featureCards = document.querySelectorAll('.feature-card');
+        featureCards.forEach(card => {
+            // Identify weapon from the image inside
+            const img = card.querySelector('.feature-icon img');
+            if (img) {
+                const src = img.getAttribute('src') || '';
+                const weaponType = identifyWeaponFromSrc(src);
+                if (weaponType) {
+                    card.dataset.weapon = weaponType;
+                    card.addEventListener('mouseenter', () => playWeaponHoverSound(weaponType));
+                }
+            }
+        });
+
+        // Add hover sounds to weapons table rows
+        const weaponsTable = document.querySelector('.weapons-table');
+        if (weaponsTable) {
+            const rows = weaponsTable.querySelectorAll('tbody tr');
+            rows.forEach(row => {
+                const img = row.querySelector('img');
+                if (img) {
+                    const src = img.getAttribute('src') || '';
+                    const weaponType = identifyWeaponFromSrc(src);
+                    if (weaponType) {
+                        row.dataset.weapon = weaponType;
+                        row.style.cursor = 'pointer';
+                        row.addEventListener('mouseenter', () => playWeaponHoverSound(weaponType));
+
+                        // Add visual feedback on hover
+                        row.addEventListener('mouseenter', () => {
+                            row.style.transition = 'all 0.2s ease';
+                            row.style.transform = 'scale(1.02)';
+                            row.style.boxShadow = '0 0 20px rgba(255, 102, 0, 0.5)';
+                        });
+                        row.addEventListener('mouseleave', () => {
+                            row.style.transform = 'scale(1)';
+                            row.style.boxShadow = 'none';
+                        });
+                    }
+                }
+            });
+        }
+
+        // Add hover sounds to HUD weapon slots
+        const hudWeaponSlots = document.querySelectorAll('.hud-weapon-slot');
+        hudWeaponSlots.forEach(slot => {
+            const img = slot.querySelector('img');
+            if (img) {
+                const src = img.getAttribute('src') || '';
+                const weaponType = identifyWeaponFromSrc(src);
+                if (weaponType) {
+                    slot.addEventListener('mouseenter', () => playWeaponHoverSound(weaponType, true)); // quieter for HUD
+                }
+            }
+        });
+    }
+
+    function identifyWeaponFromSrc(src) {
+        const srcLower = src.toLowerCase();
+        if (srcLower.includes('boot')) return 'boot';
+        if (srcLower.includes('pistol')) return 'pistol';
+        if (srcLower.includes('shotgun')) return 'shotgun';
+        if (srcLower.includes('ripper') || srcLower.includes('chaingun')) return 'chaingun';
+        if (srcLower.includes('rpg')) return 'rpg';
+        if (srcLower.includes('pipebomb') || srcLower.includes('pipe')) return 'pipebomb';
+        if (srcLower.includes('devastator')) return 'devastator';
+        if (srcLower.includes('freezer') || srcLower.includes('freeze')) return 'freezer';
+        return null;
+    }
+
+    function playWeaponHoverSound(weaponType, quiet = false) {
+        const now = Date.now();
+        if (now - lastWeaponHoverTime < weaponHoverCooldown) return;
+        lastWeaponHoverTime = now;
+
+        const weaponData = weaponHoverSounds[weaponType];
+        if (!weaponData) return;
+
+        // Play the stomp sound for boot, pickup for others (as base sound)
+        const baseSound = weaponType === 'boot' || weaponType === 'mighty-boot'
+            ? document.getElementById('bootsSound')
+            : document.getElementById('pickupSound');
+
+        if (baseSound) {
+            baseSound.volume = quiet ? 0.15 : 0.3;
+            baseSound.currentTime = 0;
+            baseSound.play().catch(() => {});
+        }
+
+        // Also show the weapon tooltip text
+        showWeaponTooltip(weaponData.text);
+
+        // 30% chance to play a voice clip too (for extra flavor)
+        if (Math.random() < 0.3 && !quiet) {
+            // Slight delay so base sound plays first
+            setTimeout(() => {
+                playVoice(weaponData.voice);
+            }, 100);
+        }
+    }
+
+    function showWeaponTooltip(text) {
+        // Remove existing tooltip
+        const existing = document.querySelector('.weapon-hover-tooltip');
+        if (existing) existing.remove();
+
+        const tooltip = document.createElement('div');
+        tooltip.className = 'weapon-hover-tooltip';
+        tooltip.textContent = text;
+        tooltip.style.cssText = `
+            position: fixed;
+            top: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff6c2c;
+            padding: 0.5rem 1rem;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #ffcc00;
+            text-shadow: 0 0 10px #ffcc00;
+            z-index: 10001;
+            pointer-events: none;
+            animation: tooltipFadeIn 0.2s ease-out;
+        `;
+
+        document.body.appendChild(tooltip);
+
+        // Auto-remove after 1.5 seconds
+        setTimeout(() => {
+            tooltip.style.animation = 'tooltipFadeOut 0.3s ease-out forwards';
+            setTimeout(() => tooltip.remove(), 300);
+        }, 1500);
+    }
+
     // ===== EXPOSE GLOBAL API =====
     window.DukeGame = {
         playVoice,
@@ -1595,6 +1753,7 @@
         unlockAchievement,
         selectWeapon,
         gameState,
+        playWeaponHoverSound,
         // Allow checking if audio is playing
         isAudioPlaying: () => currentlyPlayingAudio && !currentlyPlayingAudio.paused
     };

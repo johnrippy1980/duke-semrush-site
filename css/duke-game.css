@@ -1242,6 +1242,62 @@
     }
 }
 
+/* ===== WEAPON HOVER TOOLTIP ===== */
+.weapon-hover-tooltip {
+    box-shadow: 0 0 20px rgba(255, 108, 44, 0.5);
+}
+
+@keyframes tooltipFadeIn {
+    0% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes tooltipFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+}
+
+/* Weapons table row hover enhancement */
+.weapons-table tbody tr {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.weapons-table tbody tr:hover {
+    background: rgba(255, 102, 0, 0.15) !important;
+    transform: scale(1.01);
+}
+
+.weapons-table tbody tr:hover td {
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffcc00;
+}
+
+.weapons-table tbody tr:hover img {
+    filter: drop-shadow(0 0 10px #ff6c2c) brightness(1.2);
+    transform: scale(1.2);
+    transition: all 0.2s ease;
+}
+
+/* Feature card weapon hover enhancement */
+.feature-card[data-weapon]:hover .feature-icon img {
+    filter: drop-shadow(0 0 15px #ff6c2c);
+    transform: scale(1.1) rotate(-5deg);
+    transition: all 0.2s ease;
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .weapon-selector {
@@ -1274,5 +1330,10 @@
 
     .achievement-popup {
         width: 100%;
+    }
+
+    .weapon-hover-tooltip {
+        font-size: 0.4rem;
+        padding: 0.4rem 0.8rem;
     }
 }

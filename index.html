@@ -1128,17 +1128,7 @@
             });
         });
 
-        // Feature card hover - subtle sound
-        document.querySelectorAll('.feature-card').forEach(card => {
-            card.addEventListener('mouseenter', function() {
-                const pickup = document.getElementById('pickupSound');
-                if (pickup) {
-                    pickup.volume = 0.2;
-                    pickup.currentTime = 0;
-                    pickup.play().catch(() => {});
-                }
-            });
-        });
+        // Feature card hover sounds are now handled by duke-game.js setupWeaponHoverSounds()
 
         // Duke face click - Easter egg
         let faceClicks = 0;
