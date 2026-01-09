@@ -241,17 +241,35 @@
             box-shadow: 0 0 50px rgba(255, 204, 0, 0.7);
         }
 
-        .enemy-sprite {
-            height: 120px;
-            width: auto;
-            image-rendering: pixelated;
+        .enemy-sprite-container {
+            width: 100%;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             margin-bottom: 1.5rem;
+        }
+
+        .enemy-sprite {
+            max-height: 120px;
+            max-width: 100%;
+            width: auto;
+            height: auto;
+            image-rendering: pixelated;
             filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5));
             animation: enemyFloat 3s ease-in-out infinite;
+            /* Scale up smaller sprites */
+            min-height: 100px;
+            object-fit: contain;
+        }
+
+        .enemy-card.boss .enemy-sprite-container {
+            height: 220px;
         }
 
         .enemy-card.boss .enemy-sprite {
-            height: 200px;
+            max-height: 200px;
+            min-height: 160px;
             filter: drop-shadow(0 0 30px rgba(255, 204, 0, 0.7));
         }
 
@@ -539,7 +557,9 @@
         <div class="enemy-grid">
             <!-- Pig Cop -->
             <div class="enemy-card" onclick="fragEnemy(this, 'pigCop')">
-                <img src="images/pig-cop.png" alt="Pig Cop" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/pig-cop.png" alt="Pig Cop" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">PIG COP</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -562,7 +582,9 @@
 
             <!-- Assault Trooper -->
             <div class="enemy-card" onclick="fragEnemy(this, 'assaultTrooper')">
-                <img src="images/assault-trooper.png" alt="Assault Trooper" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/assault-trooper.png" alt="Assault Trooper" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">ASSAULT TROOPER</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -585,7 +607,9 @@
 
             <!-- Octabrain -->
             <div class="enemy-card" onclick="fragEnemy(this, 'octabrain')">
-                <img src="images/octabrain.png" alt="Octabrain" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/octabrain.png" alt="Octabrain" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">OCTABRAIN</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -608,7 +632,9 @@
 
             <!-- Enforcer -->
             <div class="enemy-card" onclick="fragEnemy(this, 'enforcer')">
-                <img src="images/enforcer.png" alt="Enforcer" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/enforcer.png" alt="Enforcer" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">ENFORCER</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -631,7 +657,9 @@
 
             <!-- Assault Commander -->
             <div class="enemy-card" onclick="fragEnemy(this, 'assaultCommander')">
-                <img src="images/assault-commander.png" alt="Assault Commander" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/assault-commander.png" alt="Assault Commander" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">ASSAULT COMMANDER</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -654,7 +682,9 @@
 
             <!-- Protozoid Slimer -->
             <div class="enemy-card" onclick="fragEnemy(this, 'protozoidSlimer')">
-                <img src="images/protozoid-slimer.png" alt="Protozoid Slimer" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/protozoid-slimer.png" alt="Protozoid Slimer" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">PROTOZOID SLIMER</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -677,7 +707,9 @@
 
             <!-- Sentry Drone -->
             <div class="enemy-card" onclick="fragEnemy(this, 'sentryDrone')">
-                <img src="images/sentry-drone.png" alt="Sentry Drone" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/sentry-drone.png" alt="Sentry Drone" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">SENTRY DRONE</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -700,7 +732,9 @@
 
             <!-- Shark -->
             <div class="enemy-card" onclick="fragEnemy(this, 'shark')">
-                <img src="images/shark.png" alt="Shark" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/shark.png" alt="Shark" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">SHARK</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -723,7 +757,9 @@
 
             <!-- Battlelord (Boss) -->
             <div class="enemy-card boss" onclick="fragEnemy(this, 'battlelord')">
-                <img src="images/battlelord-idle.png" alt="Battlelord" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/battlelord-idle.png" alt="Battlelord" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">THE BATTLELORD</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -748,7 +784,9 @@
 
             <!-- Overlord (Boss) -->
             <div class="enemy-card boss" onclick="fragEnemy(this, 'overlord')">
-                <img src="images/overlord.png" alt="Overlord" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/overlord.png" alt="Overlord" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">THE OVERLORD</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
@@ -772,7 +810,9 @@
 
             <!-- Cycloid Emperor (Final Boss) -->
             <div class="enemy-card boss" onclick="fragEnemy(this, 'cycloidEmperor')">
-                <img src="images/cycloid-emperor.png" alt="Cycloid Emperor" class="enemy-sprite">
+                <div class="enemy-sprite-container">
+                    <img src="images/cycloid-emperor.png" alt="Cycloid Emperor" class="enemy-sprite">
+                </div>
                 <h3 class="enemy-name">CYCLOID EMPEROR</h3>
                 <div class="enemy-stats">
                     <div class="enemy-stat">
