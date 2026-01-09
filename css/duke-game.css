@@ -1058,14 +1058,69 @@
     padding: 2rem;
 }
 
+/* ESRB Rating Box */
+.intro-rating {
+    margin-bottom: 1.5rem;
+}
+
+.esrb-rating {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 15px;
+    background: #000;
+    padding: 10px;
+}
+
+.esrb-box {
+    width: 70px;
+    height: 90px;
+    background: #000;
+    border: 3px solid #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.esrb-letter {
+    font-family: Arial Black, sans-serif;
+    font-size: 3rem;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+}
+
+.esrb-text {
+    font-family: Arial, sans-serif;
+    font-size: 0.45rem;
+    font-weight: bold;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.esrb-descriptors {
+    text-align: left;
+    font-family: Arial, sans-serif;
+    font-size: 0.6rem;
+    color: #fff;
+    line-height: 1.6;
+}
+
+.esrb-descriptors div {
+    white-space: nowrap;
+}
+
 .intro-duke-face {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .intro-duke-img {
-    width: 200px;
+    width: 250px;
     height: auto;
-    image-rendering: pixelated;
+    image-rendering: auto;
     filter: drop-shadow(0 0 30px #ff0000);
     animation: introFacePulse 2s ease-in-out infinite;
 }
@@ -1076,7 +1131,40 @@
 }
 
 .intro-text {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.intro-enter {
+    margin-top: 2rem;
+}
+
+.intro-enter-btn {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.8rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(180deg, #ff0000, #990000);
+    border: 3px solid #ff6666;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+    animation: enterPulse 1.5s ease-in-out infinite;
+}
+
+.intro-enter-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+}
+
+@keyframes enterPulse {
+    0%, 100% { box-shadow: 0 0 10px rgba(255, 0, 0, 0.5); }
+    50% { box-shadow: 0 0 25px rgba(255, 0, 0, 0.8); }
+}
+
+.intro-warning {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.35rem;
+    color: #666;
+    margin-top: 1rem;
 }
 
 .intro-skip {

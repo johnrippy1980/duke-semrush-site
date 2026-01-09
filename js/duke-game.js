@@ -1278,15 +1278,32 @@
         intro.className = 'duke-intro-sequence';
         intro.innerHTML = `
             <div class="intro-content">
+                <div class="intro-rating">
+                    <div class="esrb-rating">
+                        <div class="esrb-box">
+                            <div class="esrb-letter">M</div>
+                            <div class="esrb-text">MATURE 17+</div>
+                        </div>
+                        <div class="esrb-descriptors">
+                            <div>Blood and Gore</div>
+                            <div>Intense Violence</div>
+                            <div>Mature Humor</div>
+                            <div>Partial Nudity</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="intro-duke-face">
-                    <img src="${basePath}images/duke-sprite.png" alt="Duke" class="intro-duke-img">
+                    <img src="${basePath}images/duke-hero.png" alt="Duke Nukem" class="intro-duke-img">
                 </div>
                 <div class="intro-text">
                     <p class="intro-line line-1">"Damn..."</p>
                     <p class="intro-line line-2">"Those alien bastards..."</p>
                     <p class="intro-line line-3">"Are gonna pay for shooting up my ride!"</p>
                 </div>
-                <button class="intro-skip">SKIP INTRO</button>
+                <div class="intro-enter">
+                    <button class="intro-enter-btn">CLICK TO ENTER</button>
+                    <p class="intro-warning">By entering, you confirm you are 17 or older</p>
+                </div>
             </div>
         `;
 
@@ -1302,6 +1319,7 @@
             align-items: center;
             justify-content: center;
             animation: fadeIn 0.5s ease-out;
+            cursor: pointer;
         `;
 
         document.body.appendChild(intro);
@@ -1313,31 +1331,36 @@
                 opacity: 0;
                 transform: translateY(20px);
                 font-family: 'Press Start 2P', monospace;
-                font-size: ${i === 2 ? '0.8rem' : '1.2rem'};
+                font-size: ${i === 2 ? '0.7rem' : '1rem'};
                 color: ${i === 0 ? '#ffcc00' : '#ff0000'};
                 text-shadow: 0 0 20px ${i === 0 ? '#ffcc00' : '#ff0000'};
-                margin: 1rem 0;
+                margin: 0.8rem 0;
                 transition: all 0.5s ease-out;
             `;
 
             setTimeout(() => {
                 line.style.opacity = '1';
                 line.style.transform = 'translateY(0)';
-            }, 500 + i * 1500);
+            }, 500 + i * 1200);
         });
 
         // Play "Damn" voice clip
         setTimeout(() => playDynamicVoice(), 500);
 
-        // Auto-close after animation
+        // Close on click (anywhere or button)
         const closeIntro = () => {
             localStorage.setItem('duke_intro_shown', 'true');
             intro.style.animation = 'fadeOut 0.5s ease-out forwards';
+            playVoice('letsRock');
             setTimeout(() => intro.remove(), 500);
         };
 
-        setTimeout(closeIntro, 6000);
-        intro.querySelector('.intro-skip').addEventListener('click', closeIntro);
+        // Only close on explicit click - no auto-close
+        intro.querySelector('.intro-enter-btn').addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeIntro();
+        });
+        intro.addEventListener('click', closeIntro);
     }
 
     // ===== EASTER EGG - STRIPPERS/BABES =====
