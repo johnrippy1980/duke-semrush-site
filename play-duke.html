@@ -343,7 +343,7 @@
                     <div class="loading-spinner"></div>
                     <p class="loading-tip">
                         Loading DOSBox emulator...<br><br>
-                        Duke 3D shareware runs via js-dos.<br>
+                        Duke 3D Atomic Edition via js-dos.<br>
                         First load may take 30-60 seconds.
                     </p>
                     <div class="loading-progress" id="loadingProgress">Initializing...</div>
@@ -366,28 +366,28 @@
     <!-- Controls HUD -->
     <div class="controls-hud">
         <div class="control-item">
-            <span class="control-key">ARROWS</span>
+            <span class="control-key">WASD</span>
             <span class="control-label">MOVE</span>
         </div>
         <div class="control-item">
-            <span class="control-key">CTRL</span>
-            <span class="control-label">SHOOT</span>
+            <span class="control-key">MOUSE</span>
+            <span class="control-label">AIM/FIRE</span>
         </div>
         <div class="control-item">
             <span class="control-key">SPACE</span>
-            <span class="control-label">OPEN</span>
+            <span class="control-label">JUMP</span>
         </div>
         <div class="control-item">
-            <span class="control-key">A / Z</span>
-            <span class="control-label">LOOK</span>
+            <span class="control-key">E</span>
+            <span class="control-label">USE</span>
         </div>
         <div class="control-item">
-            <span class="control-key">1-7</span>
+            <span class="control-key">SHIFT</span>
+            <span class="control-label">RUN</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">1-0</span>
             <span class="control-label">WEAPONS</span>
-        </div>
-        <div class="control-item">
-            <span class="control-key">ESC</span>
-            <span class="control-label">MENU</span>
         </div>
     </div>
 
@@ -407,7 +407,7 @@
             Dos(document.getElementById("dosbox"), {
                 wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
             }).ready(function(fs, main) {
-                loadingProgress.textContent = 'Downloading game (~6MB)...';
+                loadingProgress.textContent = 'Downloading game (~20MB)...';
                 console.log('[Duke 3D] DOSBox ready, loading game bundle...');
 
                 fs.extract("games/duke3d.zip").then(function() {

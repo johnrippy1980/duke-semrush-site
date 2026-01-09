@@ -943,10 +943,14 @@
             <div class="hud-key yellow" id="keyYellow" title="Yellow Key"></div>
         </div>
 
-        <!-- Ammo Section -->
+        <!-- Secrets Section -->
         <div class="hud-section">
-            <span class="hud-label">AMMO</span>
-            <span class="hud-value hud-ammo" id="hudAmmo">50</span>
+            <span class="hud-label">SECRETS</span>
+            <div class="hud-secrets-display">
+                <span class="hud-value hud-secrets" id="hudSecrets">0</span>
+                <span class="hud-secrets-slash">/</span>
+                <span class="hud-value hud-secrets" id="hudSecretsTotal">6</span>
+            </div>
         </div>
 
         <!-- Kills Section -->
@@ -1400,5 +1404,7 @@
 
     <!-- Duke Game Engine -->
     <script src="js/duke-game.js"></script>
+    <!-- Duke Secrets System -->
+    <script src="js/duke-secrets.js"></script>
 </body>
 </html>

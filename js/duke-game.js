@@ -261,9 +261,17 @@
         });
     }
 
+    // Iconic voice lines that should play more frequently
+    const iconicVoiceLines = [
+        { file: 'duke-lines/birth-control.mp3', text: "You're an inspiration for birth control!" },
+        { file: 'duke-lines/wasted.mp3', text: "Hmhmhm, wasted." },
+        { file: 'duke-lines/bubblegum.mp3', text: "It's time to kick ass and chew bubblegum... and I'm all outta gum!" },
+        { file: 'duke-lines/yippie-kai-ay.mp3', text: "Yippie kai-ay!" }
+    ];
+
     function playRandomVoice() {
-        // 50% chance to use dynamic voice clips (from files) if available
-        if (dynamicVoiceClips.length > 0 && Math.random() < 0.5) {
+        // 70% chance to use dynamic voice clips (from files) if available
+        if (dynamicVoiceClips.length > 0 && Math.random() < 0.7) {
             return playDynamicVoice();
         }
         const keys = Object.keys(dukeVoiceClips);
@@ -276,7 +284,13 @@
         const now = Date.now();
         if (now - gameState.lastVoicePlayed < gameState.voiceCooldown) return false;
 
-        const clip = dynamicVoiceClips[Math.floor(Math.random() * dynamicVoiceClips.length)];
+        // 35% chance to play one of the iconic lines
+        let clip;
+        if (Math.random() < 0.35) {
+            clip = iconicVoiceLines[Math.floor(Math.random() * iconicVoiceLines.length)];
+        } else {
+            clip = dynamicVoiceClips[Math.floor(Math.random() * dynamicVoiceClips.length)];
+        }
         if (!clip) return false;
 
         const audio = new Audio(`${basePath}audio/${clip.file}`);

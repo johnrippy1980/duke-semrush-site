@@ -134,6 +134,19 @@ html, body { cursor: crosshair !important; }
     color: var(--duke-yellow);
     text-shadow: 3px 3px 0 #604000, -1px -1px 0 #302000, 0 0 10px rgba(208,192,64,0.5);
 }
+.hud-secrets {
+    color: #ffcc00;
+    text-shadow: 3px 3px 0 #604000, -1px -1px 0 #302000, 0 0 15px rgba(255,204,0,0.7);
+}
+.hud-secrets-display {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+.hud-secrets-slash {
+    color: #888;
+    font-size: 0.8em;
+}
 .hud-kills {
     color: var(--duke-gold);
     text-shadow: 3px 3px 0 #503000, -1px -1px 0 #281800;

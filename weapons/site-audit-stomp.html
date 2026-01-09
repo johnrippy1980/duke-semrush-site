@@ -150,10 +150,11 @@
 </head>
 <body>
     <nav class="nav-bar">
-        <a href="../index.html" class="nav-link nav-logo">DUKE'S SEO ARSENAL</a>
-        <a href="../index.html#weapons" class="nav-link">WEAPONS</a>
+        <a href="../index.html" class="nav-logo">DUKE SEO</a>
+        <a href="../index.html#weapons" class="nav-link">ARSENAL</a>
         <a href="../enemies.html" class="nav-link">ENEMIES</a>
-        <a href="../index.html#stats" class="nav-link">STATS</a>
+        <a href="../carnage-gallery.html" class="nav-link" style="color: #ff3300;">CARNAGE</a>
+        <a href="../play-duke.html" class="nav-link" style="color: #ff6c2c;">PLAY GAME</a>
         <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=john_rippy&utm_medium=dukes_seo_arsenal&utm_campaign=berush_promo" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
     </nav>
 
@@ -323,10 +324,15 @@
         <div class="hud-face-container">
             <img src="../images/duke-hud-face.png" alt="Duke" class="hud-face" id="dukeFace" title="Duke">
         </div>
+        <!-- Secrets -->
         <div class="hud-section">
             <div class="hud-stat">
-                <span class="hud-value hud-ammo" id="hudAmmo">50</span>
-                <span class="hud-label">AMMO</span>
+                <div class="hud-secrets-display">
+                    <span class="hud-value hud-secrets" id="hudSecrets">0</span>
+                    <span class="hud-secrets-slash">/</span>
+                    <span class="hud-value hud-secrets" id="hudSecretsTotal">6</span>
+                </div>
+                <span class="hud-label">SECRETS</span>
             </div>
         </div>
         <div class="hud-section">
@@ -385,5 +391,6 @@
     </audio>
 
     <script src="../js/duke-game.js"></script>
+    <script src="../js/duke-secrets.js"></script>
 </body>
 </html>
