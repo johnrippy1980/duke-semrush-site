@@ -8,9 +8,9 @@
     <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- js-dos 7.xx (supports jsdos bundles with embedded dosbox.conf) -->
-    <script src="https://js-dos.com/v7/build/releases/latest/js-dos/js-dos.js"></script>
-    <link rel="stylesheet" href="https://js-dos.com/v7/build/releases/latest/js-dos/js-dos.css">
+    <!-- js-dos 7 (self-hosted) -->
+    <script src="js-dos/js-dos.js"></script>
+    <link rel="stylesheet" href="js-dos/js-dos.css">
     <style>
         :root {
             --duke-blue: #00aaff;
@@ -419,15 +419,15 @@
         // Start game
         initGame();
 
-        // Fullscreen - target the canvas element directly
+        // Fullscreen
         fullscreenBtn.addEventListener('click', function() {
-            const canvas = document.getElementById('dosbox');
+            const gameArea = document.getElementById('dosbox');
             if (document.fullscreenElement) {
                 document.exitFullscreen();
-            } else if (canvas.requestFullscreen) {
-                canvas.requestFullscreen();
-            } else if (canvas.webkitRequestFullscreen) {
-                canvas.webkitRequestFullscreen();
+            } else if (gameArea.requestFullscreen) {
+                gameArea.requestFullscreen();
+            } else if (gameArea.webkitRequestFullscreen) {
+                gameArea.webkitRequestFullscreen();
             }
         });
 
