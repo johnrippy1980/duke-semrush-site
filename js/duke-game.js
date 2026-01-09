@@ -153,7 +153,7 @@
         boot: 'mighty-boot.wav',
         pistol: 'pistol-fire.wav',
         shotgun: 'shotgun-fire.wav',
-        chaingun: 'ripper-fire.wav',
+        chaingun: 'chaingun-fire.wav',
         rpg: 'rpg-fire.wav',
         pipebomb: 'pipebomb-fire.wav',
         devastator: 'devastator-fire.wav',
@@ -909,8 +909,21 @@
         gameState.currentWeapon = weaponKey;
         localStorage.setItem('duke_weapon', weaponKey);
 
+        // Sync top weapon bar (.weapon-slot)
         document.querySelectorAll('.weapon-slot').forEach(slot => {
             slot.classList.toggle('active', slot.dataset.weapon === weaponKey);
+        });
+
+        // Map weapon keys to HUD slot numbers
+        const weaponToHudNum = {
+            boot: '1', pistol: '2', shotgun: '3', chaingun: '4',
+            rpg: '5', pipebomb: '6', devastator: '7', freezer: '8'
+        };
+        const hudNum = weaponToHudNum[weaponKey];
+
+        // Sync bottom HUD (.hud-weapon-slot)
+        document.querySelectorAll('.hud-weapon-slot').forEach(slot => {
+            slot.classList.toggle('active', slot.dataset.weapon === hudNum);
         });
 
         // Play the weapon's fire sound instead of generic pickup

@@ -12,7 +12,7 @@
     background: url('../images/bg-pic.jpg') center center no-repeat;
     background-size: cover;
     background-attachment: fixed;
-    filter: brightness(0.3) saturate(0.8);
+    filter: brightness(0.45) saturate(0.9);
     pointer-events: none;
 }
 

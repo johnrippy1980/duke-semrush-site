@@ -1246,12 +1246,21 @@
             }
         }
 
-        // Unified weapon selection function - syncs HUD and feature cards
+        // Unified weapon selection function - syncs HUD, feature cards, and top weapon bar
         function selectWeapon(weaponNum, playSound = true) {
+            // Map HUD numbers to weapon keys for top bar
+            const hudNumToWeaponKey = {
+                '1': 'boot', '2': 'pistol', '3': 'shotgun', '4': 'chaingun',
+                '5': 'rpg', '6': 'pipebomb', '7': 'devastator', '8': 'freezer'
+            };
+            const weaponKey = hudNumToWeaponKey[weaponNum];
+
             // Remove active from all HUD weapon slots
             document.querySelectorAll('.hud-weapon-slot').forEach(s => s.classList.remove('active'));
             // Remove active from all feature cards
             document.querySelectorAll('.feature-card').forEach(c => c.classList.remove('active'));
+            // Remove active from all top weapon bar slots
+            document.querySelectorAll('.weapon-slot').forEach(s => s.classList.remove('active'));
 
             // Add active to matching HUD slot
             const hudSlot = document.querySelector(`.hud-weapon-slot[data-weapon="${weaponNum}"]`);
@@ -1263,6 +1272,14 @@
             const featureCard = document.querySelector(`.feature-card[data-weapon="${weaponNum}"]`);
             if (featureCard) {
                 featureCard.classList.add('active');
+            }
+
+            // Add active to matching top weapon bar slot
+            if (weaponKey) {
+                const topSlot = document.querySelector(`.weapon-slot[data-weapon="${weaponKey}"]`);
+                if (topSlot) {
+                    topSlot.classList.add('active');
+                }
             }
 
             // Play weapon sound
