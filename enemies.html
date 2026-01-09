@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enemy Gallery | Duke's SEO Arsenal</title>
+    <meta name="description" content="Meet the enemies of good SEO. These alien scum represent everything wrong with your rankings. Time to frag 'em!">
+    <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/duke-hud.css">
+    <link rel="stylesheet" href="css/duke-game.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #0a0a14;
+            color: #ddd;
+            min-height: 100vh;
+            padding-bottom: 100px;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-bottom: 3px solid #c09030;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10000;
+            padding: 0 20px;
+        }
+
+        .nav-link {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #c09030;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            border-color: #c09030;
+            background: rgba(192, 144, 48, 0.2);
+            text-shadow: 0 0 10px #c09030;
+        }
+
+        .nav-link.active {
+            color: #fff;
+            border-color: #ff6c2c;
+            background: rgba(255, 108, 44, 0.2);
+        }
+
+        .nav-logo {
+            font-size: 0.6rem;
+            color: #ff6c2c;
+            text-shadow: 0 0 10px #ff6c2c;
+            margin-right: auto;
+            text-decoration: none;
+        }
+
+        .nav-cta {
+            background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%);
+            color: #fff !important;
+            border: 2px solid #ffaa00 !important;
+            margin-left: auto;
+        }
+
+        .nav-cta:hover {
+            box-shadow: 0 0 15px rgba(255, 108, 44, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                gap: 0.5rem;
+                padding: 0 10px;
+            }
+            .nav-link {
+                font-size: 0.35rem;
+                padding: 6px 10px;
+            }
+            .nav-logo {
+                display: none;
+            }
+        }
+
+        /* Animated city skyline background */
+        .city-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                linear-gradient(180deg, #0a0a14 0%, #1a1a2e 50%, #2a2a4a 100%);
+            z-index: -2;
+        }
+
+        .city-silhouette {
+            position: fixed;
+            bottom: 80px;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: url('images/city-silhouette.png') repeat-x bottom;
+            background-size: auto 100%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        /* Music Toggle Button */
+        .music-toggle {
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border: 2px solid #c09030;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10001;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px rgba(192, 144, 48, 0.3);
+        }
+
+        .music-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(192, 144, 48, 0.6);
+            border-color: #ffcc00;
+        }
+
+        .music-toggle.playing {
+            animation: musicPulse 1s ease-in-out infinite;
+            border-color: #00ff00;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Page Header */
+        .page-header {
+            padding: 100px 2rem 3rem;
+            text-align: center;
+        }
+
+        .page-title {
+            font-size: 2rem;
+            color: var(--duke-red);
+            text-shadow:
+                4px 4px 0 #000,
+                0 0 30px var(--duke-red),
+                0 0 60px #ff0000;
+            margin-bottom: 1rem;
+            animation: neonFlicker 4s infinite;
+        }
+
+        .page-subtitle {
+            font-size: 0.6rem;
+            color: var(--duke-blue);
+            text-shadow: var(--neon-glow);
+            max-width: 700px;
+            margin: 0 auto 2rem;
+            line-height: 2;
+        }
+
+        /* Enemy Gallery Grid */
+        .enemy-gallery {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .enemy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .enemy-card {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0d0d1a 100%);
+            border: 3px solid var(--duke-red);
+            padding: 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .enemy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .enemy-card:hover::before {
+            left: 100%;
+        }
+
+        .enemy-card:hover {
+            border-color: var(--duke-yellow);
+            box-shadow: 0 0 30px rgba(255, 51, 51, 0.5);
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .enemy-card.boss {
+            grid-column: 1 / -1;
+            border-color: #ffcc00;
+            background: linear-gradient(180deg, #2a1a1a 0%, #1a0d0d 100%);
+        }
+
+        .enemy-card.boss:hover {
+            box-shadow: 0 0 50px rgba(255, 204, 0, 0.7);
+        }
+
+        .enemy-sprite {
+            height: 120px;
+            width: auto;
+            image-rendering: pixelated;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.5));
+            animation: enemyFloat 3s ease-in-out infinite;
+        }
+
+        .enemy-card.boss .enemy-sprite {
+            height: 200px;
+            filter: drop-shadow(0 0 30px rgba(255, 204, 0, 0.7));
+        }
+
+        @keyframes enemyFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .enemy-name {
+            font-size: 1rem;
+            color: var(--duke-red);
+            text-shadow: 0 0 10px var(--duke-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .enemy-card.boss .enemy-name {
+            font-size: 1.5rem;
+            color: #ffcc00;
+            text-shadow: 0 0 20px #ffcc00;
+        }
+
+        .enemy-stats {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+
+        .enemy-stat {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.2rem;
+            color: var(--duke-yellow);
+        }
+
+        .stat-label {
+            font-size: 0.4rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .enemy-desc {
+            font-size: 0.5rem;
+            color: #888;
+            line-height: 2;
+            margin-top: 1rem;
+        }
+
+        .enemy-seo-analogy {
+            font-size: 0.45rem;
+            color: var(--duke-blue);
+            margin-top: 1rem;
+            padding: 0.5rem;
+            background: rgba(0, 170, 255, 0.1);
+            border: 1px solid var(--duke-blue);
+        }
+
+        /* Spawn Boss Button */
+        .spawn-boss-section {
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .spawn-boss-btn {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(180deg, #ff3333 0%, #cc0000 100%);
+            color: #fff;
+            text-decoration: none;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
+            border: 3px solid #ffcc00;
+            cursor: pointer;
+            transition: all 0.3s;
+            animation: bossButtonPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes bossButtonPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 51, 51, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(255, 51, 51, 0.8); }
+        }
+
+        .spawn-boss-btn:hover {
+            transform: scale(1.1);
+            animation: none;
+            box-shadow: 0 0 50px rgba(255, 51, 51, 1);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: linear-gradient(180deg, rgba(255, 51, 51, 0.1) 0%, transparent 100%);
+        }
+
+        .cta-title {
+            font-size: 1.2rem;
+            color: var(--duke-yellow);
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 0.6rem;
+            color: #aaa;
+            margin-bottom: 2rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 2;
+        }
+
+        .big-cta {
+            display: inline-block;
+            padding: 1.5rem 3rem;
+            background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%);
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8rem;
+            border: 3px solid #ffaa00;
+            transition: all 0.3s;
+            animation: ctaPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes ctaPulse {
+            0%, 100% { box-shadow: 0 0 20px rgba(255, 108, 44, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(255, 108, 44, 0.8); }
+        }
+
+        .big-cta:hover {
+            transform: scale(1.1);
+            animation: none;
+            box-shadow: 0 0 50px rgba(255, 108, 44, 1);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.4rem;
+            color: #666;
+            margin-bottom: 80px;
+        }
+
+        .footer a {
+            color: var(--duke-blue);
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-shadow: var(--neon-glow);
+        }
+
+        /* Pain flash */
+        .pain-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 0, 0, 0.3);
+            pointer-events: none;
+            z-index: 9996;
+            opacity: 0;
+            transition: opacity 0.1s;
+        }
+
+        .pain-flash.active {
+            opacity: 1;
+        }
+
+        /* Screen shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.4s ease-in-out;
+        }
+
+        /* Duke quote display */
+        #dukeQuote {
+            position: fixed;
+            top: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.95);
+            border: 2px solid var(--duke-red);
+            padding: 1rem 2rem;
+            font-size: 0.6rem;
+            color: var(--duke-yellow);
+            text-shadow: 0 0 10px var(--duke-yellow);
+            z-index: 10000;
+            display: none;
+            max-width: 80%;
+            text-align: center;
+        }
+
+        #dukeQuote.show {
+            display: block;
+            animation: quoteSlide 0.3s ease-out;
+        }
+
+        @keyframes quoteSlide {
+            from {
+                transform: translateX(-50%) translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Kill indicator */
+        .kill-indicator {
+            position: fixed;
+            font-size: 1.5rem;
+            color: var(--duke-red);
+            text-shadow: 0 0 10px var(--duke-red);
+            pointer-events: none;
+            z-index: 9999;
+            animation: killFade 1s forwards;
+        }
+
+        @keyframes killFade {
+            0% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50px) scale(1.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-logo">DUKE SEO</a>
+        <a href="index.html#weapons" class="nav-link">ARSENAL</a>
+        <a href="enemies.html" class="nav-link active">ENEMIES</a>
+        <a href="index.html#stats" class="nav-link">KILL COUNT</a>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
+    </nav>
+
+    <!-- Music Toggle -->
+    <button class="music-toggle" id="musicToggle" title="Toggle Grabbag Theme">
+        🔇
+    </button>
+
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/grabbag.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- CRT Effects -->
+    <div class="crt-overlay"></div>
+    <div class="vignette"></div>
+    <div class="pain-flash"></div>
+
+    <!-- Background -->
+    <div class="city-bg"></div>
+    <div class="city-silhouette"></div>
+
+    <!-- Duke Quote Display -->
+    <div id="dukeQuote"></div>
+
+    <!-- Page Header -->
+    <header class="page-header">
+        <h1 class="page-title">ENEMY GALLERY</h1>
+        <p class="page-subtitle">
+            These alien scum represent everything wrong with your SEO.
+            Click to frag 'em and hear Duke's thoughts on each one!
+        </p>
+    </header>
+
+    <!-- Enemy Gallery -->
+    <section class="enemy-gallery">
+        <div class="enemy-grid">
+            <!-- Pig Cop -->
+            <div class="enemy-card" onclick="fragEnemy(this, 'pigCop')">
+                <img src="images/pig-cop.png" alt="Pig Cop" class="enemy-sprite">
+                <h3 class="enemy-name">PIG COP</h3>
+                <div class="enemy-stats">
+                    <div class="enemy-stat">
+                        <div class="stat-value">30</div>
+                        <div class="stat-label">HP</div>
+                    </div>
+                    <div class="enemy-stat">
+                        <div class="stat-value">100</div>
+                        <div class="stat-label">POINTS</div>
+                    </div>
+                </div>
+                <p class="enemy-desc">
+                    Corrupted LAPD officers turned into pig-faced mutants.
+                    They carry shotguns and hate Duke almost as much as they hate good rankings.
+                </p>
+                <div class="enemy-seo-analogy">
+                    SEO THREAT: Keyword stuffing - mindlessly repeating the same tactics
+                </div>
+            </div>
+
+            <!-- Assault Trooper -->
+            <div class="enemy-card" onclick="fragEnemy(this, 'assaultTrooper')">
+                <img src="images/assault-trooper.png" alt="Assault Trooper" class="enemy-sprite">
+                <h3 class="enemy-name">ASSAULT TROOPER</h3>
+                <div class="enemy-stats">
+                    <div class="enemy-stat">
+                        <div class="stat-value">20</div>
+                        <div class="stat-label">HP</div>
+                    </div>
+                    <div class="enemy-stat">
+                        <div class="stat-value">75</div>
+                        <div class="stat-label">POINTS</div>
+                    </div>
+                </div>
+                <p class="enemy-desc">
+                    Basic alien foot soldiers with jetpacks and laser pistols.
+                    The grunt workers of the alien invasion force.
+                </p>
+                <div class="enemy-seo-analogy">
+                    SEO THREAT: Thin content - low effort pages with no substance
+                </div>
+            </div>
+
+            <!-- Octabrain -->
+            <div class="enemy-card" onclick="fragEnemy(this, 'octabrain')">
+                <img src="images/octabrain.png" alt="Octabrain" class="enemy-sprite">
+                <h3 class="enemy-name">OCTABRAIN</h3>
+                <div class="enemy-stats">
+                    <div class="enemy-stat">
+                        <div class="stat-value">40</div>
+                        <div class="stat-label">HP</div>
+                    </div>
+                    <div class="enemy-stat">
+                        <div class="stat-value">150</div>
+                        <div class="stat-label">POINTS</div>
+                    </div>
+                </div>
+                <p class="enemy-desc">
+                    Floating brain creatures with psychic powers.
+                    They shoot mental blasts and bite when close. Truly alien intelligence.
+                </p>
+                <div class="enemy-seo-analogy">
+                    SEO THREAT: Negative SEO attacks - malicious link building against competitors
+                </div>
+            </div>
+
+            <!-- Enforcer -->
+            <div class="enemy-card" onclick="fragEnemy(this, 'enforcer')">
+                <img src="images/enforcer.png" alt="Enforcer" class="enemy-sprite">
+                <h3 class="enemy-name">ENFORCER</h3>
+                <div class="enemy-stats">
+                    <div class="enemy-stat">
+                        <div class="stat-value">50</div>
+                        <div class="stat-label">HP</div>
+                    </div>
+                    <div class="enemy-stat">
+                        <div class="stat-value">200</div>
+                        <div class="stat-label">POINTS</div>
+                    </div>
+                </div>
+                <p class="enemy-desc">
+                    Heavily armored alien soldiers with chaingun cannons.
+                    The elite enforcers of the alien regime. Tough but slow.
+                </p>
+                <div class="enemy-seo-analogy">
+                    SEO THREAT: Link farms - massive networks of low-quality backlinks
+                </div>
+            </div>
+
+            <!-- Battlelord (Boss) -->
+            <div class="enemy-card boss" onclick="fragEnemy(this, 'battlelord')">
+                <img src="images/battlelord.png" alt="Battlelord" class="enemy-sprite">
+                <h3 class="enemy-name">THE BATTLELORD</h3>
+                <div class="enemy-stats">
+                    <div class="enemy-stat">
+                        <div class="stat-value">4500</div>
+                        <div class="stat-label">HP</div>
+                    </div>
+                    <div class="enemy-stat">
+                        <div class="stat-value">5000</div>
+                        <div class="stat-label">POINTS</div>
+                    </div>
+                </div>
+                <p class="enemy-desc">
+                    The first boss of Duke Nukem 3D. A massive alien commander armed with a chaingun
+                    and mortar launcher. He represents the ultimate challenge and the embodiment
+                    of everything Duke fights against.
+                </p>
+                <div class="enemy-seo-analogy">
+                    SEO THREAT: Black hat SEO empire - combines all evil tactics:
+                    keyword stuffing, cloaking, PBNs, and algorithm manipulation
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Spawn Boss Section -->
+    <section class="spawn-boss-section">
+        <button class="spawn-boss-btn" onclick="spawnBattlelord()">
+            SPAWN BATTLELORD ON HOMEPAGE
+        </button>
+    </section>
+
+    <!-- Mighty Boot Divider -->
+    <div class="mighty-boot-divider">
+        <div class="boot-divider-line left"></div>
+        <img src="images/mighty-boot-sprite.png" alt="Mighty Boot" class="mighty-boot" id="mightyBoot" title="Click to stomp!">
+        <div class="boot-divider-line right"></div>
+    </div>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <h2 class="cta-title">"DAMN, THOSE ALIEN BASTARDS ARE GONNA PAY"</h2>
+        <p class="cta-subtitle">
+            Arm yourself with SEMrush to fight back against bad SEO.
+            7 days free trial. Time to kick ass and rank keywords.
+        </p>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=berush&utm_medium=promo&utm_campaign=link" class="big-cta" id="bottomCTA">
+            GET SEMRUSH NOW →
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>
+            Duke Nukem is a trademark of Gearbox Entertainment. This is a fan tribute site.<br>
+            <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928" target="_blank">SEMrush Affiliate Partner</a> |
+            Built with 🥾 and attitude
+        </p>
+    </footer>
+
+    <!-- Duke HUD -->
+    <div class="duke-hud">
+        <!-- Health -->
+        <div class="hud-section">
+            <div class="hud-stat">
+                <span class="hud-value hud-health" id="hudHealth">100</span>
+                <span class="hud-label">HEALTH</span>
+            </div>
+        </div>
+
+        <!-- Armor -->
+        <div class="hud-section">
+            <div class="hud-stat">
+                <span class="hud-value hud-armor" id="hudArmor">100</span>
+                <span class="hud-label">ARMOR</span>
+            </div>
+        </div>
+
+        <!-- Duke Face -->
+        <div class="hud-face-container">
+            <img src="images/duke-hud-face.png" alt="Duke" class="hud-face" id="dukeFace" title="Duke">
+        </div>
+
+        <!-- Ammo -->
+        <div class="hud-section">
+            <div class="hud-stat">
+                <span class="hud-value hud-ammo" id="hudAmmo">50</span>
+                <span class="hud-label">AMMO</span>
+            </div>
+        </div>
+
+        <!-- Kills -->
+        <div class="hud-section">
+            <div class="hud-stat">
+                <span class="hud-value hud-kills" id="hudKills">0</span>
+                <span class="hud-label">ALIENS FRAGGED</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bootsSound" preload="auto">
+        <source src="audio/stomp.wav" type="audio/wav">
+    </audio>
+    <audio id="pickupSound" preload="auto">
+        <source src="audio/pickup.wav" type="audio/wav">
+    </audio>
+
+    <!-- Duke Voice Clips -->
+    <audio id="voiceHailToTheKing" preload="auto">
+        <source src="audio/hail-to-the-king.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceComeGetSome" preload="auto">
+        <source src="audio/come-get-some.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceDamnImGood" preload="auto">
+        <source src="audio/damn-im-good.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceLetsRock" preload="auto">
+        <source src="audio/lets-rock.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBlowItOut" preload="auto">
+        <source src="audio/blow-it-out.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voicePieceOfCake" preload="auto">
+        <source src="audio/piece-of-cake.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceShakeItBaby" preload="auto">
+        <source src="audio/shake-it-baby.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceCool" preload="auto">
+        <source src="audio/cool.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceGroovy" preload="auto">
+        <source src="audio/groovy.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBubblegum" preload="auto">
+        <source src="audio/bubblegum.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceYourFace" preload="auto">
+        <source src="audio/your-face.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="voiceBallsOfSteel" preload="auto">
+        <source src="audio/balls-of-steel.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Duke Voice Clips mapping
+        const dukeVoiceClips = {
+            hailToTheKing: { id: 'voiceHailToTheKing', text: "Hail to the king, baby!" },
+            comeGetSome: { id: 'voiceComeGetSome', text: "Come get some!" },
+            damnImGood: { id: 'voiceDamnImGood', text: "Damn, I'm good!" },
+            letsRock: { id: 'voiceLetsRock', text: "Let's rock!" },
+            blowItOut: { id: 'voiceBlowItOut', text: "Blow it out your ass!" },
+            pieceOfCake: { id: 'voicePieceOfCake', text: "Piece of cake!" },
+            shakeItBaby: { id: 'voiceShakeItBaby', text: "Shake it, baby!" },
+            cool: { id: 'voiceCool', text: "Cool!" },
+            groovy: { id: 'voiceGroovy', text: "Groovy!" },
+            bubblegum: { id: 'voiceBubblegum', text: "I'm here to kick ass and chew bubblegum..." },
+            yourFace: { id: 'voiceYourFace', text: "Your face, your ass - what's the difference?" },
+            ballsOfSteel: { id: 'voiceBallsOfSteel', text: "I've got balls of steel!" }
+        };
+
+        // Voice clips for specific enemies
+        const enemyVoices = {
+            pigCop: ['comeGetSome', 'blowItOut', 'damnImGood'],
+            assaultTrooper: ['pieceOfCake', 'cool', 'comeGetSome'],
+            octabrain: ['yourFace', 'blowItOut', 'damnImGood'],
+            enforcer: ['letsRock', 'comeGetSome', 'ballsOfSteel'],
+            battlelord: ['hailToTheKing', 'bubblegum', 'damnImGood']
+        };
+
+        let killCount = parseInt(localStorage.getItem('duke_kills') || '0');
+        let lastVoicePlayed = 0;
+        const voiceCooldown = 1500;
+
+        // Play Duke voice clip
+        function playDukeVoice(clipKey) {
+            const now = Date.now();
+            if (now - lastVoicePlayed < voiceCooldown) return false;
+
+            const clip = dukeVoiceClips[clipKey];
+            if (!clip) return false;
+
+            const audio = document.getElementById(clip.id);
+            if (audio) {
+                audio.volume = 0.7;
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+                lastVoicePlayed = now;
+                showDukeQuoteText(clip.text);
+                return true;
+            }
+            return false;
+        }
+
+        // Show Duke quote text
+        function showDukeQuoteText(quote) {
+            const quoteEl = document.getElementById('dukeQuote');
+            quoteEl.textContent = '"' + quote + '"';
+            quoteEl.classList.add('show');
+
+            setTimeout(() => {
+                quoteEl.classList.remove('show');
+            }, 3000);
+        }
+
+        // Frag an enemy
+        function fragEnemy(card, enemyType) {
+            // Pain flash
+            const painFlash = document.querySelector('.pain-flash');
+            if (painFlash) {
+                painFlash.style.background = 'rgba(255, 100, 0, 0.4)';
+                painFlash.classList.add('active');
+                setTimeout(() => {
+                    painFlash.classList.remove('active');
+                    painFlash.style.background = 'rgba(255, 0, 0, 0.3)';
+                }, 150);
+            }
+
+            // Screen shake
+            document.body.classList.add('shake');
+            setTimeout(() => document.body.classList.remove('shake'), 400);
+
+            // Kill indicator
+            const rect = card.getBoundingClientRect();
+            const indicator = document.createElement('div');
+            indicator.className = 'kill-indicator';
+            indicator.textContent = '+FRAG!';
+            indicator.style.left = (rect.left + rect.width / 2 - 50) + 'px';
+            indicator.style.top = (rect.top + rect.height / 2) + 'px';
+            document.body.appendChild(indicator);
+            setTimeout(() => indicator.remove(), 1000);
+
+            // Increment kill count
+            killCount++;
+            localStorage.setItem('duke_kills', killCount);
+            document.getElementById('hudKills').textContent = killCount;
+
+            // Play enemy-specific voice clip
+            const voices = enemyVoices[enemyType] || ['comeGetSome'];
+            const randomVoice = voices[Math.floor(Math.random() * voices.length)];
+            playDukeVoice(randomVoice);
+
+            // Card effect
+            card.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                card.style.transform = '';
+            }, 200);
+        }
+
+        // Spawn Battlelord on homepage
+        function spawnBattlelord() {
+            playDukeVoice('letsRock');
+            setTimeout(() => {
+                window.location.href = 'index.html#boss';
+            }, 1000);
+        }
+
+        // Mighty Boot click
+        document.querySelectorAll('.mighty-boot').forEach(boot => {
+            boot.addEventListener('click', function() {
+                const stomp = document.getElementById('bootsSound');
+                if (stomp) {
+                    stomp.currentTime = 0;
+                    stomp.play().catch(() => {});
+                }
+
+                document.body.classList.add('shake');
+                setTimeout(() => document.body.classList.remove('shake'), 400);
+
+                const painFlash = document.querySelector('.pain-flash');
+                if (painFlash) {
+                    painFlash.classList.add('active');
+                    setTimeout(() => painFlash.classList.remove('active'), 150);
+                }
+
+                killCount++;
+                localStorage.setItem('duke_kills', killCount);
+                document.getElementById('hudKills').textContent = killCount;
+
+                if (Math.random() > 0.5) {
+                    const stompVoices = ['damnImGood', 'pieceOfCake', 'cool', 'blowItOut'];
+                    const voice = stompVoices[Math.floor(Math.random() * stompVoices.length)];
+                    playDukeVoice(voice);
+                }
+            });
+        });
+
+        // CTA clicks
+        document.querySelectorAll('.big-cta').forEach(cta => {
+            cta.addEventListener('click', function() {
+                const pickup = document.getElementById('pickupSound');
+                if (pickup) {
+                    pickup.currentTime = 0;
+                    pickup.play().catch(() => {});
+                }
+                playDukeVoice('hailToTheKing');
+            });
+        });
+
+        // Duke face click - Easter egg
+        let faceClicks = 0;
+        document.getElementById('dukeFace').addEventListener('click', function() {
+            faceClicks++;
+            if (faceClicks >= 3) {
+                const randomKey = Object.keys(dukeVoiceClips)[Math.floor(Math.random() * Object.keys(dukeVoiceClips).length)];
+                playDukeVoice(randomKey);
+                faceClicks = 0;
+            }
+        });
+
+        // Update HUD kills on load
+        document.getElementById('hudKills').textContent = killCount;
+
+        // Music Toggle
+        const musicToggle = document.getElementById('musicToggle');
+        const bgMusic = document.getElementById('bgMusic');
+        let isPlaying = false;
+
+        if (localStorage.getItem('duke_music_playing') === 'true') {
+            bgMusic.play().then(() => {
+                isPlaying = true;
+                musicToggle.textContent = '🔊';
+                musicToggle.classList.add('playing');
+            }).catch(() => {});
+        }
+
+        musicToggle.addEventListener('click', function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                musicToggle.textContent = '🔇';
+                musicToggle.classList.remove('playing');
+                localStorage.setItem('duke_music_playing', 'false');
+            } else {
+                bgMusic.play().then(() => {
+                    musicToggle.textContent = '🔊';
+                    musicToggle.classList.add('playing');
+                    localStorage.setItem('duke_music_playing', 'true');
+                    playDukeVoice('letsRock');
+                }).catch(() => {});
+            }
+            isPlaying = !isPlaying;
+        });
+
+        bgMusic.volume = 0.4;
+
+        console.log('[Duke Enemy Gallery] "Damn, those alien bastards are gonna pay..."');
+    </script>
+
+    <!-- Duke Game Engine -->
+    <script src="js/duke-game.js"></script>
+</body>
+</html>
