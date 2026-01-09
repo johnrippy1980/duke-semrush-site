@@ -978,7 +978,16 @@
         <source src="audio/protozoid-slimer.wav" type="audio/wav">
     </audio>
     <audio id="soundBattlelord" preload="auto">
-        <source src="audio/battlelord.wav" type="audio/wav">
+        <source src="audio/battlelord-roar.wav" type="audio/wav">
+    </audio>
+    <audio id="soundSentryDrone" preload="auto">
+        <source src="audio/sentry-drone.wav" type="audio/wav">
+    </audio>
+    <audio id="soundOverlord" preload="auto">
+        <source src="audio/overlord.wav" type="audio/wav">
+    </audio>
+    <audio id="soundCycloidEmperor" preload="auto">
+        <source src="audio/cycloid-emperor.wav" type="audio/wav">
     </audio>
 
     <script>
@@ -1216,9 +1225,11 @@
             enforcer: 'soundEnforcer',
             assaultCommander: 'soundAssaultCommander',
             protozoidSlimer: 'soundProtozoidSlimer',
+            sentryDrone: 'soundSentryDrone',
+            shark: 'soundOctabrain',  // Shark has no unique sound, use octabrain
             battlelord: 'soundBattlelord',
-            overlord: 'soundBattlelord',  // Reuse battlelord sound for overlord
-            cycloidEmperor: 'soundBattlelord'  // Reuse battlelord sound for cycloid emperor
+            overlord: 'soundOverlord',
+            cycloidEmperor: 'soundCycloidEmperor'
         };
 
         let lastEnemySoundPlayed = 0;
