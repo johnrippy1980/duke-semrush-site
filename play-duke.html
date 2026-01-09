@@ -343,7 +343,7 @@
                     <div class="loading-spinner"></div>
                     <p class="loading-tip">
                         Loading DOSBox emulator...<br><br>
-                        Duke 3D Atomic Edition via js-dos.<br>
+                        Duke 3D shareware via js-dos.<br>
                         First load may take 30-60 seconds.
                     </p>
                     <div class="loading-progress" id="loadingProgress">Initializing...</div>
@@ -407,7 +407,7 @@
             Dos(document.getElementById("dosbox"), {
                 wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
             }).ready(function(fs, main) {
-                loadingProgress.textContent = 'Downloading game (~20MB)...';
+                loadingProgress.textContent = 'Downloading game (~6MB)...';
                 console.log('[Duke 3D] DOSBox ready, loading game bundle...');
 
                 fs.extract("games/duke3d.zip").then(function() {
