@@ -4,6 +4,9 @@
 (function() {
     'use strict';
 
+    // ===== BASE PATH (for subpages in /weapons/) =====
+    const basePath = window.location.pathname.includes('/weapons/') ? '../' : '';
+
     // ===== GAME STATE =====
     const gameState = {
         killCount: parseInt(localStorage.getItem('duke_kills') || '0'),
@@ -67,22 +70,22 @@
 
     // ===== ENEMIES =====
     const enemyTypes = [
-        { name: 'pig-cop', hp: 30, points: 100, image: 'images/pig-cop.png', deathSound: 'death1' },
-        { name: 'assault-trooper', hp: 20, points: 75, image: 'images/assault-trooper.png', deathSound: 'death1' },
-        { name: 'octabrain', hp: 40, points: 150, image: 'images/octabrain.png', deathSound: 'death1' },
-        { name: 'enforcer', hp: 50, points: 200, image: 'images/enforcer.png', deathSound: 'death1' }
+        { name: 'pig-cop', hp: 30, points: 100, image: `${basePath}images/pig-cop.png`, deathSound: 'death1' },
+        { name: 'assault-trooper', hp: 20, points: 75, image: `${basePath}images/assault-trooper.png`, deathSound: 'death1' },
+        { name: 'octabrain', hp: 40, points: 150, image: `${basePath}images/octabrain.png`, deathSound: 'death1' },
+        { name: 'enforcer', hp: 50, points: 200, image: `${basePath}images/enforcer.png`, deathSound: 'death1' }
     ];
 
     // ===== WEAPONS =====
     const weapons = {
-        boot: { name: 'Mighty Boot', damage: 10, sound: 'stomp', icon: '<img src="images/boot-sprite.png" alt="Boot" style="height:24px;image-rendering:pixelated;">' },
-        pistol: { name: 'Pistol', damage: 15, sound: 'shotgun', icon: '<img src="images/pistol-sprite.png" alt="Pistol" style="height:24px;image-rendering:pixelated;">' },
-        shotgun: { name: 'Shotgun', damage: 40, sound: 'shotgun', icon: '<img src="images/shotgun-sprite.png" alt="Shotgun" style="height:24px;image-rendering:pixelated;">' },
-        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'shotgun', icon: '<img src="images/ripper-sprite.png" alt="Chaingun" style="height:24px;image-rendering:pixelated;">' },
-        rpg: { name: 'RPG', damage: 100, sound: 'explosion', icon: '<img src="images/rpg-sprite.png" alt="RPG" style="height:24px;image-rendering:pixelated;">' },
-        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'explosion', icon: '<img src="images/pipebomb-sprite.png" alt="Pipebomb" style="height:24px;image-rendering:pixelated;">' },
-        devastator: { name: 'Devastator', damage: 150, sound: 'explosion', icon: '<img src="images/devastator-sprite.png" alt="Devastator" style="height:24px;image-rendering:pixelated;">' },
-        freezer: { name: 'Freezethrower', damage: 30, sound: 'shotgun', icon: '<img src="images/freezer-sprite.png" alt="Freezer" style="height:24px;image-rendering:pixelated;">' }
+        boot: { name: 'Mighty Boot', damage: 10, sound: 'stomp', icon: `<img src="${basePath}images/boot-sprite.png" alt="Boot" style="height:24px;image-rendering:pixelated;">` },
+        pistol: { name: 'Pistol', damage: 15, sound: 'shotgun', icon: `<img src="${basePath}images/pistol-sprite.png" alt="Pistol" style="height:24px;image-rendering:pixelated;">` },
+        shotgun: { name: 'Shotgun', damage: 40, sound: 'shotgun', icon: `<img src="${basePath}images/shotgun-sprite.png" alt="Shotgun" style="height:24px;image-rendering:pixelated;">` },
+        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'shotgun', icon: `<img src="${basePath}images/ripper-sprite.png" alt="Chaingun" style="height:24px;image-rendering:pixelated;">` },
+        rpg: { name: 'RPG', damage: 100, sound: 'explosion', icon: `<img src="${basePath}images/rpg-sprite.png" alt="RPG" style="height:24px;image-rendering:pixelated;">` },
+        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'explosion', icon: `<img src="${basePath}images/pipebomb-sprite.png" alt="Pipebomb" style="height:24px;image-rendering:pixelated;">` },
+        devastator: { name: 'Devastator', damage: 150, sound: 'explosion', icon: `<img src="${basePath}images/devastator-sprite.png" alt="Devastator" style="height:24px;image-rendering:pixelated;">` },
+        freezer: { name: 'Freezethrower', damage: 30, sound: 'shotgun', icon: `<img src="${basePath}images/freezer-sprite.png" alt="Freezer" style="height:24px;image-rendering:pixelated;">` }
     };
 
     // ===== INITIALIZATION =====
@@ -487,7 +490,7 @@
             transform: translateX(-50%);
             width: 200px;
             height: 200px;
-            background-image: url('images/battlelord.png');
+            background-image: url('${basePath}images/battlelord.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
