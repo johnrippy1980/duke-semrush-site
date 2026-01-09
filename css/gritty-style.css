@@ -1,0 +1,408 @@
+/* ===== DUKE NUKEM GRITTY URBAN STYLE ===== */
+/* Authentic Duke 3D textures and atmosphere */
+
+/* ===== GRITTY BACKGROUND LAYERS ===== */
+.gritty-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -3;
+    background:
+        /* Dark vignette overlay */
+        radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.7) 100%),
+        /* Subtle noise grain */
+        url('../images/stone-wall.png');
+    background-size: cover, 128px 128px;
+    image-rendering: pixelated;
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+/* Brick wall texture overlay for sections */
+.gritty-texture-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    background: url('../images/gritty-wall.png');
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    opacity: 0.08;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+}
+
+/* Metal grime layer */
+.metal-grime-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: url('../images/metal-texture.png');
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    opacity: 0.05;
+    pointer-events: none;
+    mix-blend-mode: multiply;
+}
+
+/* ===== BODY GRITTY STYLING ===== */
+body {
+    background:
+        /* Dirty gradient */
+        linear-gradient(180deg,
+            #080810 0%,
+            #0c0c18 20%,
+            #101020 40%,
+            #0a0a16 70%,
+            #060610 100%
+        );
+    /* Add film grain effect */
+    background-attachment: fixed;
+}
+
+/* ===== GRITTY SECTION BACKGROUNDS ===== */
+.section {
+    position: relative;
+}
+
+.section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/dark-concrete.png');
+    background-size: 32px 32px;
+    image-rendering: pixelated;
+    opacity: 0.06;
+    pointer-events: none;
+    z-index: -1;
+}
+
+/* ===== GRITTY FEATURE CARDS ===== */
+.feature-card {
+    position: relative;
+    background:
+        linear-gradient(180deg, rgba(25, 25, 40, 0.95) 0%, rgba(10, 10, 20, 0.98) 100%);
+    border: 2px solid #3a3a50;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3),
+        0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.feature-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/gritty-wall.png');
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    opacity: 0.08;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+/* ===== GRITTY NAV BAR ===== */
+.nav-bar {
+    background:
+        linear-gradient(180deg, #1a1a28 0%, #0e0e1a 100%);
+    border-bottom: 3px solid #4a3a20;
+    box-shadow:
+        0 2px 10px rgba(0, 0, 0, 0.8),
+        inset 0 -1px 0 rgba(192, 144, 48, 0.3);
+}
+
+/* ===== GRITTY STAT BOXES ===== */
+.stat-box {
+    background:
+        linear-gradient(180deg, rgba(20, 20, 35, 0.95) 0%, rgba(8, 8, 16, 0.98) 100%);
+    border: 2px solid #4a3a30;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.03),
+        0 4px 15px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+
+.stat-box::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/rust-metal.png');
+    background-size: 32px 32px;
+    image-rendering: pixelated;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* ===== GRITTY TABLE ===== */
+.weapons-table {
+    border-collapse: collapse;
+    background: rgba(10, 10, 20, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+}
+
+.weapons-table th {
+    background:
+        linear-gradient(180deg, #2a2a40 0%, #1a1a28 100%);
+    border: 1px solid #3a3a50;
+}
+
+.weapons-table td {
+    border: 1px solid #2a2a3a;
+    background: rgba(15, 15, 25, 0.8);
+}
+
+.weapons-table tr:hover td {
+    background: rgba(80, 60, 30, 0.3);
+}
+
+/* ===== GRITTY DEATHMATCH SECTION ===== */
+.deathmatch-section {
+    background:
+        linear-gradient(180deg,
+            rgba(50, 20, 20, 0.3) 0%,
+            transparent 30%,
+            transparent 70%,
+            rgba(50, 20, 20, 0.3) 100%
+        );
+    position: relative;
+}
+
+.deathmatch-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/stone-wall.png');
+    background-size: 128px 128px;
+    image-rendering: pixelated;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+/* ===== GRITTY COMPETITOR CARDS ===== */
+.competitor-card {
+    background:
+        linear-gradient(180deg, rgba(20, 20, 35, 0.95) 0%, rgba(8, 8, 16, 0.98) 100%);
+    border: 3px solid #3a3a4a;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        0 5px 25px rgba(0, 0, 0, 0.7);
+    position: relative;
+}
+
+.competitor-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/metal-texture.png');
+    background-size: 64px 64px;
+    image-rendering: pixelated;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* ===== GRITTY BOSS SECTION ===== */
+.boss-section {
+    background:
+        linear-gradient(180deg,
+            #120808 0%,
+            #0a0a14 30%,
+            #0a0a14 70%,
+            #120808 100%
+        );
+    position: relative;
+}
+
+.boss-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        url('../images/gritty-wall.png'),
+        radial-gradient(ellipse at center, transparent 40%, rgba(100, 20, 20, 0.2) 100%);
+    background-size: 64px 64px, cover;
+    image-rendering: pixelated;
+    opacity: 0.1;
+    pointer-events: none;
+}
+
+/* ===== GRITTY CTA SECTION ===== */
+.cta-section {
+    background:
+        linear-gradient(180deg,
+            rgba(80, 40, 20, 0.15) 0%,
+            transparent 50%,
+            rgba(80, 40, 20, 0.15) 100%
+        );
+    position: relative;
+}
+
+.cta-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/dark-concrete.png');
+    background-size: 32px 32px;
+    image-rendering: pixelated;
+    opacity: 0.08;
+    pointer-events: none;
+}
+
+/* ===== GRITTY BUTTONS ===== */
+.big-cta, .feature-link, .boss-button {
+    position: relative;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    box-shadow:
+        0 4px 0 #662200,
+        0 6px 20px rgba(0, 0, 0, 0.6),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.big-cta:hover, .feature-link:hover, .boss-button:hover {
+    box-shadow:
+        0 4px 0 #662200,
+        0 6px 30px rgba(255, 100, 50, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* ===== GRITTY HERO SECTION ===== */
+.hero {
+    position: relative;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('../images/stone-wall.png');
+    background-size: 128px 128px;
+    image-rendering: pixelated;
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.hero > * {
+    position: relative;
+    z-index: 1;
+}
+
+/* ===== GRITTY FOOTER ===== */
+.footer {
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+    border-top: 1px solid #2a2a3a;
+}
+
+/* ===== SCANLINES ENHANCEMENT ===== */
+.crt-overlay {
+    background:
+        repeating-linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0.2),
+            rgba(0, 0, 0, 0.2) 1px,
+            transparent 1px,
+            transparent 3px
+        );
+    opacity: 0.5;
+}
+
+/* ===== ENHANCED VIGNETTE ===== */
+.vignette {
+    background:
+        radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* ===== GRITTY CITY SILHOUETTE ===== */
+.city-silhouette {
+    opacity: 0.4;
+    filter: brightness(0.7) contrast(1.2);
+}
+
+/* ===== GRITTY DIVIDERS ===== */
+.mighty-boot-divider {
+    position: relative;
+}
+
+.boot-divider-line {
+    background:
+        linear-gradient(90deg,
+            transparent,
+            #5a4020,
+            #8a6030,
+            #5a4020,
+            transparent
+        );
+    height: 3px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+/* ===== GRITTY HUD ===== */
+.duke-hud {
+    background:
+        linear-gradient(180deg, #404048 0%, #2a2a30 50%, #1a1a20 100%) !important;
+    box-shadow:
+        inset 0 2px 0 rgba(255,255,255,0.08),
+        0 -4px 30px rgba(0, 0, 0, 0.95) !important;
+}
+
+.hud-section {
+    background:
+        linear-gradient(180deg, #3a3a42 0%, #252530 50%, #18181e 100%);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.05),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.3);
+}
+
+/* ===== NOISE ANIMATION (subtle) ===== */
+@keyframes noiseShift {
+    0% { background-position: 0 0; }
+    100% { background-position: 100px 100px; }
+}
+
+.gritty-bg {
+    animation: noiseShift 30s linear infinite;
+}
+
+/* ===== FLICKERING NEON EFFECT ===== */
+@keyframes neonFlicker {
+    0%, 100% { opacity: 1; }
+    92% { opacity: 1; }
+    93% { opacity: 0.8; }
+    94% { opacity: 1; }
+    95% { opacity: 0.9; }
+    96% { opacity: 1; }
+}
+
+.hero-title {
+    animation: neonFlicker 4s ease-in-out infinite;
+}
