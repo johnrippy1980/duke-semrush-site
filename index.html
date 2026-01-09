@@ -644,6 +644,32 @@
                     DEVASTATE →
                 </a>
             </div>
+
+            <!-- Traffic Analytics = Chaingun Ripper -->
+            <div class="feature-card">
+                <div class="feature-icon"><img src="images/ripper-sprite.png" alt="Ripper" style="height: 48px; image-rendering: pixelated;"></div>
+                <h3 class="feature-title">TRAFFIC RIPPER</h3>
+                <p class="feature-desc">
+                    Rip through competitor traffic data with chaingun precision.
+                    Traffic Analytics reveals where their visitors really come from.
+                </p>
+                <a href="weapons/traffic-ripper.html" class="feature-link">
+                    RIP IT UP →
+                </a>
+            </div>
+
+            <!-- Advertising Research = Freezethrower -->
+            <div class="feature-card">
+                <div class="feature-icon"><img src="images/freezer-sprite.png" alt="Freezer" style="height: 48px; image-rendering: pixelated;"></div>
+                <h3 class="feature-title">AD FREEZER</h3>
+                <p class="feature-desc">
+                    Freeze competitor ad campaigns in their tracks.
+                    PPC intelligence that stops the competition cold.
+                </p>
+                <a href="weapons/ad-freezer.html" class="feature-link">
+                    FREEZE 'EM →
+                </a>
+            </div>
         </div>
     </section>
 
@@ -725,6 +751,18 @@
                     <td>Keyword Research</td>
                     <td>★★★</td>
                     <td>Precision targeting</td>
+                </tr>
+                <tr>
+                    <td><img src="images/ripper-sprite.png" alt="Ripper" style="height: 20px; image-rendering: pixelated; vertical-align: middle;"> Chaingun</td>
+                    <td>Traffic Analytics</td>
+                    <td>★★★★</td>
+                    <td>Rapid-fire traffic intel</td>
+                </tr>
+                <tr>
+                    <td><img src="images/freezer-sprite.png" alt="Freezer" style="height: 20px; image-rendering: pixelated; vertical-align: middle;"> Freezethrower</td>
+                    <td>Advertising Research</td>
+                    <td>★★★★★</td>
+                    <td>Freezing competitor ads</td>
                 </tr>
             </tbody>
         </table>
@@ -1060,6 +1098,8 @@
                 else if (text.includes('BLAST')) playDukeVoice('letsRock');
                 else if (text.includes('AIM')) playDukeVoice('comeGetSome');
                 else if (text.includes('DEVASTATE')) playDukeVoice('damnImGood');
+                else if (text.includes('RIP')) playDukeVoice('comeGetSome');
+                else if (text.includes('FREEZE')) playDukeVoice('cool');
             });
         });
 
