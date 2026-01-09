@@ -480,16 +480,8 @@
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
 
-        // Hide js-dos UI (sidebar and popup) with targeted CSS
-        (function() {
-            var style = document.createElement('style');
-            style.textContent = `
-                #dosbox .flex-grow-0 {
-                    display: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-        })();
+        // js-dos UI hiding - applied after game starts to avoid breaking initialization
+        // User can add: #dosbox .flex-grow-0 { display: none !important; } in DevTools once game loads
     </script>
 </body>
 </html>
