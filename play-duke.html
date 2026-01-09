@@ -8,8 +8,9 @@
     <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- js-dos API (classic version that works with Duke 3D bundles) -->
-    <script src="https://js-dos.com/cdn/js-dos-api.js"></script>
+    <!-- js-dos 6.22 (stable version with proper game support) -->
+    <script src="https://js-dos.com/6.22/current/js-dos.js"></script>
+    <link rel="stylesheet" href="https://js-dos.com/6.22/current/js-dos.css">
     <style>
         :root {
             --duke-blue: #00aaff;
@@ -398,27 +399,28 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Initialize with classic js-dos-api (same API js-dos.com uses)
+        // Initialize with js-dos 6.22 API
         function initGame() {
             loadingProgress.textContent = 'Loading Duke 3D...';
             console.log('[Duke 3D] Initializing DOSBox...');
 
-            var dosbox = new Dosbox({
-                id: "dosbox",
-                onload: function(dosbox) {
+            Dos(document.getElementById("dosbox"), {
+                wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
+            }).ready(function(fs, main) {
+                loadingProgress.textContent = 'Downloading game (~6MB)...';
+                console.log('[Duke 3D] DOSBox ready, loading game bundle...');
+
+                fs.extract("https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip").then(function() {
                     loadingProgress.textContent = 'Starting game...';
-                    console.log('[Duke 3D] DOSBox ready, loading game bundle...');
-                    // Use the exact path from js-dos.com
-                    dosbox.run("https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip", "./DUKE3D.EXE");
-                },
-                onrun: function(dosbox, app) {
-                    console.log('[Duke 3D] Game started:', app);
-                    loadingOverlay.classList.add('hidden');
-                },
-                onerror: function(error) {
-                    console.error('[Duke 3D] Error:', error);
-                    loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
-                }
+                    console.log('[Duke 3D] Game extracted, starting...');
+                    main(["-c", "DUKE3D.EXE"]).then(function(ci) {
+                        console.log('[Duke 3D] Game started!');
+                        loadingOverlay.classList.add('hidden');
+                    });
+                });
+            }).catch(function(error) {
+                console.error('[Duke 3D] Error:', error);
+                loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
             });
         }
 
