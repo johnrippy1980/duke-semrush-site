@@ -773,7 +773,7 @@
     <section class="deathmatch-section" id="deathmatch">
         <h2 class="deathmatch-title">DEATHMATCH: SEO TOOL SHOWDOWN</h2>
         <div class="deathmatch-arena">
-            <div class="competitor-card winner">
+            <div class="competitor-card winner" id="semrushCard">
                 <div class="competitor-logo">🏆</div>
                 <div class="competitor-name">SEMRUSH</div>
                 <div class="competitor-stats">
@@ -802,7 +802,7 @@
 
             <div class="vs-badge">VS</div>
 
-            <div class="competitor-card loser">
+            <div class="competitor-card loser" id="ahrefsCard">
                 <div class="competitor-logo">💀</div>
                 <div class="competitor-name">AHREFS</div>
                 <div class="competitor-stats">
@@ -1207,6 +1207,15 @@
         });
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and rank keywords..."');
+
+        // Deathmatch card hover sounds
+        document.getElementById('semrushCard').addEventListener('mouseenter', function() {
+            playDukeVoice('hailToTheKing');
+        });
+
+        document.getElementById('ahrefsCard').addEventListener('mouseenter', function() {
+            playDukeVoice('yourFace');
+        });
 
         // Music Toggle
         const musicToggle = document.getElementById('musicToggle');
