@@ -413,7 +413,7 @@
                 fs.extract("games/duke3d.zip").then(function() {
                     loadingProgress.textContent = 'Starting game...';
                     console.log('[Duke 3D] Game extracted, starting...');
-                    main(["-c", "DUKE3D.EXE"]).then(function(ci) {
+                    main(["-c", "cd DUKE3D", "-c", "DUKE3D.EXE"]).then(function(ci) {
                         console.log('[Duke 3D] Game started!');
                         loadingOverlay.classList.add('hidden');
                     });
