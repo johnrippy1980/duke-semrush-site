@@ -1003,7 +1003,11 @@
             blowItOut: { id: 'voiceBlowItOut', text: "Blow it out your ass!" },
             pieceOfCake: { id: 'voicePieceOfCake', text: "Piece of cake!" },
             shakeItBaby: { id: 'voiceShakeItBaby', text: "Shake it, baby!" },
-            cool: { id: 'voiceCool', text: "Cool!" }
+            cool: { id: 'voiceCool', text: "Cool!" },
+            groovy: { id: 'voiceGroovy', text: "Groovy!" },
+            bubblegum: { id: 'voiceBubblegum', text: "It's time to kick ass and chew bubblegum..." },
+            yourFace: { id: 'voiceYourFace', text: "Your face, your ass - what's the difference?" },
+            ballsOfSteel: { id: 'voiceBallsOfSteel', text: "I've got balls of steel!" }
         };
 
         // Array for random selection
@@ -1157,22 +1161,29 @@
         // Update HUD kills on load
         document.getElementById('hudKills').textContent = killCount;
 
-        // Weapon slot selection
+        // Weapon slot selection with sounds
         document.querySelectorAll('.hud-weapon-slot').forEach(slot => {
             slot.addEventListener('click', function() {
                 // Remove active from all slots
                 document.querySelectorAll('.hud-weapon-slot').forEach(s => s.classList.remove('active'));
                 // Add active to clicked slot
                 this.classList.add('active');
-                // Play pickup sound
-                const pickup = document.getElementById('pickupSound');
-                if (pickup) {
-                    pickup.currentTime = 0;
-                    pickup.play().catch(() => {});
+
+                // 30% chance to play Duke one-liner, otherwise pickup sound
+                if (Math.random() < 0.3) {
+                    // Play random Duke voice clip
+                    playRandomVoice();
+                } else {
+                    // Play pickup sound
+                    const pickup = document.getElementById('pickupSound');
+                    if (pickup) {
+                        pickup.currentTime = 0;
+                        pickup.play().catch(() => {});
+                    }
+                    // Show weapon name
+                    const weaponName = this.getAttribute('title');
+                    showDukeQuoteText('Switching to ' + weaponName);
                 }
-                // Show weapon name
-                const weaponName = this.getAttribute('title');
-                showDukeQuoteText('Switching to ' + weaponName);
             });
         });
 
