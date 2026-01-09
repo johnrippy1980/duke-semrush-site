@@ -75,14 +75,14 @@
 
     // ===== WEAPONS =====
     const weapons = {
-        boot: { name: 'Mighty Boot', damage: 10, sound: 'stomp', icon: '🥾' },
-        pistol: { name: 'Pistol', damage: 15, sound: 'shotgun', icon: '🔫' },
-        shotgun: { name: 'Shotgun', damage: 40, sound: 'shotgun', icon: '🔫' },
-        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'shotgun', icon: '🔫' },
-        rpg: { name: 'RPG', damage: 100, sound: 'explosion', icon: '🚀' },
-        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'explosion', icon: '💣' },
-        devastator: { name: 'Devastator', damage: 150, sound: 'explosion', icon: '💥' },
-        freezer: { name: 'Freezethrower', damage: 30, sound: 'shotgun', icon: '🧊' }
+        boot: { name: 'Mighty Boot', damage: 10, sound: 'stomp', icon: '<img src="images/boot-sprite.png" alt="Boot" style="height:24px;image-rendering:pixelated;">' },
+        pistol: { name: 'Pistol', damage: 15, sound: 'shotgun', icon: '<img src="images/pistol-sprite.png" alt="Pistol" style="height:24px;image-rendering:pixelated;">' },
+        shotgun: { name: 'Shotgun', damage: 40, sound: 'shotgun', icon: '<img src="images/shotgun-sprite.png" alt="Shotgun" style="height:24px;image-rendering:pixelated;">' },
+        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'shotgun', icon: '<img src="images/ripper-sprite.png" alt="Chaingun" style="height:24px;image-rendering:pixelated;">' },
+        rpg: { name: 'RPG', damage: 100, sound: 'explosion', icon: '<img src="images/rpg-sprite.png" alt="RPG" style="height:24px;image-rendering:pixelated;">' },
+        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'explosion', icon: '<img src="images/pipebomb-sprite.png" alt="Pipebomb" style="height:24px;image-rendering:pixelated;">' },
+        devastator: { name: 'Devastator', damage: 150, sound: 'explosion', icon: '<img src="images/devastator-sprite.png" alt="Devastator" style="height:24px;image-rendering:pixelated;">' },
+        freezer: { name: 'Freezethrower', damage: 30, sound: 'shotgun', icon: '<img src="images/freezer-sprite.png" alt="Freezer" style="height:24px;image-rendering:pixelated;">' }
     };
 
     // ===== INITIALIZATION =====
