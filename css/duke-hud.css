@@ -1,5 +1,5 @@
 /* ===== DUKE NUKEM 3D HUD - AUTHENTIC STYLE ===== */
-/* Using real Duke 3D sprite assets */
+/* Redesigned to match the actual Duke 3D game HUD */
 
 /* Global crosshair cursor for FPS feel */
 *, *::before, *::after { cursor: crosshair !important; }
@@ -12,37 +12,58 @@ html, body { cursor: crosshair !important; }
     --duke-gold: #c09030;
     --duke-bg: #000000;
     --duke-panel: #303030;
-    --status-bar-height: 64px;
+    --hud-border-light: #707070;
+    --hud-border-dark: #202020;
+    --hud-panel-bg: #404048;
+    --status-bar-height: 80px;
 }
 
-/* Main HUD container - Duke 3D status bar style */
+/* Main HUD container - Duke 3D authentic status bar */
 .duke-hud {
     position: fixed !important;
     bottom: 0 !important;
     left: 0 !important;
     width: 100% !important;
     height: var(--status-bar-height) !important;
-    background: linear-gradient(180deg, #3a3a4a 0%, #2a2a3a 50%, #1a1a2a 100%) !important;
-    border-top: 3px solid #606060 !important;
-    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.8) !important;
+    background: linear-gradient(180deg, #505058 0%, #383840 30%, #282830 100%) !important;
+    border-top: 4px solid var(--hud-border-light) !important;
+    box-shadow: inset 0 2px 0 rgba(255,255,255,0.1), 0 -4px 20px rgba(0, 0, 0, 0.9) !important;
     display: flex !important;
     flex-direction: row !important;
-    justify-content: space-between !important;
-    align-items: center !important;
+    justify-content: center !important;
+    align-items: stretch !important;
     z-index: 99999 !important;
     font-family: 'Press Start 2P', monospace !important;
-    padding: 0 20px !important;
+    padding: 4px 8px !important;
+    gap: 4px !important;
     visibility: visible !important;
     opacity: 1 !important;
 }
 
-/* HUD Sections */
+/* HUD Sections - Segmented panel style like Duke 3D */
 .hud-section {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
-    padding: 0 15px;
+    flex-direction: column;
+    background: linear-gradient(180deg, #484850 0%, #303038 50%, #202028 100%);
+    border: 3px solid;
+    border-color: var(--hud-border-light) var(--hud-border-dark) var(--hud-border-dark) var(--hud-border-light);
+    padding: 4px 12px;
+    min-width: 80px;
+    position: relative;
+}
+
+/* Panel inset effect */
+.hud-section::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border: 1px solid rgba(0,0,0,0.4);
+    pointer-events: none;
 }
 
 /* Stat container */
@@ -53,48 +74,140 @@ html, body { cursor: crosshair !important; }
     gap: 2px;
 }
 
-/* HUD values - Duke 3D style yellow numbers */
+/* HUD values - Duke 3D style large numbers */
 .hud-value {
-    font-size: 1.4rem;
+    font-size: 1.6rem;
     color: var(--duke-yellow);
-    text-shadow: 2px 2px 0 #000, -1px -1px 0 #000;
-    letter-spacing: 2px;
+    text-shadow: 3px 3px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+    letter-spacing: 3px;
+    line-height: 1;
 }
 
-/* HUD labels */
+/* HUD labels - Label above the panel */
 .hud-label {
-    font-size: 0.4rem;
-    color: #909090;
+    font-size: 0.35rem;
+    color: #b0b0b0;
     text-shadow: 1px 1px 0 #000;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
 }
 
-/* Duke face container using sprite sheet */
+/* Duke face container - centered prominent display */
 .hud-face-container {
-    width: 48px;
-    height: 48px;
-    background: #202020;
-    border: 2px solid #404040;
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(180deg, #282830 0%, #181820 100%);
+    border: 3px solid;
+    border-color: var(--hud-border-dark) var(--hud-border-light) var(--hud-border-light) var(--hud-border-dark);
     display: flex;
     align-items: center;
     justify-content: center;
-    margin: 0 10px;
+    margin: 0 8px;
     overflow: hidden;
+    box-shadow: inset 0 0 10px rgba(0,0,0,0.8);
 }
 
 .hud-face {
-    width: 42px;
-    height: 42px;
+    width: 52px;
+    height: 52px;
     image-rendering: pixelated;
     image-rendering: crisp-edges;
     cursor: pointer;
+    filter: brightness(1.1);
 }
 
-/* Color variations */
-.hud-health { color: #ff4040; }
-.hud-armor { color: var(--duke-blue); }
-.hud-ammo { color: var(--duke-yellow); }
-.hud-kills { color: var(--duke-gold); }
+.hud-face:hover {
+    filter: brightness(1.3);
+}
+
+/* Color variations for different stats */
+.hud-health {
+    color: #ff4040;
+    text-shadow: 3px 3px 0 #600000, -1px -1px 0 #300000, 0 0 10px rgba(255,0,0,0.5);
+}
+.hud-armor {
+    color: #4080ff;
+    text-shadow: 3px 3px 0 #002060, -1px -1px 0 #001040, 0 0 10px rgba(64,128,255,0.5);
+}
+.hud-ammo {
+    color: var(--duke-yellow);
+    text-shadow: 3px 3px 0 #604000, -1px -1px 0 #302000, 0 0 10px rgba(208,192,64,0.5);
+}
+.hud-kills {
+    color: var(--duke-gold);
+    text-shadow: 3px 3px 0 #503000, -1px -1px 0 #281800;
+}
+
+/* Weapon inventory section - shows weapon icons */
+.hud-weapons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    background: linear-gradient(180deg, #383840 0%, #202028 100%);
+    border: 3px solid;
+    border-color: var(--hud-border-light) var(--hud-border-dark) var(--hud-border-dark) var(--hud-border-light);
+}
+
+.hud-weapon-slot {
+    width: 24px;
+    height: 24px;
+    background: #181820;
+    border: 2px solid #404048;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    color: #606060;
+}
+
+.hud-weapon-slot.active {
+    border-color: var(--duke-yellow);
+    color: var(--duke-yellow);
+    background: #282830;
+    box-shadow: 0 0 8px rgba(208,192,64,0.5);
+}
+
+.hud-weapon-slot img {
+    width: 20px;
+    height: 20px;
+    image-rendering: pixelated;
+    opacity: 0.5;
+}
+
+.hud-weapon-slot.active img {
+    opacity: 1;
+    filter: brightness(1.2);
+}
+
+/* Keys/inventory section */
+.hud-keys {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+    padding: 4px 8px;
+    background: linear-gradient(180deg, #383840 0%, #202028 100%);
+    border: 3px solid;
+    border-color: var(--hud-border-light) var(--hud-border-dark) var(--hud-border-dark) var(--hud-border-light);
+}
+
+.hud-key {
+    width: 16px;
+    height: 16px;
+    border-radius: 2px;
+    opacity: 0.3;
+}
+
+.hud-key.blue { background: #4080ff; }
+.hud-key.red { background: #ff4040; }
+.hud-key.yellow { background: #ffcc00; }
+
+.hud-key.collected {
+    opacity: 1;
+    box-shadow: 0 0 8px currentColor;
+}
 
 /* ===== MIGHTY BOOT WEAPON DIVIDER ===== */
 .mighty-boot-divider {
@@ -184,26 +297,39 @@ html, body { cursor: crosshair !important; }
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .duke-hud {
-        height: 50px;
-        padding: 0 10px;
+        height: 60px !important;
+        padding: 2px 4px !important;
+        gap: 2px !important;
+    }
+    .hud-section {
+        min-width: 50px;
+        padding: 2px 6px;
     }
     .hud-face-container {
-        width: 40px;
-        height: 40px;
+        width: 44px;
+        height: 44px;
+        margin: 0 4px;
     }
     .hud-face {
-        width: 36px;
-        height: 36px;
+        width: 38px;
+        height: 38px;
     }
     .hud-value {
         font-size: 1rem;
+        letter-spacing: 1px;
     }
     .hud-label {
-        font-size: 0.3rem;
+        font-size: 0.25rem;
+    }
+    .hud-weapons {
+        display: none; /* Hide weapon inventory on mobile */
+    }
+    .hud-keys {
+        display: none; /* Hide keys on mobile */
     }
     .mighty-boot {
         width: 150px;
-        height: 112px;
+        height: auto;
     }
 }
 
