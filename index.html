@@ -578,7 +578,7 @@
 
         <div class="features-grid">
             <!-- Keyword Research = Hunting Aliens -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="2">
                 <div class="feature-icon"><img src="images/pistol-sprite.png" alt="Pistol" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">KEYWORD HUNTING</h3>
                 <p class="feature-desc">
@@ -591,7 +591,7 @@
             </div>
 
             <!-- Backlink Analysis = Pipe Bomb -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="6">
                 <div class="feature-icon"><img src="images/pipebomb-sprite.png" alt="Pipebomb" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">BACKLINK BOMBS</h3>
                 <p class="feature-desc">
@@ -604,7 +604,7 @@
             </div>
 
             <!-- Site Audit = Boot Stomp -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="1">
                 <div class="feature-icon"><img src="images/mighty-boot-sprite.png" alt="Mighty Boot" style="height: 64px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">SITE AUDIT STOMP</h3>
                 <p class="feature-desc">
@@ -617,7 +617,7 @@
             </div>
 
             <!-- Position Tracking = Jetpack -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="5">
                 <div class="feature-icon"><img src="images/rpg-sprite.png" alt="RPG" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">RANKING JETPACK</h3>
                 <p class="feature-desc">
@@ -630,7 +630,7 @@
             </div>
 
             <!-- Competitor Analysis = Shotgun -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="3">
                 <div class="feature-icon"><img src="images/shotgun-sprite.png" alt="Shotgun" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">COMPETITOR SHOTGUN</h3>
                 <p class="feature-desc">
@@ -643,7 +643,7 @@
             </div>
 
             <!-- Content Marketing = Devastator -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="7">
                 <div class="feature-icon"><img src="images/devastator-sprite.png" alt="Devastator" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">CONTENT DEVASTATOR</h3>
                 <p class="feature-desc">
@@ -656,7 +656,7 @@
             </div>
 
             <!-- Traffic Analytics = Chaingun Ripper -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="4">
                 <div class="feature-icon"><img src="images/ripper-sprite.png" alt="Ripper" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">TRAFFIC RIPPER</h3>
                 <p class="feature-desc">
@@ -669,7 +669,7 @@
             </div>
 
             <!-- Advertising Research = Freezethrower -->
-            <div class="feature-card">
+            <div class="feature-card" data-weapon="8">
                 <div class="feature-icon"><img src="images/freezer-sprite.png" alt="Freezer" style="height: 48px; image-rendering: pixelated;"></div>
                 <h3 class="feature-title">AD FREEZER</h3>
                 <p class="feature-desc">
@@ -1013,7 +1013,7 @@
         <source src="audio/shotgun-fire.wav" type="audio/wav">
     </audio>
     <audio id="weaponRipper" preload="auto">
-        <source src="audio/ripper-fire.wav" type="audio/wav">
+        <source src="audio/chaingun-fire.wav" type="audio/wav">
     </audio>
     <audio id="weaponRPG" preload="auto">
         <source src="audio/rpg-fire.wav" type="audio/wav">
@@ -1225,28 +1225,78 @@
                 audio.volume = 0.6;
                 audio.currentTime = 0;
                 audio.play().catch(() => {});
+
+                // Chaingun rapid fire - play multiple times for that authentic chaingun feel
+                if (weaponNum === '4') {
+                    let burstCount = 0;
+                    const maxBursts = 5; // 5 rapid shots
+                    const burstInterval = setInterval(() => {
+                        burstCount++;
+                        if (burstCount >= maxBursts) {
+                            clearInterval(burstInterval);
+                            return;
+                        }
+                        const chaingunAudio = document.getElementById('weaponRipper');
+                        if (chaingunAudio) {
+                            chaingunAudio.currentTime = 0;
+                            chaingunAudio.play().catch(() => {});
+                        }
+                    }, 80); // 80ms between shots for rapid fire
+                }
             }
         }
 
-        // Weapon slot selection with sounds
+        // Unified weapon selection function - syncs HUD and feature cards
+        function selectWeapon(weaponNum, playSound = true) {
+            // Remove active from all HUD weapon slots
+            document.querySelectorAll('.hud-weapon-slot').forEach(s => s.classList.remove('active'));
+            // Remove active from all feature cards
+            document.querySelectorAll('.feature-card').forEach(c => c.classList.remove('active'));
+
+            // Add active to matching HUD slot
+            const hudSlot = document.querySelector(`.hud-weapon-slot[data-weapon="${weaponNum}"]`);
+            if (hudSlot) {
+                hudSlot.classList.add('active');
+            }
+
+            // Add active to matching feature card
+            const featureCard = document.querySelector(`.feature-card[data-weapon="${weaponNum}"]`);
+            if (featureCard) {
+                featureCard.classList.add('active');
+            }
+
+            // Play weapon sound
+            if (playSound) {
+                playWeaponSound(weaponNum);
+            }
+
+            // Show weapon name
+            if (hudSlot) {
+                const weaponName = hudSlot.getAttribute('title');
+                showDukeQuoteText('Switching to ' + weaponName);
+            }
+
+            // 20% chance to also play a Duke one-liner
+            if (playSound && Math.random() < 0.2) {
+                setTimeout(() => playRandomVoice(), 300);
+            }
+        }
+
+        // Weapon slot selection with sounds (HUD)
         document.querySelectorAll('.hud-weapon-slot').forEach(slot => {
             slot.addEventListener('click', function() {
-                // Remove active from all slots
-                document.querySelectorAll('.hud-weapon-slot').forEach(s => s.classList.remove('active'));
-                // Add active to clicked slot
-                this.classList.add('active');
-
-                // Get weapon number and play weapon fire sound
                 const weaponNum = this.getAttribute('data-weapon');
-                playWeaponSound(weaponNum);
+                selectWeapon(weaponNum);
+            });
+        });
 
-                // Show weapon name
-                const weaponName = this.getAttribute('title');
-                showDukeQuoteText('Switching to ' + weaponName);
-
-                // 20% chance to also play a Duke one-liner
-                if (Math.random() < 0.2) {
-                    setTimeout(() => playRandomVoice(), 300);
+        // Feature card selection - sync with HUD
+        document.querySelectorAll('.feature-card[data-weapon]').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Only trigger if not clicking the link
+                if (e.target.tagName !== 'A' && !e.target.closest('a')) {
+                    const weaponNum = this.getAttribute('data-weapon');
+                    selectWeapon(weaponNum);
                 }
             });
         });
@@ -1255,10 +1305,7 @@
         document.addEventListener('keydown', function(e) {
             const num = parseInt(e.key);
             if (num >= 1 && num <= 8) {
-                const slot = document.querySelector(`.hud-weapon-slot[data-weapon="${num}"]`);
-                if (slot) {
-                    slot.click();
-                }
+                selectWeapon(num.toString());
             }
         });
 

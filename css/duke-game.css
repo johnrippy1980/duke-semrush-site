@@ -1298,6 +1298,31 @@
     transition: all 0.2s ease;
 }
 
+/* Feature cards are clickable */
+.feature-card[data-weapon] {
+    cursor: pointer;
+}
+
+/* Feature card active state - synced with HUD */
+.feature-card.active {
+    border-color: #ff6c2c !important;
+    box-shadow:
+        0 0 20px rgba(255, 108, 44, 0.5),
+        inset 0 0 30px rgba(255, 108, 44, 0.1) !important;
+    transform: scale(1.02);
+    transition: all 0.2s ease;
+}
+
+.feature-card.active .feature-icon img {
+    filter: drop-shadow(0 0 20px #ff6c2c);
+    transform: scale(1.15);
+}
+
+.feature-card.active .feature-title {
+    color: #ff6c2c;
+    text-shadow: 0 0 10px rgba(255, 108, 44, 0.8);
+}
+
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
     .weapon-selector {
