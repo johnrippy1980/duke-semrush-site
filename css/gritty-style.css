@@ -69,17 +69,8 @@
 
 /* ===== BODY GRITTY STYLING ===== */
 body {
-    background:
-        /* Dirty gradient */
-        linear-gradient(180deg,
-            #080810 0%,
-            #0c0c18 20%,
-            #101020 40%,
-            #0a0a16 70%,
-            #060610 100%
-        );
-    /* Add film grain effect */
-    background-attachment: fixed;
+    background: transparent;
+    /* Let the .duke-city-bg show through */
 }
 
 /* ===== GRITTY SECTION BACKGROUNDS ===== */
