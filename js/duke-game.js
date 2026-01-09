@@ -848,6 +848,7 @@
     // ===== DELAYED NAVIGATION FOR AUDIO =====
     // Intercept internal link clicks to let audio finish playing
     function setupDelayedNavigation() {
+        // Use capture phase to intercept before other handlers
         document.addEventListener('click', (e) => {
             // Find closest anchor tag
             const link = e.target.closest('a');
@@ -862,22 +863,91 @@
 
             if (isExternal || isHashOnly) return;
 
-            // Check if audio is currently playing
-            if (currentlyPlayingAudio && !currentlyPlayingAudio.paused) {
-                e.preventDefault();
+            // Always prevent default for internal navigation
+            e.preventDefault();
+            e.stopPropagation();
 
-                // Store the destination and navigate when audio ends
+            // Check if any audio element on the page is currently playing
+            const allAudio = document.querySelectorAll('audio');
+            let audioPlaying = null;
+
+            allAudio.forEach(audio => {
+                if (!audio.paused && audio.currentTime > 0) {
+                    audioPlaying = audio;
+                }
+            });
+
+            // Also check our tracked audio
+            if (currentlyPlayingAudio && !currentlyPlayingAudio.paused) {
+                audioPlaying = currentlyPlayingAudio;
+            }
+
+            if (audioPlaying) {
+                // Store destination
                 pendingNavigation = href;
 
-                // Also set a maximum wait time (2 seconds) in case audio is long
+                // Wait for current audio to end
+                const onEnded = () => {
+                    audioPlaying.removeEventListener('ended', onEnded);
+                    if (pendingNavigation === href) {
+                        pendingNavigation = null;
+                        window.location.href = href;
+                    }
+                };
+                audioPlaying.addEventListener('ended', onEnded);
+
+                // Also set a maximum wait time (2 seconds)
                 setTimeout(() => {
                     if (pendingNavigation === href) {
                         pendingNavigation = null;
                         window.location.href = href;
                     }
                 }, 2000);
+            } else {
+                // No audio playing, but we still want any sounds that WILL play
+                // to complete. Give a small delay for the sound to start
+                pendingNavigation = href;
+
+                // Check again after a brief moment
+                setTimeout(() => {
+                    // Re-check if audio started
+                    let nowPlaying = null;
+                    allAudio.forEach(audio => {
+                        if (!audio.paused && audio.currentTime > 0 && audio.currentTime < 0.5) {
+                            nowPlaying = audio;
+                        }
+                    });
+
+                    if (currentlyPlayingAudio && !currentlyPlayingAudio.paused) {
+                        nowPlaying = currentlyPlayingAudio;
+                    }
+
+                    if (nowPlaying) {
+                        // Audio just started, wait for it
+                        const onEnded = () => {
+                            nowPlaying.removeEventListener('ended', onEnded);
+                            if (pendingNavigation === href) {
+                                pendingNavigation = null;
+                                window.location.href = href;
+                            }
+                        };
+                        nowPlaying.addEventListener('ended', onEnded);
+
+                        // Max wait
+                        setTimeout(() => {
+                            if (pendingNavigation === href) {
+                                pendingNavigation = null;
+                                window.location.href = href;
+                            }
+                        }, 2000);
+                    } else {
+                        // No audio, navigate now
+                        pendingNavigation = null;
+                        window.location.href = href;
+                    }
+                }, 100);
             }
-        });
+        }, true); // Use capture phase
     }
 
     // ===== EXPOSE GLOBAL API =====
