@@ -647,7 +647,7 @@
 
             // Start idle animation
             boss.style.animation = 'bossPulse 1s ease-in-out infinite';
-            showQuote("BATTLELORD: You will die, human!");
+            showQuote("AHREFS: Our backlink index is bigger! ...Wait, no it's not.");
         }, 1000);
     }
 
@@ -746,11 +746,11 @@
 
             // Show taunt quotes at health thresholds
             if (healthPercent < 25 && healthPercent > 20) {
-                showQuote("BATTLELORD: You... will... pay!");
+                showQuote("AHREFS: SEMrush has... more tools?! Impossible!");
             } else if (healthPercent < 50 && healthPercent > 45) {
-                showQuote("BATTLELORD: Is that all you've got?!");
+                showQuote("AHREFS: But our UI is orange! That counts for something!");
             } else if (healthPercent < 75 && healthPercent > 70) {
-                showQuote("BATTLELORD: Pathetic human!");
+                showQuote("AHREFS: We have... uh... position tracking too!");
             }
         }
     }
