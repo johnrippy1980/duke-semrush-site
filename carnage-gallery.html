@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARNAGE GALLERY | Duke's Hall of Destruction</title>
+    <meta name="description" content="Duke Nukem 3D's most brutal boss battles, explosive firefights, and badass moments. Come get some!">
+    <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/duke-hud.css">
+    <link rel="stylesheet" href="css/duke-game.css">
+    <link rel="stylesheet" href="css/gritty-style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #0a0a14;
+            color: #ddd;
+            min-height: 100vh;
+            padding-bottom: 120px;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-bottom: 3px solid #c09030;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            z-index: 10000;
+            padding: 0 20px;
+        }
+
+        .nav-link {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.5rem;
+            color: #c09030;
+            text-decoration: none;
+            padding: 8px 15px;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-link:hover {
+            color: #fff;
+            border-color: #c09030;
+            background: rgba(192, 144, 48, 0.2);
+            text-shadow: 0 0 10px #c09030;
+        }
+
+        .nav-logo {
+            font-size: 0.6rem;
+            color: #ff6c2c;
+            text-shadow: 0 0 10px #ff6c2c;
+            margin-right: auto;
+        }
+
+        .nav-cta {
+            background: linear-gradient(180deg, #ff6c2c 0%, #cc4400 100%);
+            color: #fff !important;
+            border: 2px solid #ffaa00 !important;
+            margin-left: auto;
+        }
+
+        .nav-cta:hover {
+            box-shadow: 0 0 15px rgba(255, 108, 44, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            .nav-bar {
+                gap: 0.5rem;
+                padding: 0 10px;
+            }
+            .nav-link {
+                font-size: 0.35rem;
+                padding: 6px 10px;
+            }
+            .nav-logo {
+                display: none;
+            }
+        }
+
+        /* Gallery Hero */
+        .gallery-hero {
+            padding: 100px 20px 60px;
+            text-align: center;
+            background:
+                linear-gradient(180deg, rgba(100, 20, 20, 0.4) 0%, transparent 50%, rgba(100, 20, 20, 0.4) 100%),
+                radial-gradient(ellipse at center, transparent 30%, rgba(0, 0, 0, 0.7) 100%);
+            position: relative;
+        }
+
+        .gallery-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/stone-wall.png');
+            background-size: 128px 128px;
+            image-rendering: pixelated;
+            opacity: 0.08;
+            pointer-events: none;
+        }
+
+        .gallery-title {
+            font-size: 2.5rem;
+            color: #ff3300;
+            text-shadow:
+                0 0 20px #ff3300,
+                0 0 40px #ff0000,
+                4px 4px 0 #000;
+            margin-bottom: 1rem;
+            animation: bloodPulse 2s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes bloodPulse {
+            0%, 100% {
+                text-shadow:
+                    0 0 20px #ff3300,
+                    0 0 40px #ff0000,
+                    4px 4px 0 #000;
+            }
+            50% {
+                text-shadow:
+                    0 0 30px #ff5500,
+                    0 0 60px #ff3300,
+                    4px 4px 0 #000;
+            }
+        }
+
+        .gallery-subtitle {
+            font-size: 0.7rem;
+            color: #c09030;
+            text-shadow: 0 0 10px #c09030;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Gallery Grid */
+        .gallery-section {
+            padding: 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            color: #ff6c2c;
+            text-shadow: 0 0 15px #ff6c2c;
+            margin-bottom: 2rem;
+            text-align: center;
+            border-bottom: 3px solid #4a3a20;
+            padding-bottom: 1rem;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            background: linear-gradient(180deg, rgba(20, 15, 15, 0.95) 0%, rgba(10, 8, 8, 0.98) 100%);
+            border: 3px solid #5a2020;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: #ff3300;
+            box-shadow:
+                0 0 20px rgba(255, 51, 0, 0.5),
+                inset 0 0 30px rgba(255, 51, 0, 0.1);
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('images/gritty-wall.png');
+            background-size: 64px 64px;
+            image-rendering: pixelated;
+            opacity: 0.1;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .gallery-image {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            image-rendering: pixelated;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item:hover .gallery-image {
+            transform: scale(1.05);
+        }
+
+        .gallery-caption {
+            padding: 15px;
+            background: linear-gradient(180deg, rgba(30, 20, 20, 0.95) 0%, rgba(15, 10, 10, 0.98) 100%);
+            border-top: 2px solid #5a2020;
+            position: relative;
+            z-index: 2;
+        }
+
+        .caption-title {
+            font-size: 0.6rem;
+            color: #ff6c2c;
+            text-shadow: 0 0 10px rgba(255, 108, 44, 0.5);
+            margin-bottom: 0.5rem;
+        }
+
+        .caption-desc {
+            font-size: 0.4rem;
+            color: #888;
+            line-height: 1.6;
+        }
+
+        /* Featured Item - Larger */
+        .gallery-item.featured {
+            grid-column: span 2;
+        }
+
+        .gallery-item.featured .gallery-image {
+            height: 400px;
+        }
+
+        @media (max-width: 768px) {
+            .gallery-item.featured {
+                grid-column: span 1;
+            }
+            .gallery-item.featured .gallery-image {
+                height: 280px;
+            }
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            .gallery-title {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Lightbox */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 20000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 80vh;
+            image-rendering: pixelated;
+            border: 4px solid #ff3300;
+            box-shadow: 0 0 40px rgba(255, 51, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            font-size: 1.5rem;
+            color: #ff3300;
+            cursor: pointer;
+            text-shadow: 0 0 10px #ff3300;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            margin-top: 15px;
+            color: #c09030;
+            font-size: 0.6rem;
+        }
+
+        /* Scanlines overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.15),
+                rgba(0, 0, 0, 0.15) 1px,
+                transparent 1px,
+                transparent 3px
+            );
+            opacity: 0.4;
+        }
+
+        /* Warning text */
+        .warning-banner {
+            background: linear-gradient(90deg, transparent, rgba(255, 0, 0, 0.2), transparent);
+            padding: 15px;
+            text-align: center;
+            border-top: 2px solid #5a2020;
+            border-bottom: 2px solid #5a2020;
+            margin: 20px 0;
+        }
+
+        .warning-text {
+            font-size: 0.5rem;
+            color: #ff3300;
+            text-shadow: 0 0 10px #ff3300;
+            animation: warningFlash 1.5s ease-in-out infinite;
+        }
+
+        @keyframes warningFlash {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        /* Stats bar */
+        .carnage-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            padding: 20px;
+            background: linear-gradient(180deg, rgba(20, 15, 15, 0.9) 0%, rgba(10, 8, 8, 0.95) 100%);
+            border: 2px solid #5a2020;
+            border-radius: 8px;
+            margin: 2rem auto;
+            max-width: 800px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            color: #ff3300;
+            text-shadow: 0 0 15px #ff3300;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.4rem;
+            color: #888;
+            margin-top: 5px;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.5) 100%);
+            border-top: 1px solid #2a2a3a;
+            margin-top: 40px;
+        }
+
+        .footer-text {
+            font-size: 0.4rem;
+            color: #666;
+        }
+
+        .footer-quote {
+            font-size: 0.5rem;
+            color: #c09030;
+            margin-top: 10px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <!-- CRT Scanlines Overlay -->
+    <div class="scanlines"></div>
+
+    <!-- Background layers -->
+    <div class="duke-city-bg"></div>
+    <div class="gritty-bg"></div>
+    <div class="gritty-texture-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <span class="nav-logo">DUKE'S SEO</span>
+        <a href="index.html" class="nav-link">HOME</a>
+        <a href="index.html#weapons" class="nav-link">WEAPONS</a>
+        <a href="enemies.html" class="nav-link">ENEMIES</a>
+        <a href="carnage-gallery.html" class="nav-link" style="color: #ff3300; border-color: #ff3300;">CARNAGE</a>
+        <a href="https://www.semrush.com/lp/api-marketing/en/?ref=3828060639&refer_source=DUKE_SEO" target="_blank" class="nav-link nav-cta">GET SEMRUSH</a>
+    </nav>
+
+    <!-- Gallery Hero -->
+    <section class="gallery-hero">
+        <h1 class="gallery-title">💀 CARNAGE GALLERY 💀</h1>
+        <p class="gallery-subtitle">"IT'S TIME TO KICK ASS... AND DOCUMENT THE CARNAGE"</p>
+
+        <div class="carnage-stats">
+            <div class="stat-item">
+                <span class="stat-value">5</span>
+                <span class="stat-label">BOSS KILLS</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">∞</span>
+                <span class="stat-label">ALIENS WASTED</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">100%</span>
+                <span class="stat-label">BADASS RATING</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="warning-banner">
+        <span class="warning-text">⚠️ WARNING: EXTREME ALIEN VIOLENCE AHEAD ⚠️</span>
+    </div>
+
+    <!-- Boss Battles Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">🎯 BOSS BATTLES - THE BIG KILLS 🎯</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item featured" onclick="openLightbox(this)">
+                <img src="images/gallery/duke.jpg" alt="Cycloid Emperor Boss Battle" class="gallery-image" loading="lazy">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">CYCLOID EMPEROR - DOUBLE BIRDS</h3>
+                    <p class="caption-desc">Duke flips off the Cycloid Emperor in the lava arena. 200 health, max ammo, and an attitude. Come get some, ugly!</p>
+                </div>
+            </div>
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="images/gallery/duke15.jpg" alt="Pig Cop Encounter" class="gallery-image" loading="lazy">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">PIG COP FACE-OFF</h3>
+                    <p class="caption-desc">Up close and personal with a Pig Cop. 24 health, pistol ready. "Your face, your ass - what's the difference?"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Weapon Carnage Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">🔥 WEAPON DESTRUCTION 🔥</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item" onclick="openLightbox(this)">
+                <img src="images/gallery/duke2.png" alt="Rooftop Pistol Action" class="gallery-image" loading="lazy">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">ROOFTOP PISTOL JUSTICE</h3>
+                    <p class="caption-desc">Night falls on L.A. as Duke cleans up the rooftops. City lights, muzzle flash, alien death!</p>
+                </div>
+            </div>
+            <div class="gallery-item featured" onclick="openLightbox(this)">
+                <img src="images/gallery/duke4.jpg" alt="Devastator Mayhem" class="gallery-image" loading="lazy">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">RED LIGHT DEVASTATION</h3>
+                    <p class="caption-desc">Devastator blazing in the Red Light District. Gibbed Pig Cops everywhere, dancers on stage. Shake it, baby!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Iconic Levels Section -->
+    <section class="gallery-section">
+        <h2 class="section-title">🏙️ ICONIC KILLING GROUNDS 🏙️</h2>
+        <div class="gallery-grid">
+            <div class="gallery-item featured" onclick="openLightbox(this)">
+                <img src="images/gallery/duke5.jpg" alt="Lunar Apocalypse" class="gallery-image" loading="lazy">
+                <div class="gallery-caption">
+                    <h3 class="caption-title">LUNAR APOCALYPSE - MOON BASE</h3>
+                    <p class="caption-desc">USA moon base under alien occupation. Enforcer charging, dead aliens scattered. Low gravity, high body count!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">Duke Nukem 3D™ is a trademark of 3D Realms Entertainment / Gearbox Software</p>
+        <p class="footer-text">This is a fan tribute site - All game screenshots used for review/commentary purposes</p>
+        <p class="footer-quote">"Hail to the king, baby!"</p>
+    </footer>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <span class="lightbox-close" onclick="closeLightbox()">✕</span>
+            <img src="" alt="" class="lightbox-image" id="lightbox-img">
+            <p class="lightbox-caption" id="lightbox-caption"></p>
+        </div>
+    </div>
+
+    <!-- Audio Elements -->
+    <audio id="bootsSound" preload="auto">
+        <source src="audio/stomp.wav" type="audio/wav">
+    </audio>
+    <audio id="pickupSound" preload="auto">
+        <source src="audio/pickup.wav" type="audio/wav">
+    </audio>
+
+    <!-- Duke Voice Clips -->
+    <audio id="voice-comeGetSome" src="audio/Voices/come-get-some.wav" preload="auto"></audio>
+    <audio id="voice-hailToTheKing" src="audio/Voices/hail-to-the-king.wav" preload="auto"></audio>
+    <audio id="voice-groovy" src="audio/Voices/groovy.wav" preload="auto"></audio>
+    <audio id="voice-letGod" src="audio/Voices/let-god-sort-em-out.wav" preload="auto"></audio>
+
+    <!-- Duke Game Engine -->
+    <script src="js/duke-game.js"></script>
+
+    <script>
+        // Lightbox functionality
+        function openLightbox(item) {
+            const img = item.querySelector('.gallery-image');
+            const caption = item.querySelector('.caption-title').textContent;
+
+            document.getElementById('lightbox-img').src = img.src;
+            document.getElementById('lightbox-caption').textContent = caption;
+            document.getElementById('lightbox').classList.add('active');
+
+            // Play a random Duke voice
+            const voices = ['comeGetSome', 'hailToTheKing', 'groovy', 'letGod'];
+            const randomVoice = voices[Math.floor(Math.random() * voices.length)];
+            const audio = document.getElementById('voice-' + randomVoice);
+            if (audio) {
+                audio.currentTime = 0;
+                audio.volume = 0.5;
+                audio.play().catch(() => {});
+            }
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.remove('active');
+        }
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeLightbox();
+        });
+    </script>
+</body>
+</html>
