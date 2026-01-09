@@ -525,19 +525,21 @@
     function killEnemy(e, enemy) {
         e.stopPropagation();
 
-        const weapon = weapons[gameState.currentWeapon];
+        const weaponKey = gameState.currentWeapon;
+        const weapon = weapons[weaponKey];
         const hp = parseInt(enemy.dataset.hp);
         const damage = weapon.damage;
         const newHp = hp - damage;
 
-        // Play weapon sound
-        playSound(weapon.sound);
+        // Play the current weapon's fire sound
+        playWeaponFireSound(weaponKey);
 
         // Muzzle flash at click position (slightly offset toward player)
         showMuzzleFlash(e.clientX, e.clientY + 50);
 
-        // Screen shake (heavier for explosive weapons)
-        if (weapon.sound === 'explosion') {
+        // Screen shake (heavier for explosive weapons: RPG, pipebomb, devastator)
+        const explosiveWeapons = ['rpg', 'pipebomb', 'devastator'];
+        if (explosiveWeapons.includes(weaponKey)) {
             shakeScreen('heavy');
         } else {
             shakeScreen();
@@ -688,12 +690,14 @@
     function damageBoss(e, boss) {
         e.stopPropagation();
 
-        const weapon = weapons[gameState.currentWeapon];
+        const weaponKey = gameState.currentWeapon;
+        const weapon = weapons[weaponKey];
         const hp = parseInt(boss.dataset.hp);
         const maxHp = parseInt(boss.dataset.maxHp);
         const newHp = hp - weapon.damage;
 
-        playSound(weapon.sound);
+        // Play the current weapon's fire sound
+        playWeaponFireSound(weaponKey);
         shakeScreen('heavy'); // Always heavy for boss
         createExplosion(e.clientX, e.clientY);
         showMuzzleFlash(e.clientX, e.clientY + 50);
