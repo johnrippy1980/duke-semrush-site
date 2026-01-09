@@ -993,7 +993,31 @@
         <source src="audio/balls-of-steel.mp3" type="audio/mpeg">
     </audio>
 
-    <!-- Game Sound Effects - TODO: Add proper Duke 3D SFX -->
+    <!-- Weapon Fire Sound Effects -->
+    <audio id="weaponBoot" preload="auto">
+        <source src="audio/mighty-boot.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponPistol" preload="auto">
+        <source src="audio/pistol-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponShotgun" preload="auto">
+        <source src="audio/shotgun-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponRipper" preload="auto">
+        <source src="audio/ripper-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponRPG" preload="auto">
+        <source src="audio/rpg-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponPipebomb" preload="auto">
+        <source src="audio/pipebomb-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponDevastator" preload="auto">
+        <source src="audio/devastator-fire.wav" type="audio/wav">
+    </audio>
+    <audio id="weaponFreezer" preload="auto">
+        <source src="audio/freezer-fire.wav" type="audio/wav">
+    </audio>
 
     <script>
         // Duke Voice Clips mapping
@@ -1170,6 +1194,31 @@
         // Update HUD kills on load
         document.getElementById('hudKills').textContent = killCount;
 
+        // Weapon fire sounds mapping (data-weapon number -> audio element ID)
+        const weaponSounds = {
+            '1': 'weaponBoot',      // Mighty Boot
+            '2': 'weaponPistol',    // Pistol
+            '3': 'weaponShotgun',   // Shotgun
+            '4': 'weaponRipper',    // Chaingun/Ripper
+            '5': 'weaponRPG',       // RPG
+            '6': 'weaponPipebomb',  // Pipe Bomb
+            '7': 'weaponDevastator', // Devastator
+            '8': 'weaponFreezer'    // Freezer
+        };
+
+        // Play weapon fire sound
+        function playWeaponSound(weaponNum) {
+            const audioId = weaponSounds[weaponNum];
+            if (!audioId) return;
+
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.volume = 0.6;
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+            }
+        }
+
         // Weapon slot selection with sounds
         document.querySelectorAll('.hud-weapon-slot').forEach(slot => {
             slot.addEventListener('click', function() {
@@ -1178,20 +1227,17 @@
                 // Add active to clicked slot
                 this.classList.add('active');
 
-                // 30% chance to play Duke one-liner, otherwise pickup sound
-                if (Math.random() < 0.3) {
-                    // Play random Duke voice clip
-                    playRandomVoice();
-                } else {
-                    // Play pickup sound
-                    const pickup = document.getElementById('pickupSound');
-                    if (pickup) {
-                        pickup.currentTime = 0;
-                        pickup.play().catch(() => {});
-                    }
-                    // Show weapon name
-                    const weaponName = this.getAttribute('title');
-                    showDukeQuoteText('Switching to ' + weaponName);
+                // Get weapon number and play weapon fire sound
+                const weaponNum = this.getAttribute('data-weapon');
+                playWeaponSound(weaponNum);
+
+                // Show weapon name
+                const weaponName = this.getAttribute('title');
+                showDukeQuoteText('Switching to ' + weaponName);
+
+                // 20% chance to also play a Duke one-liner
+                if (Math.random() < 0.2) {
+                    setTimeout(() => playRandomVoice(), 300);
                 }
             });
         });

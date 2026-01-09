@@ -556,7 +556,7 @@
     <section class="enemy-gallery">
         <div class="enemy-grid">
             <!-- Pig Cop -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'pigCop')">
+            <div class="enemy-card" data-enemy="pigCop" onclick="fragEnemy(this, 'pigCop')">
                 <div class="enemy-sprite-container">
                     <img src="images/pig-cop.png" alt="Pig Cop" class="enemy-sprite">
                 </div>
@@ -581,7 +581,7 @@
             </div>
 
             <!-- Assault Trooper -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'assaultTrooper')">
+            <div class="enemy-card" data-enemy="assaultTrooper" onclick="fragEnemy(this, 'assaultTrooper')">
                 <div class="enemy-sprite-container">
                     <img src="images/assault-trooper.png" alt="Assault Trooper" class="enemy-sprite">
                 </div>
@@ -606,7 +606,7 @@
             </div>
 
             <!-- Octabrain -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'octabrain')">
+            <div class="enemy-card" data-enemy="octabrain" onclick="fragEnemy(this, 'octabrain')">
                 <div class="enemy-sprite-container">
                     <img src="images/octabrain.png" alt="Octabrain" class="enemy-sprite">
                 </div>
@@ -631,7 +631,7 @@
             </div>
 
             <!-- Enforcer -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'enforcer')">
+            <div class="enemy-card" data-enemy="enforcer" onclick="fragEnemy(this, 'enforcer')">
                 <div class="enemy-sprite-container">
                     <img src="images/enforcer.png" alt="Enforcer" class="enemy-sprite">
                 </div>
@@ -656,7 +656,7 @@
             </div>
 
             <!-- Assault Commander -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'assaultCommander')">
+            <div class="enemy-card" data-enemy="assaultCommander" onclick="fragEnemy(this, 'assaultCommander')">
                 <div class="enemy-sprite-container">
                     <img src="images/assault-commander.png" alt="Assault Commander" class="enemy-sprite">
                 </div>
@@ -681,7 +681,7 @@
             </div>
 
             <!-- Protozoid Slimer -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'protozoidSlimer')">
+            <div class="enemy-card" data-enemy="protozoidSlimer" onclick="fragEnemy(this, 'protozoidSlimer')">
                 <div class="enemy-sprite-container">
                     <img src="images/protozoid-slimer.png" alt="Protozoid Slimer" class="enemy-sprite">
                 </div>
@@ -706,7 +706,7 @@
             </div>
 
             <!-- Sentry Drone -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'sentryDrone')">
+            <div class="enemy-card" data-enemy="sentryDrone" onclick="fragEnemy(this, 'sentryDrone')">
                 <div class="enemy-sprite-container">
                     <img src="images/sentry-drone.png" alt="Sentry Drone" class="enemy-sprite">
                 </div>
@@ -731,7 +731,7 @@
             </div>
 
             <!-- Shark -->
-            <div class="enemy-card" onclick="fragEnemy(this, 'shark')">
+            <div class="enemy-card" data-enemy="shark" onclick="fragEnemy(this, 'shark')">
                 <div class="enemy-sprite-container">
                     <img src="images/shark.png" alt="Shark" class="enemy-sprite">
                 </div>
@@ -756,7 +756,7 @@
             </div>
 
             <!-- Battlelord (Boss) -->
-            <div class="enemy-card boss" onclick="fragEnemy(this, 'battlelord')">
+            <div class="enemy-card boss" data-enemy="battlelord" onclick="fragEnemy(this, 'battlelord')">
                 <div class="enemy-sprite-container">
                     <img src="images/battlelord-idle.png" alt="Battlelord" class="enemy-sprite">
                 </div>
@@ -783,7 +783,7 @@
             </div>
 
             <!-- Overlord (Boss) -->
-            <div class="enemy-card boss" onclick="fragEnemy(this, 'overlord')">
+            <div class="enemy-card boss" data-enemy="overlord" onclick="fragEnemy(this, 'overlord')">
                 <div class="enemy-sprite-container">
                     <img src="images/overlord.png" alt="Overlord" class="enemy-sprite">
                 </div>
@@ -809,7 +809,7 @@
             </div>
 
             <!-- Cycloid Emperor (Final Boss) -->
-            <div class="enemy-card boss" onclick="fragEnemy(this, 'cycloidEmperor')">
+            <div class="enemy-card boss" data-enemy="cycloidEmperor" onclick="fragEnemy(this, 'cycloidEmperor')">
                 <div class="enemy-sprite-container">
                     <img src="images/cycloid-emperor.png" alt="Cycloid Emperor" class="enemy-sprite">
                 </div>
@@ -956,6 +956,29 @@
     </audio>
     <audio id="voiceBallsOfSteel" preload="auto">
         <source src="audio/balls-of-steel.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Enemy Sound Effects (for hover) -->
+    <audio id="soundPigCop" preload="auto">
+        <source src="audio/pig-cop.wav" type="audio/wav">
+    </audio>
+    <audio id="soundAssaultTrooper" preload="auto">
+        <source src="audio/assault-trooper.wav" type="audio/wav">
+    </audio>
+    <audio id="soundOctabrain" preload="auto">
+        <source src="audio/octabrain.wav" type="audio/wav">
+    </audio>
+    <audio id="soundEnforcer" preload="auto">
+        <source src="audio/enforcer.wav" type="audio/wav">
+    </audio>
+    <audio id="soundAssaultCommander" preload="auto">
+        <source src="audio/assault-commander.wav" type="audio/wav">
+    </audio>
+    <audio id="soundProtozoidSlimer" preload="auto">
+        <source src="audio/protozoid-slimer.wav" type="audio/wav">
+    </audio>
+    <audio id="soundBattlelord" preload="auto">
+        <source src="audio/battlelord.wav" type="audio/wav">
     </audio>
 
     <script>
@@ -1184,6 +1207,49 @@
         });
 
         bgMusic.volume = 0.4;
+
+        // Enemy sounds mapping (camelCase key -> audio element ID)
+        const enemySounds = {
+            pigCop: 'soundPigCop',
+            assaultTrooper: 'soundAssaultTrooper',
+            octabrain: 'soundOctabrain',
+            enforcer: 'soundEnforcer',
+            assaultCommander: 'soundAssaultCommander',
+            protozoidSlimer: 'soundProtozoidSlimer',
+            battlelord: 'soundBattlelord',
+            overlord: 'soundBattlelord',  // Reuse battlelord sound for overlord
+            cycloidEmperor: 'soundBattlelord'  // Reuse battlelord sound for cycloid emperor
+        };
+
+        let lastEnemySoundPlayed = 0;
+        const enemySoundCooldown = 500;
+
+        // Play enemy sound on hover
+        function playEnemySound(enemyType) {
+            const now = Date.now();
+            if (now - lastEnemySoundPlayed < enemySoundCooldown) return;
+
+            const audioId = enemySounds[enemyType];
+            if (!audioId) return;
+
+            const audio = document.getElementById(audioId);
+            if (audio) {
+                audio.volume = 0.5;
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+                lastEnemySoundPlayed = now;
+            }
+        }
+
+        // Add hover listeners to enemy cards
+        document.querySelectorAll('.enemy-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                const enemyType = this.getAttribute('data-enemy');
+                if (enemyType) {
+                    playEnemySound(enemyType);
+                }
+            });
+        });
 
         console.log('[Duke Enemy Gallery] "Damn, those alien bastards are gonna pay..."');
     </script>
