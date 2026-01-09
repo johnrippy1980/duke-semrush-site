@@ -399,12 +399,18 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
+        // Configure js-dos to find WASM modules in js-dos folder
+        if (typeof emulators !== 'undefined') {
+            emulators.pathPrefix = "js-dos/";
+            console.log('[Duke 3D] Set emulators.pathPrefix to js-dos/');
+        }
+
         // Initialize with js-dos 7 API
         function initGame() {
             loadingProgress.textContent = 'Loading Duke 3D (~12MB)...';
             console.log('[Duke 3D] Initializing DOSBox with js-dos 7...');
 
-            // js-dos 7 uses Dos(canvas).run(bundleUrl) - respects embedded dosbox.conf
+            // js-dos 7 uses Dos(element).run(bundleUrl)
             Dos(document.getElementById("dosbox")).run("games/duke3d.jsdos").then(function(ci) {
                 console.log('[Duke 3D] Game loaded successfully!');
                 loadingOverlay.classList.add('hidden');
