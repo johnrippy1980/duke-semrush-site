@@ -8,9 +8,9 @@
     <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- js-dos 7.xx (supports jsdos bundles with proper memory config) -->
-    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
-    <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
+    <!-- js-dos 7.xx (supports jsdos bundles with embedded dosbox.conf) -->
+    <script src="https://js-dos.com/v7/build/releases/latest/js-dos/js-dos.js"></script>
+    <link rel="stylesheet" href="https://js-dos.com/v7/build/releases/latest/js-dos/js-dos.css">
     <style>
         :root {
             --duke-blue: #00aaff;
@@ -343,14 +343,14 @@
                     <div class="loading-spinner"></div>
                     <p class="loading-tip">
                         Loading DOSBox emulator...<br><br>
-                        Duke 3D Full Version via js-dos 8.<br>
+                        Duke 3D Full Version via js-dos 7.<br>
                         Pre-configured with WASD controls!
                     </p>
                     <div class="loading-progress" id="loadingProgress">Initializing...</div>
                 </div>
 
-                <!-- js-dos container (div for v8 API) -->
-                <div id="dosbox" style="width: 800px; height: 600px;"></div>
+                <!-- js-dos container (canvas for v7 API) -->
+                <canvas id="dosbox" style="width: 800px; height: 600px;"></canvas>
             </div>
         </div>
     </div>
@@ -399,21 +399,21 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Initialize with js-dos 8 API
+        // Initialize with js-dos 7 API
         function initGame() {
             loadingProgress.textContent = 'Loading Duke 3D (~12MB)...';
-            console.log('[Duke 3D] Initializing DOSBox with js-dos 8...');
+            console.log('[Duke 3D] Initializing DOSBox with js-dos 7...');
 
-            // js-dos 8 uses Dos() with a div container and jsdos bundle URL
-            // It doesn't return a promise - it just loads
-            Dos(document.getElementById("dosbox"), {
-                url: "games/duke3d.jsdos"
-            });
-
-            // Hide loading overlay after a delay (js-dos 8 manages its own UI)
-            setTimeout(function() {
+            // js-dos 7 uses Dos(canvas).run(bundleUrl) - respects embedded dosbox.conf
+            Dos(document.getElementById("dosbox")).run("games/duke3d.jsdos").then(function(ci) {
+                console.log('[Duke 3D] Game loaded successfully!');
                 loadingOverlay.classList.add('hidden');
-            }, 3000);
+                // Store command interface for potential future use
+                window.dosCI = ci;
+            }).catch(function(err) {
+                console.error('[Duke 3D] Error loading game:', err);
+                loadingProgress.textContent = 'Error loading game: ' + err.message;
+            });
         }
 
         // Start game
