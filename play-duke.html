@@ -480,8 +480,17 @@
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
 
-        // js-dos UI hiding - applied after game starts to avoid breaking initialization
-        // User can add: #dosbox .flex-grow-0 { display: none !important; } in DevTools once game loads
+        // Hide js-dos UI AFTER game has fully loaded
+        // Wait for the game to be ready, then apply CSS
+        function hideJsDosUI() {
+            var style = document.createElement('style');
+            style.textContent = '#dosbox .flex-grow-0 { display: none !important; }';
+            document.head.appendChild(style);
+            console.log('[Duke 3D] js-dos UI hidden');
+        }
+
+        // Apply after 5 seconds to ensure game is fully initialized
+        setTimeout(hideJsDosUI, 5000);
     </script>
 </body>
 </html>
