@@ -349,8 +349,8 @@
                     <div class="loading-progress" id="loadingProgress">Initializing...</div>
                 </div>
 
-                <!-- js-dos canvas -->
-                <canvas id="dosbox" width="800" height="600"></canvas>
+                <!-- js-dos container (div for v8 API) -->
+                <div id="dosbox" style="width: 800px; height: 600px;"></div>
             </div>
         </div>
     </div>
@@ -401,24 +401,19 @@
 
         // Initialize with js-dos 8 API
         function initGame() {
-            loadingProgress.textContent = 'Loading Duke 3D...';
+            loadingProgress.textContent = 'Loading Duke 3D (~12MB)...';
             console.log('[Duke 3D] Initializing DOSBox with js-dos 8...');
 
-            // js-dos 8 uses Dos() with a container element and jsdos bundle URL
+            // js-dos 8 uses Dos() with a div container and jsdos bundle URL
+            // It doesn't return a promise - it just loads
             Dos(document.getElementById("dosbox"), {
-                url: "games/duke3d.jsdos",
-                onEvent: function(event, data) {
-                    if (event === "ci-ready") {
-                        console.log('[Duke 3D] Game started!');
-                        loadingOverlay.classList.add('hidden');
-                    } else if (event === "bnd-progress") {
-                        loadingProgress.textContent = 'Downloading... ' + Math.round(data * 100) + '%';
-                    }
-                }
-            }).catch(function(error) {
-                console.error('[Duke 3D] Error:', error);
-                loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
+                url: "games/duke3d.jsdos"
             });
+
+            // Hide loading overlay after a delay (js-dos 8 manages its own UI)
+            setTimeout(function() {
+                loadingOverlay.classList.add('hidden');
+            }, 3000);
         }
 
         // Start game
