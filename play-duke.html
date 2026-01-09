@@ -8,9 +8,8 @@
     <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- js-dos v8 -->
-    <link rel="stylesheet" href="https://v8.js-dos.com/latest/js-dos.css">
-    <script src="https://v8.js-dos.com/latest/js-dos.js"></script>
+    <!-- js-dos API (classic version that works with Duke 3D bundles) -->
+    <script src="https://js-dos.com/cdn/js-dos-api.js"></script>
     <style>
         :root {
             --duke-blue: #00aaff;
@@ -131,7 +130,7 @@
         }
 
         /* js-dos container */
-        #jsdos {
+        #dosbox {
             width: 800px;
             height: 600px;
             background: #0a0a14;
@@ -288,13 +287,13 @@
 
         /* Responsive */
         @media (max-width: 900px) {
-            #jsdos {
+            #dosbox {
                 width: 640px;
                 height: 480px;
             }
         }
         @media (max-width: 700px) {
-            #jsdos {
+            #dosbox {
                 width: 100%;
                 height: auto;
                 aspect-ratio: 4/3;
@@ -321,14 +320,12 @@
 
     <!-- Navigation -->
     <nav class="nav-bar">
-        <a href="index.html" class="nav-logo">DUKE'S SEO ARSENAL</a>
-        <div class="nav-links">
-            <a href="index.html#weapons" class="nav-link">WEAPONS</a>
-            <a href="enemies.html" class="nav-link">ENEMIES</a>
-            <a href="index.html#stats" class="nav-link">STATS</a>
-            <a href="play-duke.html" class="nav-link active">PLAY GAME</a>
-            <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=john_rippy&utm_medium=dukes_seo_arsenal&utm_campaign=berush_promo" class="nav-link" target="_blank" style="color: #ff6c2c;">GET SEMRUSH</a>
-        </div>
+        <a href="index.html" class="nav-logo">DUKE SEO</a>
+        <a href="index.html#weapons" class="nav-link">ARSENAL</a>
+        <a href="enemies.html" class="nav-link">ENEMIES</a>
+        <a href="carnage-gallery.html" class="nav-link" style="color: #ff3300;">CARNAGE</a>
+        <a href="play-duke.html" class="nav-link active" style="color: #ff6c2c;">PLAY GAME</a>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=john_rippy&utm_medium=dukes_seo_arsenal&utm_campaign=berush_promo" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
     </nav>
 
     <!-- Game Container -->
@@ -352,7 +349,7 @@
                 </div>
 
                 <!-- js-dos container -->
-                <div id="jsdos"></div>
+                <div id="dosbox"></div>
             </div>
         </div>
     </div>
@@ -401,28 +398,27 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Initialize js-dos v8
-        const bundleUrl = 'https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip';
-
+        // Initialize with classic js-dos-api (same API js-dos.com uses)
         function initGame() {
-            loadingProgress.textContent = 'Loading Duke 3D bundle...';
-            console.log('[Duke 3D] Loading from:', bundleUrl);
+            loadingProgress.textContent = 'Loading Duke 3D...';
+            console.log('[Duke 3D] Initializing DOSBox...');
 
-            // js-dos v8 API: Dos(element, { url: bundleUrl })
-            Dos(document.getElementById('jsdos'), {
-                url: bundleUrl,
-                autoStart: true
-            }).then(function(ci) {
-                loadingProgress.textContent = 'Starting game...';
-                console.log('[Duke 3D] Game loaded successfully!');
-
-                // Hide loading overlay once game starts
-                setTimeout(function() {
+            var dosbox = new Dosbox({
+                id: "dosbox",
+                onload: function(dosbox) {
+                    loadingProgress.textContent = 'Starting game...';
+                    console.log('[Duke 3D] DOSBox ready, loading game bundle...');
+                    // Use the exact path from js-dos.com
+                    dosbox.run("https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip", "./DUKE3D.EXE");
+                },
+                onrun: function(dosbox, app) {
+                    console.log('[Duke 3D] Game started:', app);
                     loadingOverlay.classList.add('hidden');
-                }, 2000);
-            }).catch(function(error) {
-                console.error('[Duke 3D] Error loading game:', error);
-                loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
+                },
+                onerror: function(error) {
+                    console.error('[Duke 3D] Error:', error);
+                    loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
+                }
             });
         }
 
