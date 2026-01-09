@@ -19,7 +19,13 @@
         bossDefeated: localStorage.getItem('duke_boss_defeated') === 'true',
         cheatBuffer: '',
         lastVoicePlayed: 0,
-        voiceCooldown: 2000
+        voiceCooldown: 2000,
+        // Kill combo system
+        killCombo: 0,
+        lastKillTime: 0,
+        comboTimeout: 3000, // 3 seconds to chain kills
+        // Mature content warning shown
+        matureWarningShown: localStorage.getItem('duke_mature_warning') === 'true'
     };
 
     // ===== VOICE CLIPS =====
@@ -64,6 +70,22 @@
         { file: 'duke-lines/cool.mp3', text: "Cool!" }
     ];
 
+    // ===== KILL COMBO TAUNTS (escalating aggression) =====
+    const comboTaunts = [
+        { kills: 2, text: "Double kill!", voice: 'comeGetSome' },
+        { kills: 3, text: "TRIPLE KILL!", voice: 'damnImGood' },
+        { kills: 4, text: "MULTI KILL!", voice: 'pieceOfCake' },
+        { kills: 5, text: "KILLING SPREE!", voice: 'whoWantsSome' },
+        { kills: 7, text: "RAMPAGE!", voice: 'letsRock' },
+        { kills: 10, text: "UNSTOPPABLE!", voice: 'hailToTheKing' },
+        { kills: 15, text: "GODLIKE!", voice: 'ballsOfSteel' },
+        { kills: 20, text: "MASSACRE!", voice: 'blowItOut' }
+    ];
+
+    // ===== BLOOD/GIB PARTICLES =====
+    const gibEmojis = ['🩸', '💀', '🦴', '🫀', '🧠', '👁️'];
+    const bloodColors = ['#8B0000', '#DC143C', '#B22222', '#FF0000', '#CC0000'];
+
     // ===== CHEAT CODES =====
     const cheatCodes = {
         'dnkroz': { name: 'God Mode', action: () => toggleGodMode() },
@@ -77,7 +99,8 @@
         'dnview': { name: 'Secret View', action: () => revealSecrets() },
         'dnrate': { name: 'Show FPS', action: () => toggleFPS() },
         'dnbeta': { name: 'Beta Message', action: () => showBetaMessage() },
-        'dnallen': { name: 'Spawn Alien', action: () => spawnBossAlien() }
+        'dnallen': { name: 'Spawn Alien', action: () => spawnBossAlien() },
+        'dnbabes': { name: 'Strip Club', action: () => triggerBabesEasterEgg() }
     };
 
     // ===== ACHIEVEMENTS =====
@@ -124,8 +147,17 @@
         setupAchievements();
         setupExplosions();
         setupParallax();
+        setupEasterEggs();
+        setupIdleAnimation();
         updateHUD();
+
+        // Show intro sequence on first visit (after a short delay)
+        setTimeout(() => {
+            showIntroSequence();
+        }, 1000);
+
         console.log('[Duke Game Engine] Initialized. Type cheat codes to activate!');
+        console.log('[Duke] Cheat codes: dnkroz, dnstuff, dnallen, dnbabes, dnhyper');
     }
 
     // ===== VOICE SYSTEM =====
@@ -466,8 +498,18 @@
         // Play weapon sound
         playSound(weapon.sound);
 
-        // Screen shake
-        shakeScreen();
+        // Muzzle flash at click position (slightly offset toward player)
+        showMuzzleFlash(e.clientX, e.clientY + 50);
+
+        // Screen shake (heavier for explosive weapons)
+        if (weapon.sound === 'explosion') {
+            shakeScreen('heavy');
+        } else {
+            shakeScreen();
+        }
+
+        // Bullet impact at enemy
+        showBulletImpact(e.clientX, e.clientY);
 
         if (newHp <= 0) {
             // Enemy killed
@@ -475,6 +517,10 @@
 
             // Create explosion
             createExplosion(e.clientX, e.clientY);
+
+            // BLOOD AND GIBS!
+            spawnBloodSplatter(e.clientX, e.clientY, 8);
+            spawnGibs(e.clientX, e.clientY, 6);
 
             // Play death sound
             playSound('death1');
@@ -491,8 +537,11 @@
             // Check achievements
             checkKillAchievements();
 
-            // Random voice on kill
-            if (Math.random() > 0.5) {
+            // Update kill combo - this handles voice and combo display
+            const combo = updateKillCombo();
+
+            // Only play random voice if not a combo milestone (combo system handles its own voices)
+            if (!comboTaunts.find(t => t.kills === combo) && Math.random() > 0.7) {
                 const killVoices = ['comeGetSome', 'damnImGood', 'pieceOfCake', 'cool', 'groovy'];
                 playVoice(killVoices[Math.floor(Math.random() * killVoices.length)]);
             }
@@ -506,6 +555,10 @@
         } else {
             enemy.dataset.hp = newHp;
             enemy.classList.add('enemy-hit');
+
+            // Spawn some blood on hit (not death)
+            spawnBloodSplatter(e.clientX, e.clientY, 3);
+
             setTimeout(() => enemy.classList.remove('enemy-hit'), 100);
         }
     }
@@ -606,13 +659,16 @@
         const newHp = hp - weapon.damage;
 
         playSound(weapon.sound);
-        shakeScreen();
+        shakeScreen('heavy'); // Always heavy for boss
         createExplosion(e.clientX, e.clientY);
+        showMuzzleFlash(e.clientX, e.clientY + 50);
+        showBulletImpact(e.clientX, e.clientY);
+        spawnBloodSplatter(e.clientX, e.clientY, 4);
 
         if (newHp <= 0) {
             // Boss killed! Play "Blow it out your ass"
             gameState.bossDefeated = true;
-            localStorage.setItem('duke_boss_defeated', 'true');
+            localStorage.setItem('boss_defeated', 'true');
             unlockAchievement('boss_killer');
 
             // Big explosion chain
@@ -621,6 +677,17 @@
                     createExplosion(
                         e.clientX + (Math.random() - 0.5) * 250,
                         e.clientY + (Math.random() - 0.5) * 250
+                    );
+                    // Extra blood and gibs!
+                    spawnBloodSplatter(
+                        e.clientX + (Math.random() - 0.5) * 300,
+                        e.clientY + (Math.random() - 0.5) * 300,
+                        5
+                    );
+                    spawnGibs(
+                        e.clientX + (Math.random() - 0.5) * 200,
+                        e.clientY + (Math.random() - 0.5) * 200,
+                        4
                     );
                 }, i * 80);
             }
@@ -949,9 +1016,233 @@
         }
     }
 
-    function shakeScreen() {
-        document.body.classList.add('shake');
-        setTimeout(() => document.body.classList.remove('shake'), 300);
+    // ===== SCREEN SHAKE EFFECTS =====
+    function shakeScreen(intensity = 'normal') {
+        document.body.classList.remove('screen-shake', 'screen-shake-heavy');
+        // Force reflow to restart animation
+        void document.body.offsetWidth;
+
+        if (intensity === 'heavy') {
+            document.body.classList.add('screen-shake-heavy');
+            setTimeout(() => document.body.classList.remove('screen-shake-heavy'), 500);
+        } else {
+            document.body.classList.add('screen-shake');
+            setTimeout(() => document.body.classList.remove('screen-shake'), 300);
+        }
+    }
+
+    // ===== BLOOD SPLATTER EFFECTS =====
+    function spawnBloodSplatter(x, y, count = 5) {
+        for (let i = 0; i < count; i++) {
+            const blood = document.createElement('div');
+            blood.className = 'blood-splatter';
+            blood.textContent = '🩸';
+
+            // Randomize position around impact point
+            const offsetX = (Math.random() - 0.5) * 100;
+            const offsetY = (Math.random() - 0.5) * 100;
+            const scale = 0.5 + Math.random() * 1.5;
+            const rotation = Math.random() * 360;
+
+            blood.style.cssText = `
+                position: fixed;
+                left: ${x + offsetX}px;
+                top: ${y + offsetY}px;
+                font-size: ${scale * 2}rem;
+                transform: rotate(${rotation}deg);
+                pointer-events: none;
+                z-index: 99999;
+                animation: bloodSplat 0.6s ease-out forwards;
+            `;
+
+            document.body.appendChild(blood);
+            setTimeout(() => blood.remove(), 600);
+        }
+    }
+
+    // ===== GIB EXPLOSION (body parts flying) =====
+    function spawnGibs(x, y, count = 8) {
+        for (let i = 0; i < count; i++) {
+            const gib = document.createElement('div');
+            gib.className = 'gib-particle';
+            gib.textContent = gibEmojis[Math.floor(Math.random() * gibEmojis.length)];
+
+            // Random trajectory
+            const angle = (Math.random() * Math.PI * 2);
+            const velocity = 100 + Math.random() * 200;
+            const endX = Math.cos(angle) * velocity;
+            const endY = Math.sin(angle) * velocity - 100; // Bias upward
+            const rotation = Math.random() * 720 - 360;
+
+            gib.style.cssText = `
+                position: fixed;
+                left: ${x}px;
+                top: ${y}px;
+                font-size: ${1 + Math.random()}rem;
+                pointer-events: none;
+                z-index: 99999;
+                --end-x: ${endX}px;
+                --end-y: ${endY}px;
+                --rotation: ${rotation}deg;
+                animation: gibFly 0.8s ease-out forwards;
+            `;
+
+            document.body.appendChild(gib);
+            setTimeout(() => gib.remove(), 800);
+        }
+    }
+
+    // ===== MUZZLE FLASH =====
+    function showMuzzleFlash(x, y) {
+        const flash = document.createElement('div');
+        flash.className = 'muzzle-flash';
+        flash.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            width: 80px;
+            height: 80px;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, #fff 0%, #ffff00 20%, #ff6600 40%, transparent 70%);
+            pointer-events: none;
+            z-index: 100000;
+            animation: muzzleFlash 0.08s ease-out forwards;
+        `;
+
+        document.body.appendChild(flash);
+        setTimeout(() => flash.remove(), 80);
+    }
+
+    // ===== BULLET IMPACT SPARKS =====
+    function showBulletImpact(x, y) {
+        const impact = document.createElement('div');
+        impact.className = 'bullet-impact';
+        impact.innerHTML = '💥';
+        impact.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            font-size: 2rem;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 99998;
+            animation: bulletImpact 0.3s ease-out forwards;
+        `;
+
+        document.body.appendChild(impact);
+        setTimeout(() => impact.remove(), 300);
+    }
+
+    // ===== KILL COMBO SYSTEM =====
+    function updateKillCombo() {
+        const now = Date.now();
+
+        // Check if combo is still active
+        if (now - gameState.lastKillTime > gameState.comboTimeout) {
+            gameState.killCombo = 0;
+        }
+
+        gameState.killCombo++;
+        gameState.lastKillTime = now;
+
+        // Check for combo milestone
+        const comboTaunt = comboTaunts.find(t => t.kills === gameState.killCombo);
+        if (comboTaunt) {
+            showKillCombo(comboTaunt.text, gameState.killCombo);
+            playVoice(comboTaunt.voice);
+
+            // Extra effects for big combos
+            if (gameState.killCombo >= 5) {
+                shakeScreen('heavy');
+                flashScreen('#ff0000', 200);
+            }
+        }
+
+        return gameState.killCombo;
+    }
+
+    function showKillCombo(text, count) {
+        // Remove existing combo display
+        const existing = document.querySelector('.kill-combo');
+        if (existing) existing.remove();
+
+        const combo = document.createElement('div');
+        combo.className = 'kill-combo';
+        combo.innerHTML = `
+            <div class="combo-text">${text}</div>
+            <div class="combo-count">${count}x COMBO</div>
+        `;
+        combo.style.cssText = `
+            position: fixed;
+            top: 150px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            font-family: 'Press Start 2P', monospace;
+            z-index: 100001;
+            animation: comboPopIn 0.3s ease-out;
+        `;
+
+        document.body.appendChild(combo);
+
+        setTimeout(() => {
+            combo.style.animation = 'comboFadeOut 0.5s ease-out forwards';
+            setTimeout(() => combo.remove(), 500);
+        }, 2000);
+    }
+
+    // ===== MATURE WARNING OVERLAY =====
+    function showMatureWarning() {
+        if (gameState.matureWarningShown) return;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'mature-warning-overlay';
+        overlay.innerHTML = `
+            <div class="mature-warning-content">
+                <div class="mature-warning-icon">⚠️</div>
+                <h2>MATURE CONTENT WARNING</h2>
+                <p>This site contains content inspired by Duke Nukem 3D, including:</p>
+                <ul>
+                    <li>Cartoon violence and blood effects</li>
+                    <li>Adult humor and language</li>
+                    <li>Mature themes</li>
+                </ul>
+                <p class="mature-warning-subtitle">Just like the original game from 1996!</p>
+                <div class="mature-warning-buttons">
+                    <button class="mature-btn-enter">I'M OLD ENOUGH - LET ME IN</button>
+                    <button class="mature-btn-exit">TAKE ME BACK</button>
+                </div>
+                <p class="mature-warning-footer">"Hail to the king, baby!"</p>
+            </div>
+        `;
+
+        overlay.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999999;
+            animation: fadeIn 0.3s ease-out;
+        `;
+
+        document.body.appendChild(overlay);
+
+        overlay.querySelector('.mature-btn-enter').addEventListener('click', () => {
+            gameState.matureWarningShown = true;
+            localStorage.setItem('duke_mature_warning', 'true');
+            overlay.style.animation = 'fadeOut 0.3s ease-out forwards';
+            setTimeout(() => overlay.remove(), 300);
+            playVoice('letsRock');
+        });
+
+        overlay.querySelector('.mature-btn-exit').addEventListener('click', () => {
+            window.location.href = 'https://www.google.com';
+        });
     }
 
     function flashScreen(color, duration) {
@@ -976,6 +1267,230 @@
         const killsEl = document.getElementById('hudKills');
         if (killsEl) killsEl.textContent = gameState.killCount;
         localStorage.setItem('dukeKillCount', gameState.killCount);
+    }
+
+    // ===== INTRO SEQUENCE - "Damn, those alien bastards!" =====
+    function showIntroSequence() {
+        const introShown = localStorage.getItem('duke_intro_shown');
+        if (introShown) return;
+
+        const intro = document.createElement('div');
+        intro.className = 'duke-intro-sequence';
+        intro.innerHTML = `
+            <div class="intro-content">
+                <div class="intro-duke-face">
+                    <img src="${basePath}images/duke-sprite.png" alt="Duke" class="intro-duke-img">
+                </div>
+                <div class="intro-text">
+                    <p class="intro-line line-1">"Damn..."</p>
+                    <p class="intro-line line-2">"Those alien bastards..."</p>
+                    <p class="intro-line line-3">"Are gonna pay for shooting up my ride!"</p>
+                </div>
+                <button class="intro-skip">SKIP INTRO</button>
+            </div>
+        `;
+
+        intro.style.cssText = `
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 999998;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeIn 0.5s ease-out;
+        `;
+
+        document.body.appendChild(intro);
+
+        // Animate the text lines sequentially
+        const lines = intro.querySelectorAll('.intro-line');
+        lines.forEach((line, i) => {
+            line.style.cssText = `
+                opacity: 0;
+                transform: translateY(20px);
+                font-family: 'Press Start 2P', monospace;
+                font-size: ${i === 2 ? '0.8rem' : '1.2rem'};
+                color: ${i === 0 ? '#ffcc00' : '#ff0000'};
+                text-shadow: 0 0 20px ${i === 0 ? '#ffcc00' : '#ff0000'};
+                margin: 1rem 0;
+                transition: all 0.5s ease-out;
+            `;
+
+            setTimeout(() => {
+                line.style.opacity = '1';
+                line.style.transform = 'translateY(0)';
+            }, 500 + i * 1500);
+        });
+
+        // Play "Damn" voice clip
+        setTimeout(() => playDynamicVoice(), 500);
+
+        // Auto-close after animation
+        const closeIntro = () => {
+            localStorage.setItem('duke_intro_shown', 'true');
+            intro.style.animation = 'fadeOut 0.5s ease-out forwards';
+            setTimeout(() => intro.remove(), 500);
+        };
+
+        setTimeout(closeIntro, 6000);
+        intro.querySelector('.intro-skip').addEventListener('click', closeIntro);
+    }
+
+    // ===== EASTER EGG - STRIPPERS/BABES =====
+    let easterEggClicks = 0;
+    let lastEasterEggClick = 0;
+
+    function setupEasterEggs() {
+        // Konami-style easter egg: clicking rapidly on Duke sprite 5 times
+        document.addEventListener('click', (e) => {
+            const dukeImg = e.target.closest('.duke-face-container, .duke-sprite-main, [alt*="Duke"]');
+            if (!dukeImg) return;
+
+            const now = Date.now();
+            if (now - lastEasterEggClick > 2000) {
+                easterEggClicks = 0;
+            }
+            lastEasterEggClick = now;
+            easterEggClicks++;
+
+            if (easterEggClicks >= 5) {
+                triggerBabesEasterEgg();
+                easterEggClicks = 0;
+            }
+        });
+
+        // Also listen for "dnbabes" cheat code (add to cheat codes)
+    }
+
+    function triggerBabesEasterEgg() {
+        playVoice('shakeItBaby');
+        showQuote("Shake it, baby!");
+
+        // Create neon sign effect
+        const neonSign = document.createElement('div');
+        neonSign.className = 'easter-egg-neon';
+        neonSign.innerHTML = `
+            <div class="neon-text">GIRLS GIRLS GIRLS</div>
+            <div class="neon-subtitle">Duke's favorite club</div>
+        `;
+        neonSign.style.cssText = `
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100000;
+            animation: neonFlicker 0.5s ease-in-out;
+        `;
+
+        document.body.appendChild(neonSign);
+
+        // Flash screen pink/red
+        flashScreen('#ff1493', 300);
+
+        setTimeout(() => {
+            neonSign.style.animation = 'fadeOut 0.5s ease-out forwards';
+            setTimeout(() => neonSign.remove(), 500);
+        }, 3000);
+
+        // Show some dancing silhouettes
+        for (let i = 0; i < 3; i++) {
+            setTimeout(() => {
+                const dancer = document.createElement('div');
+                dancer.className = 'dancer-silhouette';
+                dancer.textContent = '💃';
+                dancer.style.cssText = `
+                    position: fixed;
+                    top: ${30 + Math.random() * 40}%;
+                    left: ${10 + i * 35}%;
+                    font-size: 5rem;
+                    pointer-events: none;
+                    z-index: 99999;
+                    animation: dancerBounce 0.5s ease-in-out infinite, fadeOut 3s ease-out forwards;
+                    filter: drop-shadow(0 0 20px #ff1493);
+                `;
+                document.body.appendChild(dancer);
+                setTimeout(() => dancer.remove(), 3000);
+            }, i * 200);
+        }
+    }
+
+    // ===== DUKE SMOKING IDLE ANIMATION =====
+    let idleTimeout = null;
+    let isSmoking = false;
+
+    function setupIdleAnimation() {
+        // Reset idle timer on any interaction
+        const resetIdle = () => {
+            if (idleTimeout) clearTimeout(idleTimeout);
+            if (isSmoking) stopSmoking();
+
+            idleTimeout = setTimeout(() => {
+                startSmoking();
+            }, 30000); // 30 seconds of idle
+        };
+
+        document.addEventListener('mousemove', resetIdle);
+        document.addEventListener('click', resetIdle);
+        document.addEventListener('keydown', resetIdle);
+
+        resetIdle();
+    }
+
+    function startSmoking() {
+        isSmoking = true;
+        const dukeSprite = document.querySelector('.duke-face-container img, .duke-sprite-main');
+        if (!dukeSprite) return;
+
+        // Add cigar/smoke effect
+        const cigar = document.createElement('div');
+        cigar.className = 'duke-cigar';
+        cigar.innerHTML = `
+            <div class="cigar-stick">🚬</div>
+            <div class="smoke-particles"></div>
+        `;
+        cigar.style.cssText = `
+            position: absolute;
+            bottom: 30%;
+            right: 20%;
+            font-size: 1.5rem;
+            transform: rotate(-15deg);
+            z-index: 100;
+        `;
+
+        const container = dukeSprite.parentElement;
+        if (container) {
+            container.style.position = 'relative';
+            container.appendChild(cigar);
+
+            // Animate smoke
+            const smokeInterval = setInterval(() => {
+                if (!isSmoking) {
+                    clearInterval(smokeInterval);
+                    return;
+                }
+                const smoke = document.createElement('div');
+                smoke.textContent = '💨';
+                smoke.style.cssText = `
+                    position: absolute;
+                    font-size: 1rem;
+                    opacity: 0.7;
+                    animation: smokeRise 2s ease-out forwards;
+                `;
+                cigar.querySelector('.smoke-particles').appendChild(smoke);
+                setTimeout(() => smoke.remove(), 2000);
+            }, 500);
+        }
+    }
+
+    function stopSmoking() {
+        isSmoking = false;
+        const cigar = document.querySelector('.duke-cigar');
+        if (cigar) cigar.remove();
     }
 
     // ===== DELAYED NAVIGATION FOR AUDIO =====

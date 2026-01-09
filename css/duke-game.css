@@ -207,6 +207,428 @@
     100% { opacity: 0; }
 }
 
+/* ===== SCREEN SHAKE - DUKE STYLE ===== */
+@keyframes screenShake {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-8px, -6px); }
+    20% { transform: translate(8px, 6px); }
+    30% { transform: translate(-6px, 4px); }
+    40% { transform: translate(6px, -4px); }
+    50% { transform: translate(-4px, 6px); }
+    60% { transform: translate(4px, -6px); }
+    70% { transform: translate(-6px, 4px); }
+    80% { transform: translate(6px, -4px); }
+    90% { transform: translate(-2px, 2px); }
+    100% { transform: translate(0, 0); }
+}
+
+@keyframes screenShakeHeavy {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    10% { transform: translate(-15px, -10px) rotate(-1deg); }
+    20% { transform: translate(15px, 10px) rotate(1deg); }
+    30% { transform: translate(-12px, 8px) rotate(-0.5deg); }
+    40% { transform: translate(12px, -8px) rotate(0.5deg); }
+    50% { transform: translate(-10px, 12px) rotate(-0.3deg); }
+    60% { transform: translate(10px, -12px) rotate(0.3deg); }
+    70% { transform: translate(-8px, 6px) rotate(0); }
+    80% { transform: translate(8px, -6px) rotate(0); }
+    90% { transform: translate(-4px, 4px) rotate(0); }
+    100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.screen-shake {
+    animation: screenShake 0.2s ease-out;
+}
+
+.screen-shake-heavy {
+    animation: screenShakeHeavy 0.4s ease-out;
+}
+
+/* ===== BLOOD SPLATTER EFFECTS ===== */
+.blood-splatter {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    font-size: 2rem;
+    animation: bloodSplat 0.5s ease-out forwards;
+}
+
+@keyframes bloodSplat {
+    0% {
+        transform: scale(0.5) rotate(0deg);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5) rotate(180deg);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(2) rotate(360deg) translateY(50px);
+        opacity: 0;
+    }
+}
+
+.blood-pool {
+    position: fixed;
+    pointer-events: none;
+    z-index: 1;
+    width: 60px;
+    height: 30px;
+    background: radial-gradient(ellipse, #8B0000 0%, #4a0000 50%, transparent 70%);
+    border-radius: 50%;
+    animation: bloodPoolSpread 1s ease-out forwards;
+    filter: blur(2px);
+}
+
+@keyframes bloodPoolSpread {
+    0% {
+        transform: scale(0);
+        opacity: 0.9;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 0.6;
+    }
+}
+
+/* ===== MUZZLE FLASH ===== */
+.muzzle-flash {
+    position: fixed;
+    pointer-events: none;
+    z-index: 100000;
+    width: 80px;
+    height: 80px;
+    background: radial-gradient(circle, #fff 0%, #ffff00 20%, #ff6600 40%, transparent 70%);
+    border-radius: 50%;
+    animation: muzzleFlash 0.08s ease-out forwards;
+    mix-blend-mode: screen;
+}
+
+@keyframes muzzleFlash {
+    0% {
+        transform: scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* ===== BULLET IMPACT ===== */
+.bullet-impact {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99998;
+    width: 30px;
+    height: 30px;
+    background: radial-gradient(circle, #ff0 0%, #f60 50%, transparent 70%);
+    border-radius: 50%;
+    animation: bulletImpact 0.15s ease-out forwards;
+}
+
+@keyframes bulletImpact {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+/* ===== GIB PARTICLES (body parts flying) ===== */
+.gib-particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 99997;
+    font-size: 1.5rem;
+    animation: gibFly 0.8s ease-out forwards;
+}
+
+@keyframes gibFly {
+    0% {
+        transform: translate(0, 0) rotate(0deg) scale(1);
+        opacity: 1;
+    }
+    60% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translate(var(--end-x), var(--end-y)) rotate(var(--rotation)) scale(0.3);
+        opacity: 0;
+    }
+}
+
+/* ===== KILL COMBO DISPLAY ===== */
+.kill-combo {
+    position: fixed;
+    top: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.5rem;
+    color: #ff0000;
+    text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000;
+    z-index: 100001;
+    animation: comboAppear 0.3s ease-out;
+    white-space: nowrap;
+}
+
+.kill-combo.fade-out {
+    animation: comboFade 0.5s ease-out forwards;
+}
+
+@keyframes comboAppear {
+    0% {
+        transform: translateX(-50%) scale(2);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes comboPopIn {
+    0% {
+        transform: translateX(-50%) scale(0.3);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(-50%) scale(1.3);
+    }
+    100% {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes comboFadeOut {
+    0% {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+    }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px) scale(1.2);
+    }
+}
+
+@keyframes comboFade {
+    0% { opacity: 1; }
+    100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-30px) scale(1.2);
+    }
+}
+
+.combo-text {
+    font-size: 1.8rem;
+    color: #ff0000;
+    text-shadow:
+        0 0 10px #ff0000,
+        0 0 20px #ff0000,
+        0 0 40px #ff0000,
+        2px 2px 0 #000,
+        -2px -2px 0 #000;
+    animation: comboPulse 0.2s ease-in-out infinite;
+}
+
+.combo-count {
+    font-size: 0.8rem;
+    color: #ffcc00;
+    text-shadow: 0 0 10px #ffcc00;
+    margin-top: 5px;
+}
+
+@keyframes comboPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* ===== MATURE WARNING OVERLAY ===== */
+.mature-warning-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.mature-warning-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.mature-warning-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: warningPulse 1s ease-in-out infinite;
+}
+
+@keyframes warningPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.mature-warning-content h2 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 1.5rem;
+    color: #ff0000;
+    text-shadow: 0 0 30px #ff0000;
+    margin-bottom: 1.5rem;
+}
+
+.mature-warning-content p {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
+    color: #ccc;
+    line-height: 2;
+    margin-bottom: 1rem;
+}
+
+.mature-warning-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+}
+
+.mature-warning-content li {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.45rem;
+    color: #ff6666;
+    padding: 0.5rem 0;
+}
+
+.mature-warning-content li::before {
+    content: '> ';
+    color: #ff0000;
+}
+
+.mature-warning-subtitle {
+    color: #888 !important;
+    font-style: italic;
+}
+
+.mature-warning-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin: 2rem 0 1rem;
+    flex-wrap: wrap;
+}
+
+.mature-btn-enter {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    padding: 1rem 1.5rem;
+    background: linear-gradient(180deg, #ff0000, #990000);
+    border: 3px solid #ff6666;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mature-btn-enter:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+}
+
+.mature-btn-exit {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
+    padding: 1rem 1.5rem;
+    background: #333;
+    border: 2px solid #666;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mature-btn-exit:hover {
+    background: #444;
+    color: #fff;
+}
+
+.mature-warning-footer {
+    color: #ffcc00 !important;
+    font-size: 0.4rem !important;
+    margin-top: 1rem;
+}
+
+/* Fade animations */
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+/* Legacy class support */
+.mature-warning {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.98);
+    z-index: 999999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+}
+
+.mature-warning h1 {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 2rem;
+    color: #ff0000;
+    text-shadow: 0 0 30px #ff0000;
+}
+
+.mature-warning p {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    color: #888;
+    text-align: center;
+    max-width: 600px;
+    line-height: 2;
+}
+
+.mature-warning button {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.8rem;
+    padding: 1rem 2rem;
+    background: linear-gradient(180deg, #ff0000, #990000);
+    border: 3px solid #ff6666;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.mature-warning button:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+}
+
 /* ===== CHEAT MESSAGE ===== */
 .cheat-message {
     position: fixed;
@@ -614,6 +1036,122 @@
 .boss-button:hover {
     transform: scale(1.1);
     box-shadow: 0 0 30px rgba(255, 0, 0, 0.8);
+}
+
+/* ===== INTRO SEQUENCE ===== */
+.duke-intro-sequence {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    z-index: 999998;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.intro-content {
+    text-align: center;
+    max-width: 800px;
+    padding: 2rem;
+}
+
+.intro-duke-face {
+    margin-bottom: 2rem;
+}
+
+.intro-duke-img {
+    width: 200px;
+    height: auto;
+    image-rendering: pixelated;
+    filter: drop-shadow(0 0 30px #ff0000);
+    animation: introFacePulse 2s ease-in-out infinite;
+}
+
+@keyframes introFacePulse {
+    0%, 100% { transform: scale(1); filter: drop-shadow(0 0 30px #ff0000); }
+    50% { transform: scale(1.05); filter: drop-shadow(0 0 50px #ff0000); }
+}
+
+.intro-text {
+    margin-bottom: 2rem;
+}
+
+.intro-skip {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: transparent;
+    border: 1px solid #666;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.intro-skip:hover {
+    border-color: #fff;
+    color: #fff;
+}
+
+/* ===== EASTER EGG NEON SIGN ===== */
+.easter-egg-neon {
+    text-align: center;
+}
+
+.neon-text {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 2rem;
+    color: #ff1493;
+    text-shadow:
+        0 0 10px #ff1493,
+        0 0 20px #ff1493,
+        0 0 40px #ff1493,
+        0 0 80px #ff1493;
+    animation: neonFlicker 0.1s ease-in-out infinite alternate;
+}
+
+.neon-subtitle {
+    font-family: 'Press Start 2P', monospace;
+    font-size: 0.6rem;
+    color: #ff69b4;
+    text-shadow: 0 0 10px #ff69b4;
+    margin-top: 1rem;
+}
+
+@keyframes neonFlicker {
+    0% { opacity: 1; }
+    50% { opacity: 0.8; }
+    100% { opacity: 1; }
+}
+
+/* ===== DANCER SILHOUETTES ===== */
+@keyframes dancerBounce {
+    0%, 100% { transform: translateY(0) scaleX(1); }
+    25% { transform: translateY(-20px) scaleX(-1); }
+    50% { transform: translateY(0) scaleX(-1); }
+    75% { transform: translateY(-20px) scaleX(1); }
+}
+
+/* ===== SMOKE ANIMATION ===== */
+.duke-cigar {
+    position: absolute;
+}
+
+.smoke-particles {
+    position: relative;
+}
+
+@keyframes smokeRise {
+    0% {
+        transform: translateY(0) translateX(0) scale(1);
+        opacity: 0.7;
+    }
+    100% {
+        transform: translateY(-50px) translateX(20px) scale(2);
+        opacity: 0;
+    }
 }
 
 /* ===== RESPONSIVE ===== */
