@@ -410,7 +410,7 @@
                 loadingProgress.textContent = 'Downloading game (~6MB)...';
                 console.log('[Duke 3D] DOSBox ready, loading game bundle...');
 
-                fs.extract("https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip").then(function() {
+                fs.extract("games/duke3d.zip").then(function() {
                     loadingProgress.textContent = 'Starting game...';
                     console.log('[Duke 3D] Game extracted, starting...');
                     main(["-c", "DUKE3D.EXE"]).then(function(ci) {
