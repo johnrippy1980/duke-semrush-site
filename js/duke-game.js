@@ -148,15 +148,27 @@
     ];
 
     // ===== WEAPONS =====
+    // Weapon fire sound files mapping
+    const weaponFireSounds = {
+        boot: 'mighty-boot.wav',
+        pistol: 'pistol-fire.wav',
+        shotgun: 'shotgun-fire.wav',
+        chaingun: 'ripper-fire.wav',
+        rpg: 'rpg-fire.wav',
+        pipebomb: 'pipebomb-fire.wav',
+        devastator: 'devastator-fire.wav',
+        freezer: 'freezer-fire.wav'
+    };
+
     const weapons = {
-        boot: { name: 'Mighty Boot', damage: 10, sound: 'stomp', icon: `<img src="${basePath}images/boot-sprite.png" alt="Boot" style="height:24px;image-rendering:pixelated;">` },
-        pistol: { name: 'Pistol', damage: 15, sound: 'shotgun', icon: `<img src="${basePath}images/pistol-sprite.png" alt="Pistol" style="height:24px;image-rendering:pixelated;">` },
+        boot: { name: 'Mighty Boot', damage: 10, sound: 'boot', icon: `<img src="${basePath}images/boot-sprite.png" alt="Boot" style="height:24px;image-rendering:pixelated;">` },
+        pistol: { name: 'Pistol', damage: 15, sound: 'pistol', icon: `<img src="${basePath}images/pistol-sprite.png" alt="Pistol" style="height:24px;image-rendering:pixelated;">` },
         shotgun: { name: 'Shotgun', damage: 40, sound: 'shotgun', icon: `<img src="${basePath}images/shotgun-sprite.png" alt="Shotgun" style="height:24px;image-rendering:pixelated;">` },
-        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'shotgun', icon: `<img src="${basePath}images/ripper-sprite.png" alt="Chaingun" style="height:24px;image-rendering:pixelated;">` },
-        rpg: { name: 'RPG', damage: 100, sound: 'explosion', icon: `<img src="${basePath}images/rpg-sprite.png" alt="RPG" style="height:24px;image-rendering:pixelated;">` },
-        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'explosion', icon: `<img src="${basePath}images/pipebomb-sprite.png" alt="Pipebomb" style="height:24px;image-rendering:pixelated;">` },
-        devastator: { name: 'Devastator', damage: 150, sound: 'explosion', icon: `<img src="${basePath}images/devastator-sprite.png" alt="Devastator" style="height:24px;image-rendering:pixelated;">` },
-        freezer: { name: 'Freezethrower', damage: 30, sound: 'shotgun', icon: `<img src="${basePath}images/freezer-sprite.png" alt="Freezer" style="height:24px;image-rendering:pixelated;">` }
+        chaingun: { name: 'Chaingun Cannon', damage: 25, sound: 'chaingun', icon: `<img src="${basePath}images/ripper-sprite.png" alt="Chaingun" style="height:24px;image-rendering:pixelated;">` },
+        rpg: { name: 'RPG', damage: 100, sound: 'rpg', icon: `<img src="${basePath}images/rpg-sprite.png" alt="RPG" style="height:24px;image-rendering:pixelated;">` },
+        pipebomb: { name: 'Pipe Bomb', damage: 80, sound: 'pipebomb', icon: `<img src="${basePath}images/pipebomb-sprite.png" alt="Pipebomb" style="height:24px;image-rendering:pixelated;">` },
+        devastator: { name: 'Devastator', damage: 150, sound: 'devastator', icon: `<img src="${basePath}images/devastator-sprite.png" alt="Devastator" style="height:24px;image-rendering:pixelated;">` },
+        freezer: { name: 'Freezethrower', damage: 30, sound: 'freezer', icon: `<img src="${basePath}images/freezer-sprite.png" alt="Freezer" style="height:24px;image-rendering:pixelated;">` }
     };
 
     // ===== INITIALIZATION =====
@@ -897,7 +909,8 @@
             slot.classList.toggle('active', slot.dataset.weapon === weaponKey);
         });
 
-        playSound('pickup');
+        // Play the weapon's fire sound instead of generic pickup
+        playWeaponFireSound(weaponKey);
         showQuote(weapons[weaponKey].name + ' selected!');
     }
 
@@ -1031,12 +1044,28 @@
 
     // ===== UTILITY FUNCTIONS =====
     function playSound(soundId) {
+        // Check if this is a weapon fire sound
+        if (weaponFireSounds[soundId]) {
+            playWeaponFireSound(soundId);
+            return;
+        }
+
         const audio = document.getElementById(soundId + 'Sound') || document.getElementById(soundId);
         if (audio) {
             audio.volume = 0.5;
             audio.currentTime = 0;
             audio.play().catch(() => {});
         }
+    }
+
+    // Play weapon fire sound from audio files
+    function playWeaponFireSound(weaponKey) {
+        const soundFile = weaponFireSounds[weaponKey];
+        if (!soundFile) return;
+
+        const audio = new Audio(`${basePath}audio/${soundFile}`);
+        audio.volume = 0.6;
+        audio.play().catch(() => {});
     }
 
     // ===== SCREEN SHAKE EFFECTS =====
