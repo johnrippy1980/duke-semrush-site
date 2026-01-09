@@ -479,6 +479,66 @@
         });
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
+
+        // Hide js-dos UI elements (popup, sidebar) using MutationObserver
+        function hideJsDosUI() {
+            var dosbox = document.getElementById('dosbox');
+            if (!dosbox) return;
+
+            // Function to hide unwanted elements
+            function hideElements() {
+                // Hide sidebar buttons (the icons on the left)
+                var buttons = dosbox.querySelectorAll('.emulator-button, .emulator-button-touch-zone');
+                buttons.forEach(function(btn) {
+                    btn.style.display = 'none';
+                });
+
+                // Hide any popup/modal with "Mouse lock" or "NEXT" text
+                var allDivs = dosbox.querySelectorAll('div');
+                allDivs.forEach(function(div) {
+                    if (div.textContent && (div.textContent.includes('Mouse lock') || div.textContent.includes('NEXT'))) {
+                        // Find the popup container and hide it
+                        var parent = div;
+                        while (parent && parent !== dosbox) {
+                            if (parent.style && (parent.style.position === 'absolute' || parent.style.position === 'fixed')) {
+                                parent.style.display = 'none';
+                                break;
+                            }
+                            // Check for modal-like styling
+                            var computed = window.getComputedStyle(parent);
+                            if (computed.position === 'absolute' || computed.position === 'fixed') {
+                                if (computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)') {
+                                    parent.style.display = 'none';
+                                    break;
+                                }
+                            }
+                            parent = parent.parentElement;
+                        }
+                    }
+                });
+            }
+
+            // Run immediately
+            hideElements();
+
+            // Watch for DOM changes and hide elements as they appear
+            var observer = new MutationObserver(function(mutations) {
+                hideElements();
+            });
+
+            observer.observe(dosbox, { childList: true, subtree: true });
+
+            // Also run periodically for the first few seconds
+            var attempts = 0;
+            var interval = setInterval(function() {
+                hideElements();
+                attempts++;
+                if (attempts > 20) clearInterval(interval);
+            }, 500);
+        }
+
+        // Start hiding after game loads
+        setTimeout(hideJsDosUI, 2000);
     </script>
 </body>
 </html>
