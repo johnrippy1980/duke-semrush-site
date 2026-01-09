@@ -1077,23 +1077,38 @@
             }, 1000);
         }
 
-        // Mighty Boot click
+        // Mighty Boot click - with multi-frame kick animation
         document.querySelectorAll('.mighty-boot').forEach(boot => {
             boot.addEventListener('click', function() {
-                const stomp = document.getElementById('bootsSound');
-                if (stomp) {
-                    stomp.currentTime = 0;
-                    stomp.play().catch(() => {});
-                }
+                // If already kicking, ignore
+                if (this.classList.contains('kicking')) return;
 
-                document.body.classList.add('shake');
-                setTimeout(() => document.body.classList.remove('shake'), 400);
+                // Trigger kick animation
+                this.classList.add('kicking');
 
-                const painFlash = document.querySelector('.pain-flash');
-                if (painFlash) {
-                    painFlash.classList.add('active');
-                    setTimeout(() => painFlash.classList.remove('active'), 150);
-                }
+                // Play stomp sound - delay slightly to sync with kick impact
+                setTimeout(() => {
+                    const stomp = document.getElementById('bootsSound');
+                    if (stomp) {
+                        stomp.currentTime = 0;
+                        stomp.play().catch(() => {});
+                    }
+                }, 100);
+
+                // Screen shake at impact
+                setTimeout(() => {
+                    document.body.classList.add('shake');
+                    setTimeout(() => document.body.classList.remove('shake'), 400);
+                }, 150);
+
+                // Pain flash at impact
+                setTimeout(() => {
+                    const painFlash = document.querySelector('.pain-flash');
+                    if (painFlash) {
+                        painFlash.classList.add('active');
+                        setTimeout(() => painFlash.classList.remove('active'), 150);
+                    }
+                }, 150);
 
                 killCount++;
                 localStorage.setItem('duke_kills', killCount);
@@ -1104,6 +1119,11 @@
                     const voice = stompVoices[Math.floor(Math.random() * stompVoices.length)];
                     playDukeVoice(voice);
                 }
+
+                // Remove kicking class after animation completes
+                setTimeout(() => {
+                    this.classList.remove('kicking');
+                }, 400);
             });
         });
 
