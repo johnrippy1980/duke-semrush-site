@@ -35,8 +35,34 @@
         groovy: { id: 'voiceGroovy', text: "Groovy!" },
         bubblegum: { id: 'voiceBubblegum', text: "It's time to kick ass and chew bubblegum... and I'm all out of gum." },
         yourFace: { id: 'voiceYourFace', text: "Your face, your ass - what's the difference?" },
-        ballsOfSteel: { id: 'voiceBallsOfSteel', text: "I've got balls of steel!" }
+        ballsOfSteel: { id: 'voiceBallsOfSteel', text: "I've got balls of steel!" },
+        // New one-liners from soundboard
+        yippieKaiAy: { id: 'voiceYippieKaiAy', text: "Yippie kai-ay, motherf***er!" },
+        whoWantsSome: { id: 'voiceWhoWantsSome', text: "Who wants some?" },
+        damn: { id: 'voiceDamn', text: "Damn!" },
+        whatAreYouWaiting: { id: 'voiceWhatAreYouWaiting', text: "What are you waiting for?" },
+        getCrapOuttaHere: { id: 'voiceGetCrapOuttaHere', text: "Get that crap outta here!" },
+        nobodySteals: { id: 'voiceNobodySteals', text: "Nobody steals our chicks and lives!" }
     };
+
+    // ===== DYNAMIC VOICE CLIPS (loaded from files) =====
+    const dynamicVoiceClips = [
+        { file: 'duke-lines/yippie-kai-ay.mp3', text: "Yippie kai-ay!" },
+        { file: 'duke-lines/come-get-some.mp3', text: "Come get some!" },
+        { file: 'duke-lines/damn-im-good.mp3', text: "Damn, I'm good!" },
+        { file: 'duke-lines/groovy.mp3', text: "Groovy!" },
+        { file: 'duke-lines/hail-to-the-king.mp3', text: "Hail to the king, baby!" },
+        { file: 'duke-lines/its-time-to-kick-ass.mp3', text: "It's time to kick ass!" },
+        { file: 'duke-lines/lets-rock.mp3', text: "Let's rock!" },
+        { file: 'duke-lines/shake-it-baby.mp3', text: "Shake it, baby!" },
+        { file: 'duke-lines/what-are-you-waiting-for.mp3', text: "What are you waiting for?" },
+        { file: 'duke-lines/your-face-your-ass.mp3', text: "Your face, your ass - what's the difference?" },
+        { file: 'duke-lines/get-that-crap-outta-here.mp3', text: "Get that crap outta here!" },
+        { file: 'duke-lines/nobody-steals-our-chicks.mp3', text: "Nobody steals our chicks!" },
+        { file: 'duke-lines/who-wants-some.mp3', text: "Who wants some?" },
+        { file: 'duke-lines/damn.mp3', text: "Damn!" },
+        { file: 'duke-lines/cool.mp3', text: "Cool!" }
+    ];
 
     // ===== CHEAT CODES =====
     const cheatCodes = {
@@ -169,9 +195,32 @@
     }
 
     function playRandomVoice() {
+        // 50% chance to use dynamic voice clips (from files) if available
+        if (dynamicVoiceClips.length > 0 && Math.random() < 0.5) {
+            return playDynamicVoice();
+        }
         const keys = Object.keys(dukeVoiceClips);
         const randomKey = keys[Math.floor(Math.random() * keys.length)];
         return playVoice(randomKey);
+    }
+
+    // Play a random voice clip from the dynamic clips (loaded from audio files)
+    function playDynamicVoice() {
+        const now = Date.now();
+        if (now - gameState.lastVoicePlayed < gameState.voiceCooldown) return false;
+
+        const clip = dynamicVoiceClips[Math.floor(Math.random() * dynamicVoiceClips.length)];
+        if (!clip) return false;
+
+        const audio = new Audio(`${basePath}audio/${clip.file}`);
+        audio.volume = 0.7;
+        audio.play().then(() => {
+            currentlyPlayingAudio = audio;
+            gameState.lastVoicePlayed = now;
+            showQuote(clip.text);
+        }).catch(() => {});
+
+        return true;
     }
 
     function showQuote(text) {
