@@ -53,6 +53,7 @@
 
     // ===== DYNAMIC VOICE CLIPS (loaded from files) =====
     const dynamicVoiceClips = [
+        // Classic Duke 3D lines
         { file: 'duke-lines/yippie-kai-ay.mp3', text: "Yippie kai-ay!" },
         { file: 'duke-lines/come-get-some.mp3', text: "Come get some!" },
         { file: 'duke-lines/damn-im-good.mp3', text: "Damn, I'm good!" },
@@ -67,7 +68,17 @@
         { file: 'duke-lines/nobody-steals-our-chicks.mp3', text: "Nobody steals our chicks!" },
         { file: 'duke-lines/who-wants-some.mp3', text: "Who wants some?" },
         { file: 'duke-lines/damn.mp3', text: "Damn!" },
-        { file: 'duke-lines/cool.mp3', text: "Cool!" }
+        { file: 'duke-lines/cool.mp3', text: "Cool!" },
+        // New iconic lines from vocal collection
+        { file: 'duke-lines/bubblegum.mp3', text: "It's time to kick ass and chew bubblegum... and I'm all outta gum!" },
+        { file: 'duke-lines/balls-of-steel.mp3', text: "I've got balls of steel!" },
+        { file: 'duke-lines/rip-head-off.mp3', text: "I'll rip your head off and shit down your neck!" },
+        { file: 'duke-lines/terminated.mp3', text: "Terminated!" },
+        { file: 'duke-lines/rest-in-pieces.mp3', text: "Rest in pieces!" },
+        { file: 'duke-lines/wasted.mp3', text: "Hmhmhm, wasted." },
+        { file: 'duke-lines/eat-shit-and-die.mp3', text: "Eat shit and die!" },
+        { file: 'duke-lines/die-son-of-a-bitch.mp3', text: "Die, you son of a bitch!" },
+        { file: 'duke-lines/born-to-be-wild.mp3', text: "Born to be wiiiiild!" }
     ];
 
     // ===== KILL COMBO TAUNTS (escalating aggression) =====
