@@ -143,42 +143,11 @@
         }
 
         /* Ensure canvas is ALWAYS visible */
-        #dosbox canvas {
+        #dosbox canvas,
+        #dosbox video {
             display: block !important;
             visibility: visible !important;
             opacity: 1 !important;
-            z-index: 10 !important;
-            position: relative !important;
-        }
-
-        /* Hide ALL js-dos UI elements - popups, sidebar, buttons */
-        .sidebar-header,
-        .emulator-button-control,
-        .emulator-button,
-        .emulator-button-touch-zone,
-        .jsdos-player-save-button,
-        .jsdos-player-sound-button,
-        .jsdos-player-fullscreen-button,
-        [class*="sidebar"]:not(#dosbox):not(.emulator-screen),
-        [class*="tooltip"],
-        [class*="tutorial"],
-        [class*="onboarding"],
-        [class*="modal"],
-        [class*="popup"],
-        [class*="dialog"],
-        [class*="overlay"]:not(.loading-overlay),
-        .pointer-lock-dialog,
-        div[style*="background-color: rgba(0, 0, 0"],
-        div[style*="position: fixed"][style*="z-index"] {
-            display: none !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-            visibility: hidden !important;
-        }
-
-        /* Hide the left sidebar button strip */
-        #dosbox > div > div:first-child:not(canvas) {
-            display: none !important;
         }
 
         /* Loading Overlay */
