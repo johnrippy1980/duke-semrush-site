@@ -480,65 +480,71 @@
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
 
-        // Hide js-dos UI elements (popup, sidebar) using MutationObserver
-        function hideJsDosUI() {
+        // Auto-click through js-dos tutorial and hide sidebar
+        function handleJsDosUI() {
             var dosbox = document.getElementById('dosbox');
             if (!dosbox) return;
 
-            // Function to hide unwanted elements
-            function hideElements() {
-                // Hide sidebar buttons (the icons on the left)
-                var buttons = dosbox.querySelectorAll('.emulator-button, .emulator-button-touch-zone');
-                buttons.forEach(function(btn) {
-                    btn.style.display = 'none';
+            function processUI() {
+                // Auto-click NEXT buttons to skip tutorial
+                var allElements = dosbox.querySelectorAll('*');
+                allElements.forEach(function(el) {
+                    var text = el.textContent ? el.textContent.trim() : '';
+                    // Click NEXT or any button that advances the tutorial
+                    if (text === 'NEXT' || text === 'OK' || text === 'GOT IT' || text === 'CLOSE') {
+                        if (el.tagName === 'BUTTON' || el.onclick || el.style.cursor === 'pointer' ||
+                            window.getComputedStyle(el).cursor === 'pointer') {
+                            console.log('[Duke 3D] Auto-clicking:', text);
+                            el.click();
+                        }
+                    }
                 });
 
-                // Hide any popup/modal with "Mouse lock" or "NEXT" text
-                var allDivs = dosbox.querySelectorAll('div');
-                allDivs.forEach(function(div) {
-                    if (div.textContent && (div.textContent.includes('Mouse lock') || div.textContent.includes('NEXT'))) {
-                        // Find the popup container and hide it
-                        var parent = div;
-                        while (parent && parent !== dosbox) {
-                            if (parent.style && (parent.style.position === 'absolute' || parent.style.position === 'fixed')) {
-                                parent.style.display = 'none';
-                                break;
-                            }
-                            // Check for modal-like styling
-                            var computed = window.getComputedStyle(parent);
-                            if (computed.position === 'absolute' || computed.position === 'fixed') {
-                                if (computed.backgroundColor && computed.backgroundColor !== 'rgba(0, 0, 0, 0)') {
-                                    parent.style.display = 'none';
-                                    break;
-                                }
-                            }
-                            parent = parent.parentElement;
-                        }
+                // Also look for clickable divs with those texts
+                var buttons = dosbox.querySelectorAll('button, [role="button"], div[style*="cursor"]');
+                buttons.forEach(function(btn) {
+                    var text = btn.textContent ? btn.textContent.trim() : '';
+                    if (text.includes('NEXT') || text.includes('OK') || text.includes('GOT IT')) {
+                        console.log('[Duke 3D] Clicking button:', text);
+                        btn.click();
+                    }
+                });
+
+                // Hide sidebar icons
+                var sidebar = dosbox.querySelector('.sidebar, [class*="sidebar"]');
+                if (sidebar) sidebar.style.display = 'none';
+
+                // Hide individual sidebar buttons by looking for the icon container on left
+                var leftPanel = dosbox.querySelectorAll('div');
+                leftPanel.forEach(function(div) {
+                    var rect = div.getBoundingClientRect();
+                    var dosRect = dosbox.getBoundingClientRect();
+                    // If it's a narrow div on the left edge with buttons/icons
+                    if (rect.width < 60 && rect.left <= dosRect.left + 5 && rect.height > 100) {
+                        div.style.display = 'none';
                     }
                 });
             }
 
-            // Run immediately
-            hideElements();
+            // Run immediately and watch for changes
+            processUI();
 
-            // Watch for DOM changes and hide elements as they appear
-            var observer = new MutationObserver(function(mutations) {
-                hideElements();
+            var observer = new MutationObserver(function() {
+                processUI();
             });
-
             observer.observe(dosbox, { childList: true, subtree: true });
 
-            // Also run periodically for the first few seconds
+            // Keep trying for 15 seconds to catch all tutorial steps
             var attempts = 0;
             var interval = setInterval(function() {
-                hideElements();
+                processUI();
                 attempts++;
-                if (attempts > 20) clearInterval(interval);
+                if (attempts > 30) clearInterval(interval);
             }, 500);
         }
 
-        // Start hiding after game loads
-        setTimeout(hideJsDosUI, 2000);
+        // Start after game initializes
+        setTimeout(handleJsDosUI, 1500);
     </script>
 </body>
 </html>
