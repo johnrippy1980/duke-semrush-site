@@ -401,23 +401,12 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Initialize js-dos v8 - correct API
-        // Working bundle URLs (try in order)
-        const bundleUrls = [
-            'https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip',
-            'https://cdn.dos.zone/original/2X/9/9ed5eb9dfba12d6d7ef0b70965e5dfbef20c5d74.jsdos'
-        ];
-        let currentUrlIndex = 0;
+        // Initialize js-dos v8
+        const bundleUrl = 'https://js-dos.com/cdn/upload/Duke%20Nukem%203d-@digitalwalt.zip';
 
         function initGame() {
             loadingProgress.textContent = 'Loading Duke 3D bundle...';
-
-            tryLoadGame(bundleUrls[currentUrlIndex]);
-        }
-
-        function tryLoadGame(bundleUrl) {
-            console.log('[Duke 3D] Trying bundle:', bundleUrl);
-            loadingProgress.textContent = 'Loading bundle ' + (currentUrlIndex + 1) + '/' + bundleUrls.length + '...';
+            console.log('[Duke 3D] Loading from:', bundleUrl);
 
             // js-dos v8 API: Dos(element, { url: bundleUrl })
             Dos(document.getElementById('jsdos'), {
@@ -425,24 +414,15 @@
                 autoStart: true
             }).then(function(ci) {
                 loadingProgress.textContent = 'Starting game...';
-                console.log('[Duke 3D] Game loaded successfully from:', bundleUrl);
+                console.log('[Duke 3D] Game loaded successfully!');
 
                 // Hide loading overlay once game starts
                 setTimeout(function() {
                     loadingOverlay.classList.add('hidden');
                 }, 2000);
             }).catch(function(error) {
-                console.error('[Duke 3D] Error loading from', bundleUrl, ':', error);
-
-                // Try next URL
-                currentUrlIndex++;
-                if (currentUrlIndex < bundleUrls.length) {
-                    console.log('[Duke 3D] Trying next bundle...');
-                    tryLoadGame(bundleUrls[currentUrlIndex]);
-                } else {
-                    // All URLs failed
-                    loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com</a>';
-                }
+                console.error('[Duke 3D] Error loading game:', error);
+                loadingProgress.innerHTML = 'Failed to load. <a href="https://js-dos.com/Duke%20Nukem%203d/" target="_blank" style="color: #ffcc00;">Play on js-dos.com instead</a>';
             });
         }
 
