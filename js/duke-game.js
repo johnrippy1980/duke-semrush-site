@@ -78,7 +78,18 @@
         { file: 'duke-lines/wasted.mp3', text: "Hmhmhm, wasted." },
         { file: 'duke-lines/eat-shit-and-die.mp3', text: "Eat shit and die!" },
         { file: 'duke-lines/die-son-of-a-bitch.mp3', text: "Die, you son of a bitch!" },
-        { file: 'duke-lines/born-to-be-wild.mp3', text: "Born to be wiiiiild!" }
+        { file: 'duke-lines/born-to-be-wild.mp3', text: "Born to be wiiiiild!" },
+        // Requested iconic one-liners
+        { file: 'duke-lines/disease-and-cure.mp3', text: "Hey, you're the disease, and I'm the cure!" },
+        { file: 'duke-lines/mess-with-best.mp3', text: "Mess with the best, die like the rest!" },
+        { file: 'duke-lines/birth-control.mp3', text: "You're an inspiration for birth control!" },
+        { file: 'duke-lines/gotta-hurt.mp3', text: "Ewww... that's gotta hurt!" },
+        { file: 'duke-lines/what-a-mess.mp3', text: "Heh heh heh... what a mess!" },
+        // Additional classics from vocal collection
+        { file: 'duke-lines/blow-it-out.mp3', text: "Blow it out your ass!" },
+        { file: 'duke-lines/youre-ugly.mp3', text: "Damn. You're ugly." },
+        { file: 'duke-lines/love-this-job.mp3', text: "Babes, bullets, bombs... damn, I love this job!" },
+        { file: 'duke-lines/im-duke-nukem.mp3', text: "I'm Duke Nukem... and I'm coming to get the rest of you alien bastards!" }
     ];
 
     // ===== KILL COMBO TAUNTS (escalating aggression) =====
