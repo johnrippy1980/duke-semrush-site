@@ -1,6 +1,21 @@
 /* ===== DUKE NUKEM GRITTY URBAN STYLE ===== */
 /* Authentic Duke 3D textures and atmosphere */
 
+/* ===== HOLLYWOOD HOLOCAUST BACKGROUND ===== */
+.duke-city-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -10;
+    background: url('../images/bg-pic.jpg') center center no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    filter: brightness(0.3) saturate(0.8);
+    pointer-events: none;
+}
+
 /* ===== GRITTY BACKGROUND LAYERS ===== */
 .gritty-bg {
     position: fixed;
