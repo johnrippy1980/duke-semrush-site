@@ -100,6 +100,10 @@
     }
 
     // ===== VOICE SYSTEM =====
+    // Track currently playing audio for navigation delay
+    let currentlyPlayingAudio = null;
+    let pendingNavigation = null;
+
     function playVoice(clipKey) {
         const now = Date.now();
         if (now - gameState.lastVoicePlayed < gameState.voiceCooldown) return false;
@@ -112,11 +116,53 @@
             audio.volume = 0.7;
             audio.currentTime = 0;
             audio.play().catch(() => {});
+            currentlyPlayingAudio = audio;
             gameState.lastVoicePlayed = now;
             showQuote(clip.text);
+
+            // Clear reference when audio ends
+            audio.onended = () => {
+                if (currentlyPlayingAudio === audio) {
+                    currentlyPlayingAudio = null;
+                }
+                // If there's a pending navigation, execute it
+                if (pendingNavigation) {
+                    const url = pendingNavigation;
+                    pendingNavigation = null;
+                    window.location.href = url;
+                }
+            };
             return true;
         }
         return false;
+    }
+
+    // Play voice and return a promise that resolves when done
+    function playVoiceAsync(clipKey) {
+        return new Promise((resolve) => {
+            const clip = dukeVoiceClips[clipKey];
+            if (!clip) {
+                resolve();
+                return;
+            }
+
+            const audio = document.getElementById(clip.id);
+            if (audio) {
+                audio.volume = 0.7;
+                audio.currentTime = 0;
+
+                const onEnded = () => {
+                    audio.removeEventListener('ended', onEnded);
+                    resolve();
+                };
+                audio.addEventListener('ended', onEnded);
+
+                audio.play().catch(() => resolve());
+                showQuote(clip.text);
+            } else {
+                resolve();
+            }
+        });
     }
 
     function playRandomVoice() {
@@ -799,21 +845,63 @@
         localStorage.setItem('dukeKillCount', gameState.killCount);
     }
 
+    // ===== DELAYED NAVIGATION FOR AUDIO =====
+    // Intercept internal link clicks to let audio finish playing
+    function setupDelayedNavigation() {
+        document.addEventListener('click', (e) => {
+            // Find closest anchor tag
+            const link = e.target.closest('a');
+            if (!link) return;
+
+            const href = link.getAttribute('href');
+            if (!href) return;
+
+            // Only intercept internal links (not external, not hash-only)
+            const isExternal = link.target === '_blank' || href.startsWith('http');
+            const isHashOnly = href.startsWith('#');
+
+            if (isExternal || isHashOnly) return;
+
+            // Check if audio is currently playing
+            if (currentlyPlayingAudio && !currentlyPlayingAudio.paused) {
+                e.preventDefault();
+
+                // Store the destination and navigate when audio ends
+                pendingNavigation = href;
+
+                // Also set a maximum wait time (2 seconds) in case audio is long
+                setTimeout(() => {
+                    if (pendingNavigation === href) {
+                        pendingNavigation = null;
+                        window.location.href = href;
+                    }
+                }, 2000);
+            }
+        });
+    }
+
     // ===== EXPOSE GLOBAL API =====
     window.DukeGame = {
         playVoice,
+        playVoiceAsync,
         playRandomVoice,
         spawnEnemy,
         spawnBoss,
         unlockAchievement,
         selectWeapon,
-        gameState
+        gameState,
+        // Allow checking if audio is playing
+        isAudioPlaying: () => currentlyPlayingAudio && !currentlyPlayingAudio.paused
     };
 
     // Initialize when DOM is ready
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            setupDelayedNavigation();
+        });
     } else {
         init();
+        setupDelayedNavigation();
     }
 })();
