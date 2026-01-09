@@ -480,71 +480,22 @@
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
 
-        // Auto-click through js-dos tutorial and hide sidebar
-        function handleJsDosUI() {
-            var dosbox = document.getElementById('dosbox');
-            if (!dosbox) return;
-
-            function processUI() {
-                // Auto-click NEXT buttons to skip tutorial
-                var allElements = dosbox.querySelectorAll('*');
-                allElements.forEach(function(el) {
-                    var text = el.textContent ? el.textContent.trim() : '';
-                    // Click NEXT or any button that advances the tutorial
-                    if (text === 'NEXT' || text === 'OK' || text === 'GOT IT' || text === 'CLOSE') {
-                        if (el.tagName === 'BUTTON' || el.onclick || el.style.cursor === 'pointer' ||
-                            window.getComputedStyle(el).cursor === 'pointer') {
-                            console.log('[Duke 3D] Auto-clicking:', text);
-                            el.click();
-                        }
-                    }
-                });
-
-                // Also look for clickable divs with those texts
-                var buttons = dosbox.querySelectorAll('button, [role="button"], div[style*="cursor"]');
-                buttons.forEach(function(btn) {
-                    var text = btn.textContent ? btn.textContent.trim() : '';
-                    if (text.includes('NEXT') || text.includes('OK') || text.includes('GOT IT')) {
-                        console.log('[Duke 3D] Clicking button:', text);
-                        btn.click();
-                    }
-                });
-
-                // Hide sidebar icons
-                var sidebar = dosbox.querySelector('.sidebar, [class*="sidebar"]');
-                if (sidebar) sidebar.style.display = 'none';
-
-                // Hide individual sidebar buttons by looking for the icon container on left
-                var leftPanel = dosbox.querySelectorAll('div');
-                leftPanel.forEach(function(div) {
-                    var rect = div.getBoundingClientRect();
-                    var dosRect = dosbox.getBoundingClientRect();
-                    // If it's a narrow div on the left edge with buttons/icons
-                    if (rect.width < 60 && rect.left <= dosRect.left + 5 && rect.height > 100) {
-                        div.style.display = 'none';
-                    }
-                });
-            }
-
-            // Run immediately and watch for changes
-            processUI();
-
-            var observer = new MutationObserver(function() {
-                processUI();
-            });
-            observer.observe(dosbox, { childList: true, subtree: true });
-
-            // Keep trying for 15 seconds to catch all tutorial steps
-            var attempts = 0;
-            var interval = setInterval(function() {
-                processUI();
-                attempts++;
-                if (attempts > 30) clearInterval(interval);
-            }, 500);
+        // Hide sidebar with CSS only (don't interfere with game functionality)
+        function hideJsDosSidebar() {
+            // Add CSS to hide the sidebar - using visibility so it doesn't break layout
+            var style = document.createElement('style');
+            style.textContent = `
+                /* Hide js-dos sidebar icons */
+                #dosbox > div > div:first-child {
+                    opacity: 0 !important;
+                    pointer-events: none !important;
+                }
+            `;
+            document.head.appendChild(style);
         }
 
-        // Start after game initializes
-        setTimeout(handleJsDosUI, 1500);
+        // Apply after a short delay
+        setTimeout(hideJsDosSidebar, 3000);
     </script>
 </body>
 </html>
