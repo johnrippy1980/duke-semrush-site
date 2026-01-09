@@ -407,13 +407,14 @@
             Dos(document.getElementById("dosbox"), {
                 wdosboxUrl: "https://js-dos.com/6.22/current/wdosbox.js",
             }).ready(function(fs, main) {
-                loadingProgress.textContent = 'Downloading game (~6MB)...';
+                loadingProgress.textContent = 'Downloading game (~12MB)...';
                 console.log('[Duke 3D] DOSBox ready, loading game bundle...');
 
                 fs.extract("games/duke3d.zip").then(function() {
                     loadingProgress.textContent = 'Starting game...';
                     console.log('[Duke 3D] Game extracted, starting...');
-                    main(["-c", "cd DUKE3D", "-c", "DUKE3D.EXE"]).then(function(ci) {
+                    // Load dosbox.conf for 64MB memory, then run game
+                    main(["-conf", "DUKE3D/dosbox.conf", "-c", "cd DUKE3D", "-c", "DUKE3D.EXE"]).then(function(ci) {
                         console.log('[Duke 3D] Game started!');
                         loadingOverlay.classList.add('hidden');
                     });
