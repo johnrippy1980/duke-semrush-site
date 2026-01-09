@@ -401,46 +401,27 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Initialize js-dos
-        async function initGame() {
-            try {
-                loadingProgress.textContent = 'Loading js-dos...';
+        // Initialize js-dos v8 - correct API
+        function initGame() {
+            loadingProgress.textContent = 'Loading js-dos...';
 
-                // Create Dos instance
-                const dos = Dos(document.getElementById('jsdos'), {
-                    // Disable js-dos UI elements we don't want
-                    noSocialLinks: true,
-                });
-
-                loadingProgress.textContent = 'Downloading Duke 3D...';
-
-                // Run Duke Nukem 3D shareware bundle from dos.zone CDN
-                const ci = await dos.run('https://cdn.dos.zone/custom/dos/duke-nukem-3d.jsdos');
-
+            // js-dos v8 API: Dos(element, { url: bundleUrl })
+            // The bundle URL must be a .jsdos file
+            Dos(document.getElementById('jsdos'), {
+                url: 'https://cdn.dos.zone/custom/dos/duke-nukem-3d.jsdos',
+                autoStart: true
+            }).then(function(ci) {
                 loadingProgress.textContent = 'Starting game...';
+                console.log('[Duke 3D] Game loaded successfully');
 
                 // Hide loading overlay once game starts
                 setTimeout(function() {
                     loadingOverlay.classList.add('hidden');
-                }, 1500);
-
-                console.log('[Duke 3D] Game loaded successfully');
-
-            } catch (error) {
+                }, 2000);
+            }).catch(function(error) {
                 console.error('[Duke 3D] Error loading game:', error);
-                loadingProgress.textContent = 'Error loading game. Trying fallback...';
-
-                // Fallback: try alternative bundle URL
-                try {
-                    const dos = Dos(document.getElementById('jsdos'));
-                    await dos.run('https://js-dos.com/upload/Duke%20Nukem%203d-@digitalwalt.zip');
-                    setTimeout(function() {
-                        loadingOverlay.classList.add('hidden');
-                    }, 1500);
-                } catch (fallbackError) {
-                    loadingProgress.innerHTML = 'Failed to load. <a href="https://dos.zone/duke-nukem-3d-1996/" target="_blank" style="color: #ffcc00;">Play on DOS.Zone</a>';
-                }
-            }
+                loadingProgress.innerHTML = 'Failed to load. <a href="https://dos.zone/duke-nukem-3d-1996/" target="_blank" style="color: #ffcc00;">Play on DOS.Zone</a>';
+            });
         }
 
         // Start game
