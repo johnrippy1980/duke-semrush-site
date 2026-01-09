@@ -480,22 +480,8 @@
 
         console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..."');
 
-        // Hide sidebar with CSS only (don't interfere with game functionality)
-        function hideJsDosSidebar() {
-            // Add CSS to hide the sidebar - using visibility so it doesn't break layout
-            var style = document.createElement('style');
-            style.textContent = `
-                /* Hide js-dos sidebar icons */
-                #dosbox > div > div:first-child {
-                    opacity: 0 !important;
-                    pointer-events: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-
-        // Apply after a short delay
-        setTimeout(hideJsDosSidebar, 3000);
+        // UI hiding disabled for now - game needs to work first
+        // TODO: Once game works, inspect DOM and add targeted CSS to hide sidebar
     </script>
 </body>
 </html>
