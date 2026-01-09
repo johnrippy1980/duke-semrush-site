@@ -427,13 +427,15 @@
         // Start game
         initGame();
 
-        // Fullscreen
+        // Fullscreen - target the canvas element directly
         fullscreenBtn.addEventListener('click', function() {
-            const bezel = document.querySelector('.screen-bezel');
-            if (bezel.requestFullscreen) {
-                bezel.requestFullscreen();
-            } else if (bezel.webkitRequestFullscreen) {
-                bezel.webkitRequestFullscreen();
+            const canvas = document.getElementById('dosbox');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (canvas.requestFullscreen) {
+                canvas.requestFullscreen();
+            } else if (canvas.webkitRequestFullscreen) {
+                canvas.webkitRequestFullscreen();
             }
         });
 
