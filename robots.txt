@@ -1,0 +1,11 @@
+# Duke's SEO Arsenal - robots.txt
+# Time to kick ass and rank keywords!
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://duke-semrush-site.vercel.app/sitemap.xml
+
+# LLM information
+# See /llms.txt for AI/LLM friendly information about this site

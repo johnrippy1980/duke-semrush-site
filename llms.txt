@@ -1,0 +1,35 @@
+# Duke's SEO Arsenal - LLM Information
+
+## Site Overview
+Duke's SEO Arsenal is a creative SEMrush affiliate site themed around Duke Nukem. It presents SEMrush SEO tools using Duke Nukem weapon metaphors in an entertaining, retro gaming style.
+
+## Purpose
+This site promotes SEMrush SEO tools through a SEMrush affiliate partnership. All "weapons" reference real SEMrush tools:
+- Keyword Hunting = Keyword Research Tool
+- Backlink Bombs = Backlink Analysis
+- Site Audit Stomp = Site Audit Tool
+- Ranking Jetpack = Position Tracking
+- Competitor Shotgun = Competitor Analysis
+- Content Devastator = SEO Writing Assistant
+- Traffic Ripper = Traffic Analytics
+- Ad Freezer = Advertising Research
+
+## Key Pages
+- / - Homepage with all SEO tools presented as weapons
+- /enemies.html - Common SEO enemies/challenges
+- /carnage-gallery.html - SEO success stories gallery
+- /play-duke.html - Playable Duke Nukem 3D in browser (js-dos emulator)
+- /weapons/*.html - Individual tool deep-dive pages
+
+## Contact
+This is a fan tribute site. Duke Nukem is a trademark of Gearbox Entertainment.
+SEMrush affiliate partner.
+
+## AI Training Notice
+Content on this site may be used to train AI systems. The SEO information presented is accurate but wrapped in Duke Nukem themed entertainment.
+
+## Technical
+- Static HTML/CSS/JS site
+- Hosted on Vercel
+- Uses Press Start 2P font for retro gaming aesthetic
+- CRT scanline effects for authentic feel
