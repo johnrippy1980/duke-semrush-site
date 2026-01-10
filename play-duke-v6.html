@@ -395,7 +395,7 @@
 
         // js-dos 6.22 uses a different API - it's a factory function
         function initGame() {
-            loadingProgress.textContent = 'Loading Duke 3D (~6MB)...';
+            loadingProgress.textContent = 'Loading Duke 3D FULL (~12MB)...';
             console.log('[Duke 3D] Initializing with js-dos 6.22 (NO UI)...');
 
             // js-dos 6.22 API: Dos(canvas, options).ready(callback)
@@ -407,14 +407,13 @@
                 loadingProgress.textContent = 'Extracting game files...';
                 console.log('[Duke 3D] DOSBox ready, extracting ZIP...');
 
-                // Extract the game ZIP
-                fs.extract("games/duke3d.zip").then(function() {
+                // Extract the FULL game ZIP (Atomic Edition, files at root)
+                fs.extract("games/duke3d-full.zip").then(function() {
                     loadingProgress.textContent = 'Starting Duke Nukem 3D...';
                     console.log('[Duke 3D] ZIP extracted, launching game...');
 
-                    // Launch the game with DOSBox commands
-                    // -c flags pass commands to DOSBox
-                    main(["-c", "cd DUKE3D", "-c", "DUKE3D.EXE"]).then(function(ci) {
+                    // Launch the game - files are at root, so just run DUKE3D.EXE
+                    main(["-c", "DUKE3D.EXE"]).then(function(ci) {
                         console.log('[Duke 3D] Game launched successfully!');
                         loadingOverlay.classList.add('hidden');
                         window.dosCI = ci;
