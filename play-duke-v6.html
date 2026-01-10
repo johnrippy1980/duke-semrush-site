@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Play Duke Nukem 3D | Duke's SEO Arsenal</title>
+    <meta name="description" content="Play Duke Nukem 3D FULL VERSION in your browser! All 4 episodes with WASD controls. Time to kick ass and chew bubblegum.">
+    <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <!-- js-dos 6.22 (NO UI - just canvas!) -->
+    <script src="js-dos-v6/js-dos.js"></script>
+    <style>
+        :root {
+            --duke-blue: #00aaff;
+            --duke-red: #ff3333;
+            --duke-yellow: #ffcc00;
+            --duke-gold: #c09030;
+            --duke-bg: #0a0a14;
+            --duke-panel: #1a1a2e;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Press Start 2P', monospace;
+            background: #000;
+            color: #fff;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 100%);
+            border-bottom: 3px solid #c09030;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 1001;
+        }
+        .nav-logo {
+            font-size: 0.6rem;
+            color: #ff6c2c;
+            text-shadow: 0 0 10px #ff6c2c;
+            text-decoration: none;
+        }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        .nav-link {
+            font-size: 0.45rem;
+            color: #c09030;
+            text-decoration: none;
+            padding: 6px 12px;
+            border: 1px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            color: #fff;
+            border-color: #c09030;
+            text-shadow: 0 0 10px #c09030;
+        }
+        .nav-link.active {
+            color: #ff6c2c;
+            border-color: #ff6c2c;
+        }
+
+        /* Game Container */
+        .game-container {
+            position: fixed;
+            top: 50px;
+            left: 0;
+            right: 0;
+            bottom: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #000;
+        }
+
+        /* Arcade Cabinet Wrapper */
+        .arcade-cabinet {
+            position: relative;
+            background: linear-gradient(180deg, #3a3a4a 0%, #2a2a3a 100%);
+            border: 4px solid #606060;
+            border-top-color: #808080;
+            border-left-color: #808080;
+            border-radius: 10px 10px 0 0;
+            padding: 15px;
+            box-shadow:
+                0 0 50px rgba(255, 108, 44, 0.4),
+                inset 0 2px 0 #7a7a8a,
+                inset 0 -2px 0 #1a1a2a;
+        }
+
+        .arcade-cabinet::before {
+            content: 'CLICK GAME TO CAPTURE MOUSE';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.45rem;
+            color: var(--duke-yellow);
+            animation: blink 1s step-end infinite;
+            white-space: nowrap;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .screen-bezel {
+            background: #111;
+            border: 6px solid #444;
+            border-top-color: #333;
+            border-left-color: #333;
+            border-radius: 4px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* js-dos 6.22 canvas - NO UI! */
+        #jsdos {
+            width: 800px;
+            height: 600px;
+            background: #0a0a14;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 20, 0.98);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.5s;
+        }
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-title {
+            font-size: 1.5rem;
+            color: var(--duke-red);
+            text-shadow: 3px 3px 0 #000, 0 0 20px var(--duke-red);
+            margin-bottom: 15px;
+        }
+        .loading-subtitle {
+            font-size: 0.5rem;
+            color: var(--duke-yellow);
+            margin-bottom: 25px;
+        }
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid #333;
+            border-top-color: var(--duke-yellow);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .loading-tip {
+            font-size: 0.35rem;
+            color: #888;
+            margin-top: 20px;
+            text-align: center;
+            max-width: 400px;
+            line-height: 1.8;
+        }
+        .loading-progress {
+            font-size: 0.4rem;
+            color: var(--duke-gold);
+            margin-top: 15px;
+        }
+
+        /* Control Buttons */
+        .control-buttons {
+            position: absolute;
+            top: -30px;
+            right: 0;
+            display: flex;
+            gap: 8px;
+        }
+        .control-btn {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.4rem;
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.8);
+            color: var(--duke-yellow);
+            border: 1px solid var(--duke-yellow);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .control-btn:hover {
+            background: rgba(255, 204, 0, 0.2);
+        }
+
+        /* Controls HUD */
+        .controls-hud {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: linear-gradient(180deg, #2a2a3a 0%, #1a1a2a 50%, #0a0a14 100%);
+            border-top: 3px solid #c09030;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 25px;
+            padding: 0 20px;
+        }
+        .control-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .control-key {
+            font-size: 0.4rem;
+            background: #1a1a2e;
+            border: 2px solid #404050;
+            padding: 4px 8px;
+            color: var(--duke-yellow);
+        }
+        .control-label {
+            font-size: 0.3rem;
+            color: #888;
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 70px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .music-btn {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.45rem;
+            padding: 8px 12px;
+            background: rgba(0,0,0,0.9);
+            color: var(--duke-gold);
+            border: 2px solid var(--duke-gold);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .music-btn:hover {
+            background: rgba(192, 144, 48, 0.2);
+            box-shadow: 0 0 15px rgba(192, 144, 48, 0.4);
+        }
+        .music-btn.playing {
+            border-color: #00ff00;
+            color: #00ff00;
+            animation: musicPulse 1s ease-in-out infinite;
+        }
+        @keyframes musicPulse {
+            0%, 100% { box-shadow: 0 0 10px rgba(0, 255, 0, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.6); }
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            #jsdos {
+                width: 640px;
+                height: 480px;
+            }
+        }
+        @media (max-width: 700px) {
+            #jsdos {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 4/3;
+            }
+            .arcade-cabinet {
+                width: calc(100% - 20px);
+                padding: 8px;
+            }
+            .controls-hud {
+                gap: 10px;
+                height: 50px;
+            }
+            .control-item:nth-child(n+5) { display: none; }
+            .control-key { font-size: 0.35rem; padding: 3px 6px; }
+            .control-label { font-size: 0.25rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Music -->
+    <audio id="bgMusic" loop preload="auto">
+        <source src="audio/grabbag.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Navigation -->
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-logo">DUKE SEO</a>
+        <a href="index.html#weapons" class="nav-link">ARSENAL</a>
+        <a href="enemies.html" class="nav-link">ENEMIES</a>
+        <a href="carnage-gallery.html" class="nav-link" style="color: #ff3300;">CARNAGE</a>
+        <a href="play-duke.html" class="nav-link active" style="color: #ff6c2c;">PLAY GAME</a>
+        <a href="https://www.semrush.com/lp/digital-marketing-starts-here-7/en/?ref=1292478928&refer_source=&utm_source=john_rippy&utm_medium=dukes_seo_arsenal&utm_campaign=berush_promo" class="nav-link nav-cta" target="_blank">GET SEMRUSH</a>
+    </nav>
+
+    <!-- Game Container -->
+    <div class="game-container">
+        <div class="arcade-cabinet">
+            <div class="control-buttons">
+                <button class="control-btn" id="fullscreenBtn">FULLSCREEN</button>
+            </div>
+            <div class="screen-bezel">
+                <!-- Loading Overlay -->
+                <div class="loading-overlay" id="loadingOverlay">
+                    <div class="loading-title">DUKE NUKEM 3D</div>
+                    <div class="loading-subtitle">FULL VERSION - 3D Realms 1996</div>
+                    <div class="loading-spinner"></div>
+                    <p class="loading-tip">
+                        Loading DOSBox emulator...<br><br>
+                        Duke 3D Full Version via js-dos 6.22<br>
+                        Clean canvas - NO UI overlay!
+                    </p>
+                    <div class="loading-progress" id="loadingProgress">Initializing...</div>
+                </div>
+
+                <!-- js-dos 6.22 canvas - NO SIDEBAR OR POPUPS -->
+                <canvas id="jsdos" width="800" height="600"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Music Player Button -->
+    <div class="music-player">
+        <button class="music-btn" id="musicBtn">
+            <span>[M]</span>
+            <span id="musicText">GRABBAG</span>
+        </button>
+    </div>
+
+    <!-- Controls HUD -->
+    <div class="controls-hud">
+        <div class="control-item">
+            <span class="control-key">WASD</span>
+            <span class="control-label">MOVE</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">MOUSE</span>
+            <span class="control-label">AIM/FIRE</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">SPACE</span>
+            <span class="control-label">JUMP</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">E</span>
+            <span class="control-label">USE</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">SHIFT</span>
+            <span class="control-label">RUN</span>
+        </div>
+        <div class="control-item">
+            <span class="control-key">1-0</span>
+            <span class="control-label">WEAPONS</span>
+        </div>
+    </div>
+
+    <script>
+        const loadingOverlay = document.getElementById('loadingOverlay');
+        const loadingProgress = document.getElementById('loadingProgress');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicText = document.getElementById('musicText');
+        const bgMusic = document.getElementById('bgMusic');
+
+        // js-dos 6.22 uses a different API - it's a factory function
+        function initGame() {
+            loadingProgress.textContent = 'Loading Duke 3D (~6MB)...';
+            console.log('[Duke 3D] Initializing with js-dos 6.22 (NO UI)...');
+
+            // js-dos 6.22 API: Dos(canvas, options).ready(callback)
+            Dos(document.getElementById("jsdos"), {
+                wdosboxUrl: "js-dos-v6/wdosbox.js",
+                cycles: "max",        // Maximum speed
+                autolock: true        // Auto-lock mouse pointer
+            }).ready(function(fs, main) {
+                loadingProgress.textContent = 'Extracting game files...';
+                console.log('[Duke 3D] DOSBox ready, extracting ZIP...');
+
+                // Extract the game ZIP
+                fs.extract("games/duke3d.zip").then(function() {
+                    loadingProgress.textContent = 'Starting Duke Nukem 3D...';
+                    console.log('[Duke 3D] ZIP extracted, launching game...');
+
+                    // Launch the game with DOSBox commands
+                    // -c flags pass commands to DOSBox
+                    main(["-c", "cd DUKE3D", "-c", "DUKE3D.EXE"]).then(function(ci) {
+                        console.log('[Duke 3D] Game launched successfully!');
+                        loadingOverlay.classList.add('hidden');
+                        window.dosCI = ci;
+                    }).catch(function(err) {
+                        console.error('[Duke 3D] Error launching game:', err);
+                        loadingProgress.textContent = 'Error launching: ' + err.message;
+                    });
+                }).catch(function(err) {
+                    console.error('[Duke 3D] Error extracting ZIP:', err);
+                    loadingProgress.textContent = 'Error extracting: ' + err.message;
+                });
+            });
+        }
+
+        // Start game
+        initGame();
+
+        // Fullscreen
+        fullscreenBtn.addEventListener('click', function() {
+            const gameArea = document.getElementById('jsdos');
+            if (document.fullscreenElement) {
+                document.exitFullscreen();
+            } else if (gameArea.requestFullscreen) {
+                gameArea.requestFullscreen();
+            } else if (gameArea.webkitRequestFullscreen) {
+                gameArea.webkitRequestFullscreen();
+            }
+        });
+
+        document.addEventListener('fullscreenchange', function() {
+            fullscreenBtn.textContent = document.fullscreenElement ? 'EXIT' : 'FULLSCREEN';
+        });
+
+        // Music controls
+        let musicPlaying = false;
+
+        if (localStorage.getItem('duke_music_playing') === 'true') {
+            bgMusic.play().then(function() {
+                musicPlaying = true;
+                musicBtn.classList.add('playing');
+                musicText.textContent = 'MUTE';
+            }).catch(function() {});
+        }
+
+        musicBtn.addEventListener('click', function() {
+            if (musicPlaying) {
+                bgMusic.pause();
+                musicBtn.classList.remove('playing');
+                musicText.textContent = 'GRABBAG';
+                localStorage.setItem('duke_music_playing', 'false');
+            } else {
+                bgMusic.volume = 0.4;
+                bgMusic.play().then(function() {
+                    musicBtn.classList.add('playing');
+                    musicText.textContent = 'MUTE';
+                    localStorage.setItem('duke_music_playing', 'true');
+                }).catch(function() {});
+            }
+            musicPlaying = !musicPlaying;
+        });
+
+        console.log('[Duke SEO Arsenal] js-dos 6.22 - NO UI VERSION');
+    </script>
+</body>
+</html>
