@@ -8,9 +8,8 @@
     <link rel="icon" href="images/duke-icon.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-    <!-- js-dos 7 (self-hosted) -->
-    <script src="js-dos/js-dos.js"></script>
-    <link rel="stylesheet" href="js-dos/js-dos.css">
+    <!-- js-dos 6.22 (NO UI - just canvas!) -->
+    <script src="js-dos-v6/js-dos.js"></script>
     <style>
         :root {
             --duke-blue: #00aaff;
@@ -103,7 +102,7 @@
         }
 
         .arcade-cabinet::before {
-            content: 'CLICK GAME TO CAPTURE CONTROLS';
+            content: 'CLICK GAME TO CAPTURE MOUSE';
             position: absolute;
             top: -30px;
             left: 50%;
@@ -130,24 +129,11 @@
             overflow: hidden;
         }
 
-        /* js-dos container */
-        #dosbox {
+        /* js-dos 6.22 canvas - NO UI! */
+        #jsdos {
             width: 800px;
             height: 600px;
             background: #0a0a14;
-        }
-
-        /* Override js-dos styling */
-        .emulator-screen {
-            background: #0a0a14 !important;
-        }
-
-        /* Ensure canvas is ALWAYS visible */
-        #dosbox canvas,
-        #dosbox video {
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
         }
 
         /* Loading Overlay */
@@ -296,13 +282,13 @@
 
         /* Responsive */
         @media (max-width: 900px) {
-            #dosbox {
+            #jsdos {
                 width: 640px;
                 height: 480px;
             }
         }
         @media (max-width: 700px) {
-            #dosbox {
+            #jsdos {
                 width: 100%;
                 height: auto;
                 aspect-ratio: 4/3;
@@ -351,14 +337,14 @@
                     <div class="loading-spinner"></div>
                     <p class="loading-tip">
                         Loading DOSBox emulator...<br><br>
-                        Duke 3D Full Version via js-dos 7.<br>
-                        Pre-configured with WASD controls!
+                        Duke 3D Full Version via js-dos 6.22<br>
+                        Clean canvas - NO UI overlay!
                     </p>
                     <div class="loading-progress" id="loadingProgress">Initializing...</div>
                 </div>
 
-                <!-- js-dos container -->
-                <div id="dosbox" style="width: 800px; height: 600px;"></div>
+                <!-- js-dos 6.22 canvas - NO SIDEBAR OR POPUPS -->
+                <canvas id="jsdos" width="800" height="600"></canvas>
             </div>
         </div>
     </div>
@@ -407,27 +393,38 @@
         const musicText = document.getElementById('musicText');
         const bgMusic = document.getElementById('bgMusic');
 
-        // Configure js-dos to find WASM modules in js-dos folder
-        if (typeof emulators !== 'undefined') {
-            emulators.pathPrefix = "js-dos/";
-            console.log('[Duke 3D] Set emulators.pathPrefix to js-dos/');
-        }
-
-        // Initialize with js-dos 7 API
+        // js-dos 6.22 uses a different API - it's a factory function
         function initGame() {
-            loadingProgress.textContent = 'Loading Duke 3D (~12MB)...';
-            console.log('[Duke 3D] Initializing DOSBox with js-dos 7...');
+            loadingProgress.textContent = 'Loading Duke 3D FULL (~12MB)...';
+            console.log('[Duke 3D] Initializing with js-dos 6.22 (NO UI)...');
 
-            // js-dos 7 uses Dos(element).run(bundleUrl)
-            Dos(document.getElementById("dosbox")).run("games/duke3d.jsdos").then(function(ci) {
-                console.log('[Duke 3D] Game loaded successfully!');
-                loadingOverlay.classList.add('hidden');
-                // Store command interface for potential future use
-                window.dosCI = ci;
-                // UI hiding disabled for testing
-            }).catch(function(err) {
-                console.error('[Duke 3D] Error loading game:', err);
-                loadingProgress.textContent = 'Error loading game: ' + err.message;
+            // js-dos 6.22 API: Dos(canvas, options).ready(callback)
+            Dos(document.getElementById("jsdos"), {
+                wdosboxUrl: "js-dos-v6/wdosbox.js",
+                cycles: "max",        // Maximum speed
+                autolock: true        // Auto-lock mouse pointer
+            }).ready(function(fs, main) {
+                loadingProgress.textContent = 'Extracting game files...';
+                console.log('[Duke 3D] DOSBox ready, extracting ZIP...');
+
+                // Extract the FULL game ZIP (Atomic Edition, files at root)
+                fs.extract("games/duke3d-full.zip").then(function() {
+                    loadingProgress.textContent = 'Starting Duke Nukem 3D...';
+                    console.log('[Duke 3D] ZIP extracted, launching game...');
+
+                    // Launch the game - files are at root, so just run DUKE3D.EXE
+                    main(["-c", "DUKE3D.EXE"]).then(function(ci) {
+                        console.log('[Duke 3D] Game launched successfully!');
+                        loadingOverlay.classList.add('hidden');
+                        window.dosCI = ci;
+                    }).catch(function(err) {
+                        console.error('[Duke 3D] Error launching game:', err);
+                        loadingProgress.textContent = 'Error launching: ' + err.message;
+                    });
+                }).catch(function(err) {
+                    console.error('[Duke 3D] Error extracting ZIP:', err);
+                    loadingProgress.textContent = 'Error extracting: ' + err.message;
+                });
             });
         }
 
@@ -436,7 +433,7 @@
 
         // Fullscreen
         fullscreenBtn.addEventListener('click', function() {
-            const gameArea = document.getElementById('dosbox');
+            const gameArea = document.getElementById('jsdos');
             if (document.fullscreenElement) {
                 document.exitFullscreen();
             } else if (gameArea.requestFullscreen) {
@@ -453,7 +450,6 @@
         // Music controls
         let musicPlaying = false;
 
-        // Check if music was playing before (localStorage persistence)
         if (localStorage.getItem('duke_music_playing') === 'true') {
             bgMusic.play().then(function() {
                 musicPlaying = true;
@@ -479,11 +475,7 @@
             musicPlaying = !musicPlaying;
         });
 
-        console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..." v7-clean');
-
-        // NOTE: Hiding js-dos UI breaks the game. CSS display:none, visibility:hidden,
-        // width:0 - all break it. The sidebar/popup must remain for the game to work.
-        // This is a js-dos limitation we'll have to live with for now.
+        console.log('[Duke SEO Arsenal] js-dos 6.22 - NO UI VERSION');
     </script>
 </body>
 </html>
