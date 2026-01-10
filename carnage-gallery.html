@@ -423,7 +423,7 @@
 
     <!-- Navigation -->
     <nav class="nav-bar">
-        <a href="index.html" class="nav-logo">DUKE'S SEO ARSENAL <span style="font-size: 0.35rem; color: #c09030;">- Time to kick ass &amp; rank keywords</span></a>
+        <a href="index.html" class="nav-logo">DUKE'S SEO ARSENAL - Time to kick ass & rank keywords</a>
         <a href="index.html#weapons" class="nav-link">ARSENAL</a>
         <a href="enemies.html" class="nav-link">ENEMIES</a>
         <a href="carnage-gallery.html" class="nav-link active" style="color: #ff3300;">CARNAGE</a>
@@ -433,7 +433,7 @@
 
     <!-- Gallery Hero -->
     <section class="gallery-hero">
-        <h1 class="gallery-title">💀 CARNAGE GALLERY 💀</h1>
+        <h1 class="gallery-title">CARNAGE GALLERY</h1>
         <p class="gallery-subtitle">"IT'S TIME TO KICK ASS... AND DOCUMENT THE CARNAGE"</p>
 
         <div class="carnage-stats">
@@ -458,7 +458,7 @@
 
     <!-- Boss Battles Section -->
     <section class="gallery-section">
-        <h2 class="section-title">🎯 BOSS BATTLES - THE BIG KILLS 🎯</h2>
+        <h2 class="section-title">BOSS BATTLES - THE BIG KILLS</h2>
         <div class="gallery-grid">
             <div class="gallery-item featured" onclick="openLightbox(this)">
                 <img src="images/gallery/duke.jpg" alt="Cycloid Emperor Boss Battle" class="gallery-image" loading="lazy">
@@ -486,7 +486,7 @@
 
     <!-- Weapon Carnage Section -->
     <section class="gallery-section">
-        <h2 class="section-title">🔥 WEAPON DESTRUCTION 🔥</h2>
+        <h2 class="section-title">WEAPON DESTRUCTION</h2>
         <div class="gallery-grid">
             <div class="gallery-item featured" onclick="openLightbox(this)">
                 <img src="images/gallery/duke6.jpg" alt="Hollywood Holocaust Theater" class="gallery-image" loading="lazy">
@@ -521,7 +521,7 @@
 
     <!-- Iconic Levels Section -->
     <section class="gallery-section">
-        <h2 class="section-title">🏙️ ICONIC KILLING GROUNDS 🏙️</h2>
+        <h2 class="section-title">ICONIC KILLING GROUNDS</h2>
         <div class="gallery-grid">
             <div class="gallery-item" onclick="openLightbox(this)">
                 <img src="images/gallery/duke5.jpg" alt="Lunar Apocalypse" class="gallery-image" loading="lazy">
@@ -545,7 +545,81 @@
         <p class="footer-text">Duke Nukem 3D™ is a trademark of 3D Realms Entertainment / Gearbox Software</p>
         <p class="footer-text">This is a fan tribute site - All game screenshots used for review/commentary purposes</p>
         <p class="footer-quote">"Hail to the king, baby!"</p>
+        <a href="404.html" style="display: inline-block; margin-top: 1rem;">
+            <img src="images/semrush-partner-badge.png" alt="SEMrush Affiliate Partner" style="height: 60px; opacity: 0.8; transition: opacity 0.3s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.8'">
+        </a>
     </footer>
+
+    <!-- Duke HUD - Authentic Duke 3D Style -->
+    <div class="duke-hud">
+        <!-- Health Section -->
+        <div class="hud-section">
+            <span class="hud-label">HEALTH</span>
+            <span class="hud-value hud-health" id="hudHealth">100</span>
+        </div>
+
+        <!-- Armor Section -->
+        <div class="hud-section">
+            <span class="hud-label">ARMOR</span>
+            <span class="hud-value hud-armor" id="hudArmor">100</span>
+        </div>
+
+        <!-- Weapon Inventory -->
+        <div class="hud-weapons">
+            <div class="hud-weapon-slot active" data-weapon="1" title="Mighty Boot">
+                <img src="images/mighty-boot-sprite.png" alt="1">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="2" title="Pistol">
+                <img src="images/pistol-sprite.png" alt="2">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="3" title="Shotgun">
+                <img src="images/shotgun-sprite.png" alt="3">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="4" title="Chaingun">
+                <img src="images/ripper-sprite.png" alt="4">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="5" title="RPG">
+                <img src="images/rpg-sprite.png" alt="5">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="6" title="Pipe Bomb">
+                <img src="images/pipebomb-sprite.png" alt="6">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="7" title="Devastator">
+                <img src="images/devastator-sprite.png" alt="7">
+            </div>
+            <div class="hud-weapon-slot" data-weapon="8" title="Freezer">
+                <img src="images/freezer-sprite.png" alt="8">
+            </div>
+        </div>
+
+        <!-- Duke Face - Center -->
+        <div class="hud-face-container">
+            <img src="images/duke-hud-face.png" alt="Duke" class="hud-face" id="dukeFace" title="Click Duke!">
+        </div>
+
+        <!-- Keys Section -->
+        <div class="hud-keys">
+            <div class="hud-key blue" id="keyBlue" title="Blue Key"></div>
+            <div class="hud-key red" id="keyRed" title="Red Key"></div>
+            <div class="hud-key yellow" id="keyYellow" title="Yellow Key"></div>
+        </div>
+
+        <!-- Secrets Section -->
+        <div class="hud-section">
+            <span class="hud-label">SECRETS</span>
+            <div class="hud-secrets-display">
+                <span class="hud-value hud-secrets" id="hudSecrets">0</span>
+                <span class="hud-secrets-slash">/</span>
+                <span class="hud-value hud-secrets" id="hudSecretsTotal">6</span>
+            </div>
+        </div>
+
+        <!-- Kills Section -->
+        <div class="hud-section">
+            <span class="hud-label">FRAGS</span>
+            <span class="hud-value hud-kills" id="hudKills">0</span>
+        </div>
+    </div>
 
     <!-- Lightbox -->
     <div class="lightbox" id="lightbox" onclick="closeLightbox()">
