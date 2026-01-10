@@ -1688,28 +1688,3 @@ select:focus {
 
 @media (min-width: 1536px) {
 }
-
-/* === DUKE SEO ARSENAL CUSTOMIZATIONS === */
-/* Hide js-dos sidebar/UI without breaking the game */
-/* Using width:0 + overflow:hidden instead of display:none */
-.flex-grow-0 {
-  width: 0 !important;
-  min-width: 0 !important;
-  max-width: 0 !important;
-  overflow: hidden !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border: none !important;
-  opacity: 0 !important;
-}
-
-/* Hide any tutorial/onboarding popups */
-.sidebar-header,
-[class*="tutorial"],
-[class*="onboard"],
-[class*="tooltip"] {
-  width: 0 !important;
-  height: 0 !important;
-  overflow: hidden !important;
-  opacity: 0 !important;
-}
