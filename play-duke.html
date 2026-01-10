@@ -424,12 +424,7 @@
                 loadingOverlay.classList.add('hidden');
                 // Store command interface for potential future use
                 window.dosCI = ci;
-
-                // Hide js-dos UI only AFTER game is fully loaded and running
-                // Wait 10 more seconds to ensure game menu appears
-                setTimeout(function() {
-                    hideJsDosUI();
-                }, 10000);
+                // UI hiding disabled for testing
             }).catch(function(err) {
                 console.error('[Duke 3D] Error loading game:', err);
                 loadingProgress.textContent = 'Error loading game: ' + err.message;
@@ -484,15 +479,7 @@
             musicPlaying = !musicPlaying;
         });
 
-        console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..." v3');
-
-        // Hide js-dos UI - called from within initGame after successful load
-        function hideJsDosUI() {
-            var style = document.createElement('style');
-            style.textContent = '#dosbox .flex-grow-0 { display: none !important; }';
-            document.head.appendChild(style);
-            console.log('[Duke 3D] js-dos UI hidden');
-        }
+        console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..." v4-no-hide');
     </script>
 </body>
 </html>
