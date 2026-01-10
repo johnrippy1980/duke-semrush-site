@@ -479,26 +479,7 @@
             musicPlaying = !musicPlaying;
         });
 
-        console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..." v5');
-
-        // Hide js-dos UI using visibility instead of display:none
-        // display:none breaks the game, but visibility/position should work
-        function hideJsDosUI() {
-            var style = document.createElement('style');
-            style.textContent = `
-                #dosbox .flex-grow-0 {
-                    visibility: hidden !important;
-                    position: absolute !important;
-                    left: -9999px !important;
-                    pointer-events: none !important;
-                }
-            `;
-            document.head.appendChild(style);
-            console.log('[Duke 3D] js-dos UI hidden (visibility method)');
-        }
-
-        // Apply after 8 seconds to ensure game is fully running
-        setTimeout(hideJsDosUI, 8000);
+        console.log('[Duke SEO Arsenal] "It\'s time to kick ass and chew bubblegum..." v6-css-mod');
     </script>
 </body>
 </html>
